@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67F0F7A8-474B-4F4C-8589-9CE9679E39E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eca.Commons</RootNamespace>
+    <AssemblyName>Eca.CoreLib</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>CoreLib</SccProjectName>
+    <SccLocalPath>3~013d968f-324d-41cc-af5e-d5ee52fbcae4</SccLocalPath>
+    <SccAuxPath>http://sevsq09-vm.eca.domain/VaultService</SccAuxPath>
+    <SccProvider>SourceGear Vault Visual Studio 2005 Client:{1EA47954-8515-402d-82D9-B5C332120A8D}</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\$(MSBuildProjectName)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\$(MSBuildProjectName)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>..\..\bin\Release\$(MSBuildProjectName)\Eca.CoreLib.XML</DocumentationFile>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NValidate, Version=0.0.0.10177, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NValidate\NValidate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CoreLib.AssemblyInfo.cs">
+      <Link>Properties\CoreLib.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AddressLookup\ImisDefaultAddress.cs" />
+    <Compile Include="AddressLookup\IQasConnection.cs" />
+    <Compile Include="AddressLookup\IAddressLookup.cs" />
+    <Compile Include="AddressLookup\IQasLookupBase.cs" />
+    <Compile Include="AddressLookup\IQasLookupV2.cs" />
+    <Compile Include="AddressLookup\LookupAddress.cs" />
+    <Compile Include="AddressLookup\SimpleAddress.cs" />
+    <Compile Include="AddressLookup\ExtendedAddress.cs" />
+    <Compile Include="Caching\CacheAdministator.cs" />
+    <Compile Include="Caching\CacheDecorator.cs" />
+    <Compile Include="Caching\CacheInfo.cs" />
+    <Compile Include="Caching\NullCache.cs" />
+    <Compile Include="Caching\NullStoppableCache.cs" />
+    <Compile Include="Caching\SimpleInmemoryCache.cs" />
+    <Compile Include="Caching\Statistics\CacheStatistic.cs" />
+    <Compile Include="Caching\Statistics\CacheStatistics.cs" />
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Caching\Statistics\ICacheActivityRecorder.cs" />
+    <Compile Include="Caching\IStoppableCache.cs" />
+    <Compile Include="Caching\Statistics\StatisticsCache.cs" />
+    <Compile Include="Caching\StoppableCache.cs" />
+    <Compile Include="CheckDigit\CheckDigitAlgorithms.cs" />
+    <Compile Include="CheckDigit\VerhoeffCheckDigit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Comparers\ComparerEx.cs" />
+    <Compile Include="Comparers\ComparisonComparer.cs" />
+    <Compile Include="DataAnnotations\AtLeastOnePropertyRequiredAttribute.cs" />
+    <Compile Include="DataAnnotations\EmailValidator.cs" />
+    <Compile Include="DataAnnotations\NiNumberValidator.cs" />
+    <Compile Include="DataAnnotations\OrderAttribute.cs" />
+    <Compile Include="DataAnnotations\PropertiesMustMatchAttribute.cs" />
+    <Compile Include="DataAnnotations\ValueObjectAttribute.cs" />
+    <Compile Include="Data\Comparison.cs" />
+    <Compile Include="Data\DbConnectionInfo.cs" />
+    <Compile Include="Data\IdentityMap.cs" />
+    <Compile Include="Data\IIdGenerator.cs" />
+    <Compile Include="Data\IntegerDbTableIdGenerator.cs" />
+    <Compile Include="Data\IQueryCriteria.cs" />
+    <Compile Include="Data\ObjectNotFoundException.cs" />
+    <Compile Include="Data\SelectQueryBuilder\JoinType.cs" />
+    <Compile Include="Data\LogicOperator.cs" />
+    <Compile Include="Data\SelectQueryBuilder\IQueryBuilder.cs" />
+    <Compile Include="Data\SelectQueryBuilder\JoinClause.cs" />
+    <Compile Include="Data\SelectQueryBuilder\OrderByClause.cs" />
+    <Compile Include="Data\SelectQueryBuilder\SelectQueryBuilder.cs" />
+    <Compile Include="Data\SelectQueryBuilder\SqlLiteral.cs" />
+    <Compile Include="Data\SelectQueryBuilder\TopClause.cs" />
+    <Compile Include="Data\SelectQueryBuilder\TopUnit.cs" />
+    <Compile Include="Data\SelectQueryBuilder\WhereClause.cs" />
+    <Compile Include="Data\SelectQueryBuilder\WhereStatement.cs" />
+    <Compile Include="Data\SimpleDataAccess.cs" />
+    <Compile Include="Data\Sorting.cs" />
+    <Compile Include="Data\SqlAdminQueries.cs" />
+    <Compile Include="Data\SqlCeDbHelper.cs" />
+    <Compile Include="Dates\DateValidator.cs" />
+    <Compile Include="Dates\TimeRange.cs" />
+    <Compile Include="DisposableAction.cs" />
+    <Compile Include="DomainLayer\Auditable.cs" />
+    <Compile Include="DomainLayer\AuditableObjectBase.cs" />
+    <Compile Include="DomainLayer\EntityBase.cs" />
+    <Compile Include="DomainLayer\ICreatable.cs" />
+    <Compile Include="DomainLayer\IAuditable.cs" />
+    <Compile Include="DomainLayer\ICanStopValidating.cs" />
+    <Compile Include="DomainLayer\IEntityBase.cs" />
+    <Compile Include="DomainLayer\IExposesId.cs" />
+    <Compile Include="DomainLayer\IFind.cs" />
+    <Compile Include="DomainLayer\ILinqRepository.cs" />
+    <Compile Include="DomainLayer\INew.cs" />
+    <Compile Include="DomainLayer\INullable.cs" />
+    <Compile Include="DomainLayer\ISoftDelete.cs" />
+    <Compile Include="DomainLayer\IUpdatable.cs" />
+    <Compile Include="DomainLayer\IUser.cs" />
+    <Compile Include="DomainLayer\SoftDeleteExtensions.cs" />
+    <Compile Include="DomainLayer\User.cs" />
+    <Compile Include="DomainLayer\ValueObjectBase.cs" />
+    <Compile Include="Email\EmailAddressValidator.cs" />
+    <Compile Include="Email\IEmailSender.cs" />
+    <Compile Include="EnumDescConverter.cs" />
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="ExceptionSafe.cs" />
+    <Compile Include="Extensions\BoolExtensions.cs" />
+    <Compile Include="Extensions\DataConnectionExtensions.cs" />
+    <Compile Include="Extensions\DataRowExts.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExt.cs" />
+    <Compile Include="Extensions\FileInfoExtensions.cs" />
+    <Compile Include="Extensions\Int32Extensions.cs" />
+    <Compile Include="Extensions\JsonExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
+    <Compile Include="Extensions\NumberToWordsConverter.cs" />
+    <Compile Include="Extensions\ProcessExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="Extensions\TwoDimensionalArrayExtensions.cs" />
+    <Compile Include="Extensions\UserExtensions.cs" />
+    <Compile Include="Extensions\XmlTextWriterExtensions.cs" />
+    <Compile Include="GenericEqualityComparerAdapter.cs" />
+    <Compile Include="DI\IAutoRegisteredComponent.cs" />
+    <Compile Include="DI\IAutoRegisteredTransientComponent.cs" />
+    <Compile Include="HierarchySort.cs" />
+    <Compile Include="CheckDigit\ICheckDigit.cs" />
+    <Compile Include="IEncryptor.cs" />
+    <Compile Include="IFactory.cs" />
+    <Compile Include="Drawing\DrawingUtils.cs" />
+    <Compile Include="INullMarker.cs" />
+    <Compile Include="IsBuiltinTypeAttribute.cs" />
+    <Compile Include="Comparers\LinkedComparer.cs" />
+    <Compile Include="LocalData\ILocalData.cs" />
+    <Compile Include="LocalData\LocalData.cs" />
+    <Compile Include="Logging\DotNetLoggerFactory.cs" />
+    <Compile Include="Logging\OutputDebugStringTraceListener.cs" />
+    <Compile Include="Logging\TraceSourceExtensions.cs" />
+    <Compile Include="NullSafe.cs" />
+    <Compile Include="ObjectsKeyedByType.cs" />
+    <Compile Include="Comparers\ProjectComparer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Dates\Clock.cs" />
+    <Compile Include="Dates\Date.cs" />
+    <Compile Include="Dates\DateRange.cs" />
+    <Compile Include="Dates\IPublicHolidayCalendar.cs" />
+    <Compile Include="Dates\PublicHolidayCalendar.cs" />
+    <Compile Include="CollectionComparer.cs" />
+    <Compile Include="DeepCloner.cs" />
+    <Compile Include="DesignByContract.cs" />
+    <Compile Include="Email\EmailAddresses.cs" />
+    <Compile Include="Email\EmailMessage.cs" />
+    <Compile Include="Email\EmailSender.cs" />
+    <Compile Include="EnhancedConvertor.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Reflection\EnumElement.cs" />
+    <Compile Include="Reflection\PropertyInfoExtensions.cs" />
+    <Compile Include="Reflection\PropertyNameFilter.cs" />
+    <Compile Include="Reflection\PropertyNames.cs" />
+    <Compile Include="Reflection\ReflectTypeExtensions.cs" />
+    <Compile Include="FileWatcher.cs" />
+    <Compile Include="GuidGenerator.cs" />
+    <Compile Include="Logging\DefaultUsageStatsLogger.cs" />
+    <Compile Include="Logging\IUsageStatsLogger.cs" />
+    <Compile Include="Logging\LogFactoryRegistry.cs" />
+    <Compile Include="Logging\LoggerExtensionMethods.cs" />
+    <Compile Include="Logging\UsageStats.cs" />
+    <Compile Include="Registry64.cs" />
+    <Compile Include="Comparers\ReverseComparer.cs" />
+    <Compile Include="Security\IHasher.cs" />
+    <Compile Include="Security\RandomSaltedSHA256HashValue.cs" />
+    <Compile Include="Serialization\DataContractJsonStringSerializer.cs" />
+    <Compile Include="Serialization\IEncryptedStringSerializer.cs" />
+    <Compile Include="Serialization\IStringSerializer.cs" />
+    <Compile Include="Serialization\EncryptedStringSerializer.cs" />
+    <Compile Include="Serialization\StringSerialiserAdaptor.cs" />
+    <Compile Include="SimpleComparer.cs" />
+    <Compile Include="SimpleFactory.cs" />
+    <Compile Include="SkipFormattingAttribute.cs" />
+    <Compile Include="SmartEnumerable.cs" />
+    <Compile Include="Testing\Builder.cs" />
+    <Compile Include="Testing\DataGenenerator.cs" />
+    <Compile Include="Testing\EmailSenderFake.cs" />
+    <Compile Include="Testing\InvalidMethodChainGrammerException.cs" />
+    <Compile Include="Testing\PropertiesSetter.cs" />
+    <Compile Include="Testing\StreamUtils.cs" />
+    <Compile Include="TextHelper.cs" />
+    <Compile Include="Reflection\PropertyReference.cs" />
+    <Compile Include="Reflection\ReflectionUtil.cs" />
+    <Compile Include="UnhandledWorkerThreadException.cs" />
+    <Compile Include="Validation\BrokenRuleMethod.cs" />
+    <Compile Include="Validation\BrokenRuleObjectToObjectMapper.cs" />
+    <Compile Include="Validation\BrokenRules.cs" />
+    <Compile Include="Validation\BrokenRulesException.cs" />
+    <Compile Include="Validation\CompositeValidationRunner.cs" />
+    <Compile Include="Validation\ExceptionToBrokenRuleTranslator.cs" />
+    <Compile Include="Validation\IValidationProvider.cs" />
+    <Compile Include="Validation\ObjectToObjectMap.cs" />
+    <Compile Include="Validation\ObjectToObjectMapping.cs" />
+    <Compile Include="Validation\ValidationCallContext.cs" />
+    <Compile Include="Validation\ValidationPerformanceThresholds.cs" />
+    <Compile Include="Validation\ValidationProvider.cs" />
+    <Compile Include="Validation\ValidationProviderResult.cs" />
+    <Compile Include="Validation\ValidationRunner.cs" />
+    <Compile Include="Validation\ValidationRunnerBase.cs" />
+    <Compile Include="Validation\ValidatorInfo.cs" />
+    <Compile Include="WinApiFileOperations.cs" />
+    <Compile Include="With.PerformanceCounter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Caching\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Caching\CachingOverview.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

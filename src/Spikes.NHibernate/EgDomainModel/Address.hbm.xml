@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="Eca.Spikes.NHibernate" 
+				   namespace="Eca.Spikes.NHibernate">
+	<class name="Address" table="tblCustomerAddress" lazy="false">
+		<id name="Id" column="AddressID" access="field.camelcase-underscore">
+			<generator class="assigned"/>
+		</id>
+		<version name="ConcurrencyId" unsaved-value="-1" access="field.camelcase-underscore"/>
+		<many-to-one name="Customer" column="CustomerId" class="Customer" not-null="true" access="field.camelcase-underscore"/>
+		<property name="Line1" length="50" not-null="true"/>
+		<property name="Line2" length="50" not-null="true"/>
+		<property name="Town" length="50" not-null="true"/>
+		<property name="County" length="50" not-null="true"/>
+		<property name="PostCode" length="50" not-null="true"/>
+	</class>
+</hibernate-mapping>

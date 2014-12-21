@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+				   assembly="Eca.Spikes.NHibernate"
+				   namespace="Eca.Spikes.NHibernate">
+	<class name="User" table="tblUser" lazy="false">
+		<id name="Id" column="UserId" access="field.camelcase-underscore">
+			<generator class="assigned"/>
+		</id>
+		<version name="ConcurrencyId" unsaved-value="-1" access="field.camelcase-underscore"/>
+		<property name="Number" not-null="true"/>
+		<property name="FirstName" length="50" not-null="true"/>
+		<property name="LastName" length="50" not-null="true"/>
+		<property name="ShortCode" length="5" not-null="true"/>
+		<property name="HomeAddress" type="Eca.Spikes.NHibernate.UserAddressType, Eca.Spikes.NHibernate">
+			<column name="line1"/>
+			<column name="line2"/>
+			<column name="town"/>
+			<column name="county"/>
+			<column name="postCode"/>
+		</property>
+		<map name="OtherAddresses" table="tblOtherUserAddresses" lazy="false" access="field.camelcase-underscore">
+			<key column="UserId"/>
+			<index type="String" column="AddressType" length="50"/>
+			<element type="Eca.Spikes.NHibernate.UserAddressType, Eca.Spikes.NHibernate">
+				<column name="line1"/>
+				<column name="line2"/>
+				<column name="town"/>
+				<column name="county"/>
+				<column name="postCode" not-null="true"/>
+			</element>
+		</map>
+	</class>
+</hibernate-mapping>

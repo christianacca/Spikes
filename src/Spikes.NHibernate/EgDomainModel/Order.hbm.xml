@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+				   assembly="Eca.Spikes.NHibernate"
+				   namespace="Eca.Spikes.NHibernate">
+	<class name="Order" table="tblOrder" lazy="false">
+		<id name="Id" column="OrderId" access="field.camelcase-underscore">
+			<generator class="assigned"/>
+		</id>
+		<version name="ConcurrencyId" unsaved-value="-1" access="field.camelcase-underscore"/>
+		<property name="Name" not-null="true"/>
+        <many-to-one name="Customer" class="Customer" column="CustomerId" not-null="true"
+                 foreign-key="FK_tblOrder_tblCustomer_CustomerId"/>
+	</class>
+</hibernate-mapping>

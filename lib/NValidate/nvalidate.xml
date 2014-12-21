@@ -1,0 +1,2567 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NValidate</name>
+    </assembly>
+    <members>
+        <member name="T:NValidate.Framework.NumericValidatorBase`2">
+            <summary>
+            Contains a collection of methods that implement
+            the most common tests performed on numeric parameters.
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.ComparableValidatorBase`2">
+            <summary>
+            Contains a collection of methods that represents the tests
+            commonly performed on any parameter which can be compared
+            </summary>
+            <remarks>
+            Comparisons will be performed using the <see cref="P:System.Collections.Generic.Comparer`1.Default"/> compare for <typeparamref name="ParamT"/>. Therefore
+            <typeparamref name="ParamT"/> must implement <see cref="T:System.IComparable"/>, otherwise an <see cref="T:System.ArgumentException"/> will
+            be thrown at runtime.
+            <para>
+            A generic constraint to enforce that <typeparamref name="ParamT"/> implement <see cref="T:System.IComparable`1"/> has not been 
+            added in antiticpation of a future enhancement where a <see cref="T:System.Collections.Generic.IComparer`1"/> can be supplied to the validator
+            </para>
+            </remarks>
+        </member>
+        <member name="T:NValidate.Framework.EqualityValidatorBase`2">
+            <summary>
+            Contains a collection of methods that represents the tests
+            commonly performed on any parameter which can be compared for equality (ie all parameters).
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.ValidatorBase`1">
+            <summary>
+             Convenience base class for Validator's
+            </summary>
+            <typeparam name="ParamT"></typeparam>
+        </member>
+        <member name="M:NValidate.Framework.ValidatorBase`1.#ctor(`0,System.String)">
+            <summary>
+                Creates a new instance of the class.
+            </summary>
+            <exception cref="T:System.ArgumentException">
+                Thrown when <paramref name="parameterName"/> is null or 
+                evaluates to an empty string.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ValidatorBase`1.#ctor(System.Func{`0})">
+            <exception cref="T:System.ArgumentNullException">Argument is null.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ValidatorBase`1.ThrowArgumentException(System.String)">
+            <exception cref="T:System.ArgumentException">Throw exception with <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterName"/></exception>
+        </member>
+        <member name="P:NValidate.Framework.ValidatorBase`1.ParameterName">
+            <summary>
+                Gets the name of the parameter to be validated.
+            </summary>
+            <value>
+                <para>
+                    A string containing the parameter's name.
+                </para>
+            </value>
+        </member>
+        <member name="P:NValidate.Framework.ValidatorBase`1.ParameterNameReference">
+            <summary>
+            Having a separate property to point to the same delegate as <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterReferernce"/>
+            was required because of having both an <see cref="T:NValidate.Framework.ArrayValidator"/> and <see cref="T:NValidate.Framework.SequenceValidator`1"/>
+            which was playing havoc with method overload resolution
+            </summary>
+        </member>
+        <member name="P:NValidate.Framework.ValidatorBase`1.ParameterValue">
+            <summary>
+                Gets the value of the parameter.
+            </summary>
+            <value>
+                <para>
+                    The parameter's value.
+                </para>
+            </value>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.#ctor(`0,System.String)">
+            <summary>
+                Creates a new instance of the class.
+            </summary>
+            <exception cref="T:System.ArgumentException">
+                Thrown when <paramref name="parameterName"/> is null or 
+                evaluates to an empty string.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.#ctor(System.Func{`0})">
+            <exception cref="T:System.ArgumentNullException">Argument is null.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsEqualTo(`0)">
+            <summary>
+                Tests the parameter to ensure that its value is equal to the specified
+                value.
+            </summary>
+            <param name="expectedValue" type="System.ValueType">
+                <para>
+                    The expected value.
+                </para>
+            </param>
+            <returns>
+              A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsEqualTo(`0,System.String)">
+            <summary>
+                Tests the parameter to ensure that its value is equal to the specified
+                value.
+            </summary>
+            <param name="expectedValue" type="System.ValueType">
+                <para>
+                    The expected value.
+                </para>
+            </param>
+            <param name="errorMessage" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the 
+                    test fails.
+                </para>
+            </param>
+            <returns>
+              A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsNotEqualTo(`0)">
+            <summary>
+                Tests the parameter to ensure that its value is not equal to the specified
+                value.
+            </summary>
+            <param name="expectedValue" type="ParamT">
+                <para>
+                    The value to compare against the parameter.
+                </para>
+            </param>
+            <returns>
+              A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsNotEqualTo(`0,System.String)">
+            <summary>
+                Tests the parameter to ensure that its value is not equal to the specified
+                value.
+            </summary>
+            <param name="expectedValue" type="ParamT">
+                <para>
+                    The value to compare against the parameter.
+                </para>
+            </param>
+            <param name="errorMessage" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the 
+                    test fails.
+                </para>
+            </param>
+            <returns>
+              A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsNotOneOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Tests the parameter to ensure that it is not one of the values in 
+            the specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsNotOneOf``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Tests the parameter to ensure that it is not one of the values in 
+            the specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsNotOneOf(System.Collections.Generic.IEnumerable{`0},System.String)">
+            <summary>
+            Tests the parameter to ensure that it is not one of the values in 
+            the specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsNotOneOf``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Tests the parameter to ensure that it is not one of the values in 
+            the specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsOneOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Tests the parameter to ensure that it is one of the values in the 
+            specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsOneOf``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Tests the parameter to ensure that it is one of the values in the 
+            specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsOneOf``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Tests the parameter to ensure that it is one of the values in the 
+            specified list.
+            </summary>
+            <param name="values">The list to compare against the parameter.</param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsOneOf(System.Collections.Generic.IEnumerable{`0},System.String)">
+            <summary>
+            Tests the parameter to ensure that it is one of the values in the 
+            specified list.
+            </summary>
+            <param name="values">The list to compare against the  parameter.</param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.IsValid(System.Boolean,System.String)">
+            <summary>
+                Tests the parameter to ensure that it meets the specified test.
+            </summary>
+            <param name="testExpression" type="bool">
+                <para>
+                    A test expression that includes the parameter.
+                </para>
+            </param>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include with the exception that is thrown 
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EqualityValidatorBase`2.ThrowArgumentOutOfRangeException(System.String)">
+            <exception cref="T:System.ArgumentOutOfRangeException"><see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/> is out of range.</exception>
+        </member>
+        <member name="P:NValidate.Framework.EqualityValidatorBase`2.EqualityComparer">
+            <summary>
+             Comparer that this validator uses to test for equality
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsGreaterThan(`0)">
+            <summary>
+            Tests the parameter to ensure that its value is greater than the
+            the specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.
+            </param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsGreaterThan(`0,System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is greater than the
+            the specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.
+            </param>
+            <param name="errorMessage">The message to include in the exception
+            that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsGreaterThanOrEqualTo(`0)">
+            <summary>
+            Tests the parameter to ensure that its value is greater than or
+            equal to the specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsGreaterThanOrEqualTo(`0,System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is greater than or
+            equal to the specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.</param>
+            <param name="errorMessage">The message to include in the exception
+            that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsInRange(`0,`0)">
+            <summary>
+            Tests the parameter to ensure that its value falls between the 
+            specified minimum and maximum values.
+            </summary>
+            <param name="minimumValue">The minimum value against which the 
+            parameter will be compared.</param>
+            <param name="maximumValue">The maximum value against which the 
+            parameter will be compared.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsInRange(`0,`0,System.String)">
+            <summary>
+            Tests the parameter to ensure that its value falls between the 
+            specified minimum and maximum values.
+            </summary>
+            <param name="minimumValue">The minimum value against which the 
+            parameter will be compared.</param>
+            <param name="maximumValue">The maximum value against which the 
+            parameter will be compared.</param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsLessThan(`0)">
+            <summary>
+            Tests the parameter to ensure that its value is less than the
+            specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.
+            </param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsLessThan(`0,System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is less than the
+            specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.
+            </param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsLessThanOrEqualTo(`0)">
+            <summary>
+            Tests the parameter to ensure that its value is less than or 
+            equal to the specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.
+            </param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsLessThanOrEqualTo(`0,System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is less than or 
+            equal to the specified value.
+            </summary>
+            <param name="expectedValue">The value to compare against the parameter.
+            </param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsNotInRange(`0,`0)">
+            <summary>
+            Tests the parameter to ensure that its value is not within the 
+            specified range.
+            </summary>
+            <param name="minimumValue">The minimum value against which the 
+            parameter will be compared.</param>
+            <param name="maximumValue">The maximum value against which the 
+            parameter will be compared.</param>
+            <returns>A reference to this instance of the <c>IntegerValidator</c>.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.ComparableValidatorBase`2.IsNotInRange(`0,`0,System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is not within the 
+            specified range.
+            </summary>
+            <param name="minimumValue">The minimum value against which the 
+            parameter will be compared.</param>
+            <param name="maximumValue">The maximum value against which the 
+            parameter will be compared.</param>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.NumericValidatorBase`2.IsNonzero">
+            <summary>
+            Tests the parameter to ensure that its value is a nonzero value.
+            </summary>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.NumericValidatorBase`2.IsNonzero(System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is a negative number.
+            </summary>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.NumericValidatorBase`2.IsPositive">
+            <summary>
+            Tests the parameter to ensure that its value is greater than zero.
+            </summary>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.NumericValidatorBase`2.IsPositive(System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is greater than zero.
+            </summary>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.NumericValidatorBase`2.IsZero">
+            <summary>
+            Tests the parameter to ensure that its value is greater than zero.
+            </summary>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.NumericValidatorBase`2.IsZero(System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is zero.
+            </summary>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="T:NValidate.Framework.ComparableValidator`1">
+            <summary>
+            See <see cref="T:NValidate.Framework.ComparableValidatorBase`2"/>
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.EqualityValidator`1">
+            <summary>
+            See <see cref="T:NValidate.Framework.EqualityValidatorBase`2"/>
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.CollectionEqualityComparer`1">
+            <summary>
+            Compares two <see cref="T:System.Collections.Generic.IEnumerable`1"/> and returns true when the elements within each sequence are equal
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:NValidate.Framework.CollectionEqualityComparer`1.GetHashCode(System.Collections.Generic.IEnumerable{`0})">
+            <exception cref="T:System.NotImplementedException"><c>NotImplementedException</c>.</exception>
+        </member>
+        <member name="T:NValidate.Framework.ArrayValidator">
+            <summary>
+                <strong>ArrayValidator</strong> provides a set of methods that test 
+                array parameters.
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.ReferenceTypeValidatorBase`2">
+            <summary>
+            Contains a collection of methods that represents the tests
+            commonly performed on reference type (ie class) parameters
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.ReferenceTypeValidatorBase`2.IsNotNull">
+            <summary>
+                Tests the parameter to ensure that its value is not null.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+        </member>
+        <member name="M:NValidate.Framework.ReferenceTypeValidatorBase`2.IsNotNull(System.String)">
+            <summary>
+                Tests the parameter to ensure that its value is not null.
+            </summary>
+            <param name="message" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the test
+                    fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when test fails</exception>
+        </member>
+        <member name="M:NValidate.Framework.ReferenceTypeValidatorBase`2.IsNull">
+            <summary>
+                Tests the parameter to ensure that its value evaluates to null.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+        </member>
+        <member name="M:NValidate.Framework.ReferenceTypeValidatorBase`2.IsNull(System.String)">
+            <summary>
+                Tests the parameter to ensure that its value evaluates to null.
+            </summary>
+            <param name="message" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the 
+                    test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">Thrown when test fails</exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.Contains(System.Object)">
+            <summary>
+                Tests the array to ensure that it contains the specified item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <remarks>
+              <para>
+            		This overload only scans the default dimension of the array
+            		(index 0).
+              </para>
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.Contains(System.Object,System.Int32)">
+            <summary>
+                Tests the array to ensure that it contains the specified item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <param name="dimension" type="int">
+            	<para>
+            		The index of the dimension to scan.
+            	</para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.Contains(System.Object,System.String)">
+            <summary>
+                Tests the array to ensure that it contains the specified item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <param name="message" type="string">
+            	<para>
+            		The message to include in the exception that is thrown if the
+            		test fails.
+            	</para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <remarks>
+              <para>
+            		This overload only scans the default dimension of the array
+            		(index 0).
+              </para>
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.Contains(System.Object,System.Int32,System.String)">
+            <summary>
+                Tests the array to ensure that it contains the specified item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <param name="dimension" type="int">
+            <para>
+            	The index of the dimension to scan.
+            </para>
+            </param>
+            <param name="message" type="string">
+            	<para>
+            		The message to include in the exception that is thrown if the
+            		test fails.
+            	</para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.DoesNotContain(System.Object)">
+            <summary>
+                Tests the array to ensure that it does not contain the specified 
+                item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <remarks>
+                This overload scans the default dimension of the array.
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.DoesNotContain(System.Object,System.Int32)">
+            <summary>
+                Tests the array to ensure that it does not contain the specified 
+                item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <param name="dimension" type="int">
+                <para>
+                    The dimension of the array to scan.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.DoesNotContain(System.Object,System.String)">
+            <summary>
+                Tests the array to ensure that it does not contain the specified 
+                item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <param name="message" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the
+                    test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <remarks>
+                This overload scans the default dimension of the array.
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.DoesNotContain(System.Object,System.Int32,System.String)">
+            <summary>
+                Tests the array to ensure that it does not contain the specified 
+                item.
+            </summary>
+            <param name="item" type="object">
+                <para>
+                    The item to scan the array for.
+                </para>
+            </param>
+            <param name="dimension" type="int">
+                <para>
+                    The dimension of the array to scan.
+                </para>
+            </param>
+            <param name="message" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the
+                    test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsEmpty">
+            <summary>
+                Tests the array to ensure that it is empty.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <remarks>
+              <para>
+                  This overload tests the default boundary of the array 
+                  (the lowest boundary, at index 0). 
+              </para>
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsEmpty(System.Int32)">
+            <summary>
+                Tests the array to ensure that it is empty.
+            </summary>
+            <param name="dimension" type="int">
+                <para>
+                    An integer that specifies the dimension of the multi-dimensional
+                    array that will be tested.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsEmpty(System.Int32,System.String)">
+            <summary>
+                Tests the array to ensure that it is empty.
+            </summary>
+            <param name="dimension" type="int">
+                <para>
+                    An integer that specifies the dimension of the multi-dimensional
+                    array that will be tested.
+                </para>
+            </param>
+            <param name="message" type="string">
+                <para>
+                    The error messsage to include in the exception that 
+                    is thrown if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsNotEmpty">
+            <overloads>
+              Tests the array parameter to verify that it is not empty.
+            </overloads>
+            <summary>
+                Tests the array to ensure that the default dimension on the array is not empty.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <remarks>
+                <para>
+                    This overload of the method always tests dimension zero of
+                    a multi-dimension array.
+                </para>
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsNotEmpty(System.Int32)">
+            <summary>
+                Tests the array to ensure that the specified dimension is not empty.
+            </summary>
+            <param name="dimension" type="int">
+                <para>
+                    The dimension to be tested.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsNotEmpty(System.Int32,System.String)">
+            <summary>
+                Tests the array to ensure that the specified dimension is not empty.
+            </summary>
+            <param name="dimension" type="int">
+                <para>
+                    The dimension to be tested.
+                </para>
+            </param>
+            <param name="message" type="string">
+                <para>
+                    The message to include in the exception that will be thrown 
+                    when the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsNotNullOrEmpty">
+            <overloads>
+                Tests the array parameter to verify that it is neither null 
+                nor empty.
+            </overloads>
+            <summary>
+                Tests the array to verify that it is not null and that its
+                lowest dimension is not empty.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the array has only one dimension, but is empty, 
+              or when the array has multiple dimensions, but the number of
+              items in dimension zero evaluates to zero.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsNotNullOrEmpty(System.Int32)">
+            <summary>
+                Tests the array to verify that it is not null and that the
+                specified dimension is not empty.
+            </summary>
+            <param name="dimension" type="int">
+              The index of the dimension to be checked for emptiness.
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the specified dimension is empty.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ArrayValidator.IsNotNullOrEmpty(System.String)">
+            <summary>
+                Tests the array to verify that it is not null and that its
+                lowest dimension is not empty.
+            </summary>
+            <param name="message" type="string">
+                The message to include in the exception that is thrown when
+                the test fails.
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the specified dimension is empty.
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.SignedNumericValidator`1">
+            <summary>
+            See <see cref="T:NValidate.Framework.SignedNumericValidatorBase`2"/>
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.SignedNumericValidatorBase`2">
+            <summary>
+            Contains a collection of methods that implement
+            the most common tests performed on signed numeric parameters.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SignedNumericValidatorBase`2.IsNegative">
+            <summary>
+            Tests the parameter to ensure that its value is a negative number.
+            </summary>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.SignedNumericValidatorBase`2.IsNegative(System.String)">
+            <summary>
+            Tests the parameter to ensure that its value is a negative number.
+            </summary>
+            <param name="errorMessage">The message to include in the exception that
+            is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown when the test
+            fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.Reflect.DelegatedVariable(System.Delegate)">
+            <exception cref="T:System.ArgumentException">Expected simple field reference</exception>
+        </member>
+        <member name="T:NValidate.Framework.CustomValidator">
+            <summary>
+                Provides support for custom validation classes that extend the 
+                capabilities of NValidate.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.CustomValidator.#ctor(NValidate.Framework.IValidatable,System.String)">
+            <summary>
+                Creates a new instance of the class.
+            </summary>
+            <param name="parameterValue" type="NValidate.Framework.IValidatable">
+                <para>
+                    The parameter's value. 
+                </para>
+            </param>
+            <param name="parameterName" type="string">
+                <para>
+                    The name of the parameter.
+                </para>
+            </param>
+        </member>
+        <member name="M:NValidate.Framework.CustomValidator.IsValid">
+            <summary>
+                Invokes the validation code in the custom validator.
+            </summary>
+            <returns>
+              <para>
+                  A reference to this validator.
+              </para>
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              <para>
+            	   Thrown when the Validate method on the custom validator returns false. 
+              </para>
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.NumericValidator`1">
+            <summary>
+            <see cref="T:NValidate.Framework.NumericValidatorBase`2"/>
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.EnumerableExtensions.IsUnique``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Tests that there are no duplicate elements within this sequence by comparing elements 
+            using <paramref name="comparer"/>
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.EnumerableExtensions.IsUnique``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Projects each element of a sequence into a new form. Tests that there are no duplicate elements within the projected sequence 
+            by comparing the projected elements for equality
+            </summary>
+            <typeparam name="TSource">The type of the elements of <paramref name="source"/></typeparam>
+            <typeparam name="TResult">The type of the value returned by <paramref name="selector"/></typeparam>
+            <param name="source">A sequence of elements to test</param>
+            <param name="selector">A transform function to apply to each element</param>
+            <returns></returns>
+        </member>
+        <member name="T:NValidate.Framework.ConnectionValidator">
+            <summary>
+                ConnectionValidator contains a collection of methods that implement
+                the most common tests performed on IDbConnection parameters.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.ConnectionValidator.IsClosed">
+            <summary>
+                Tests the connection to ensure that it is closed.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ConnectionValidator.IsClosed(System.String)">
+            <summary>
+                Tests the connection to ensure that it is closed.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown if
+                    the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ConnectionValidator.IsOpen">
+            <summary>
+                Tests the connection to ensure that it is open.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ConnectionValidator.IsOpen(System.String)">
+            <summary>
+                Tests the connection to ensure that it is open.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown 
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ConnectionValidator.IsUsable">
+            <summary>
+                Tests the parameter to verify that it is not null and that it
+                references an open database connection.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter's value is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the parameter is not null, but the connection is
+                not open.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.ConnectionValidator.IsUsable(System.String)">
+            <summary>
+                Tests the parameter to verify that it is not null and that it
+                references an open database connection.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown
+                    when the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter's value is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the parameter is not null, but the connection is
+                not open.
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.EnumValidator">
+            <summary>
+            EnumValidator contains a collection of methods that represents the tests
+            commonly performed on enumeration value parameters.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.EnumValidator.IsValid">
+            <summary>
+            Tests the parameter to verify that it is one of the defined values for 
+            the enumeration.
+            </summary>
+            <returns>A reference to this parameter validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.EnumValidator.IsValid(System.String)">
+            <summary>
+            Tests the parameter to verify that it is one of the defined values for 
+            the enumeration.
+            </summary>
+            <param name="errorMessage">The message to include with the exception
+            that is thrown when the test fails.</param>
+            <returns>A reference to this parameter validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.DateTimeValidator">
+            <summary>
+            DateTimeValidator contains a collection of methods that perform the 
+            most common tests performed on DateTime parameters.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.#ctor(System.DateTime,System.String)">
+            <summary>
+            Creates an instance of the object.
+            </summary>
+            <param name="parameterValue">The parameter's value.</param>
+            <param name="parameterName">The parameter's name.</param>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasDay(System.Int32)">
+            <summary>
+            Tests the parameter to ensure that it has the specified day of the
+            month.
+            </summary>
+            <param name="day">The value to compare against the Day property of
+            the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasDay(System.Int32,System.String)">
+            <summary>
+            Tests the parameter to ensure that it has the specified day of the
+            month.
+            </summary>
+            <param name="day">The value to compare against the Day property of
+            the parameter.</param>
+            <param name="errorMessage">The error message to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasHour(System.Int32)">
+            <summary>
+            Tests the parameter to ensure that it has the specified hour of the
+            day.
+            </summary>
+            <param name="hour">The value to compare against the Hour property of
+            the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasHour(System.Int32,System.String)">
+            <summary>
+            Tests the parameter to ensure that it has the specified hour of the
+            day.
+            </summary>
+            <param name="hour">The value to compare against the Hour property of
+            the parameter.</param>
+            <param name="errorMessage">The error message to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasMinute(System.Int32)">
+            <summary>
+            Tests the parameter to ensure that it has the specified minute of 
+            the hour.
+            </summary>
+            <param name="minute">The value to compare against the Minute property 
+            of the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasMinute(System.Int32,System.String)">
+            <summary>
+            Tests the parameter to ensure that it has the specified minute of 
+            the hour.
+            </summary>
+            <param name="minute">The value to compare against the Minute property 
+            of the parameter.</param>
+            <param name="errorMessage">The error message to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasMonth(System.Int32)">
+            <summary>
+            Tests the parameter to ensure that it has the specified month of 
+            the year.
+            </summary>
+            <param name="month">The value to compare against the Month property 
+            of the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasMonth(System.Int32,System.String)">
+            <summary>
+            Tests the parameter to ensure that it has the specified month of 
+            the year.
+            </summary>
+            <param name="month">The value to compare against the Month property 
+            of the parameter.</param>
+            <param name="errorMessage">The error message to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasSecond(System.Int32)">
+            <summary>
+            Tests the parameter to ensure that it has the specified second of 
+            the minute.
+            </summary>
+            <param name="second">The value to compare against the Second property 
+            of the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasSecond(System.Int32,System.String)">
+            <summary>
+            Tests the parameter to ensure that it has the specified second of 
+            the minute.
+            </summary>
+            <param name="second">The value to compare against the Second property 
+            of the parameter.</param>
+            <param name="errorMessage">The error message to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasYear(System.Int32)">
+            <summary>
+            Tests the parameter to ensure that it has the specified year.
+            </summary>
+            <param name="year">The value to compare against the Year property 
+            of the parameter.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.HasYear(System.Int32,System.String)">
+            <summary>
+            Tests the parameter to ensure that it has the specified year. 
+            </summary>
+            <param name="year">The value to compare against the Year property 
+            of the parameter.</param>
+            <param name="errorMessage">The error message to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this validator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsInFuture">
+            <summary>
+                Tests the parameter to ensure that it specifies a date in the future.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsInFuture(System.String)">
+            <summary>
+                Tests the parameter to ensure that it specifies a date in the future.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown 
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsInPast">
+            <summary>
+                Tests the parameter to ensure that it specifies a date in the past.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsInPast(System.String)">
+            <summary>
+                Tests the parameter to ensure that it specifies a date in the past.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown 
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsNotInFuture">
+            <summary>
+                Tests the parameter to ensure that it does not specify a date in 
+                the future.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsNotInFuture(System.String)">
+            <summary>
+                Tests the parameter to ensure that it does not specify a date in 
+                the future.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown 
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsNotInPast">
+            <summary>
+                Tests the parameter to ensure that it does not specify a date in 
+                the past.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.DateTimeValidator.IsNotInPast(System.String)">
+            <summary>
+                Tests the parameter to ensure that it does not specify a date in 
+                the past.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown 
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            	Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.TransactionValidator">
+            <summary>
+                <strong>TransactionValidator</strong> provides a set of methods
+                that test the validity of parameters that reference objects that
+                implement the <see cref="T:System.Data.IDbTransaction"/> interface.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.TransactionValidator.HasOpenConnection">
+            <summary>
+                Tests the transaction to ensure that it has an open database connection.
+            </summary>
+            <returns>
+                A reference to this Validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.TransactionValidator.HasOpenConnection(System.String)">
+            <summary>
+                Tests the transaction to ensure that it has an open database connection.
+            </summary>
+            <param name="errorMessage" type="string">
+              <para>
+                  The error message to include in the exception that is thrown 
+                  when the test fails.
+              </para>
+            </param>
+            <returns>
+                A reference to this Validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.TransactionValidator.HasValidConnection">
+            <summary>
+                Tests the transaction to ensure that its <see cref="P:System.Data.IDbTransaction.Connection"/> property is
+                not <see langword="null"/>.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when...
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.TransactionValidator.HasValidConnection(System.String)">
+            <summary>
+                Tests the transaction to ensure that its <see cref="P:System.Data.IDbTransaction.Connection"/> property is
+                not <see langword="null"/>.
+            </summary>
+            <param name="errorMessage" type="string">
+              <para>
+                  The error message to include in the exception that is thrown 
+                  when the test fails.
+              </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when...
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.TransactionValidator.IsUsable">
+            <summary>
+                Tests the transaction to verify that it is not <see langword="null"/>, 
+                has a valid connection, and that the connection is open.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              Thrown when the transaction itself is null or the transaction's 
+              connection is null. Check the error message for the specific 
+              condition.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the connection is not open.
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.ReferenceTypeValidator`1">
+            <summary>
+            See <see cref="T:NValidate.Framework.ReferenceTypeValidatorBase`2"/>
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.The">
+               <summary>
+                  Syntax sugar class
+               </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Array})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Array,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Array,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Array"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param``1(System.Func{``0[]})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param``1(``0[],System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param``1(``0[],System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Array"/> parameter.
+            </summary>
+            <remarks>
+            IMPORTANT: Tests for equality will assume two arrays are equal if their elements are equal and in the same order.
+            When you want to test that two arrays' reference the same object, call <see cref="M:NValidate.Framework.The.Param(System.Object,System.String)"/>
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.The.Param``1(System.Func{System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param``1(System.Collections.Generic.IEnumerable{``0},System.String)"/> with the name of the parameter derived from the expression supplied.
+            Uses the default <see cref="T:System.Collections.Generic.EqualityComparer`1"/> to determine equality of collection elements
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param``1(System.Func{System.Collections.Generic.IEnumerable{``0}},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Collections.Generic.IEqualityComparer{``0})"/> with the name of the parameter derived from the expression supplied
+            </summary>
+            <remarks>
+            IMPORTANT: Tests for equality will assume two <see cref="T:System.Collections.Generic.IEnumerable`1"/> are equal if their elements are equal and in the same order.
+            When you want to test that two arrays' reference the same object, call <see cref="M:NValidate.Framework.The.Param(System.Func{System.Object})"/>
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.The.Param``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Collections.Generic.ICollection`1"/> parameter. 
+            Uses the default <see cref="T:System.Collections.Generic.EqualityComparer`1"/> to determine equality of collection elements
+            </summary>
+            <remarks>
+            IMPORTANT: Tests for equality will assume two <see cref="T:System.Collections.Generic.IEnumerable`1"/> are equal if their elements are equal and in the same order.
+            When you want to test that two arrays' reference the same object, call <see cref="M:NValidate.Framework.The.Param(System.Object,System.String)"/>
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.The.Param``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Collections.Generic.ICollection`1"/> parameter, using the <paramref name="elementComparer"/>
+            to determine equality of collection elemements
+            </summary>
+            <remarks>
+            IMPORTANT: Tests for equality will assume two <see cref="T:System.Collections.Generic.IEnumerable`1"/> are equal if their elements are equal and in the same order.
+            When you want to test that two arrays' reference the same object, call <see cref="M:NValidate.Framework.The.Param(System.Object,System.String)"/>
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Boolean})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Boolean,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Boolean,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Boolean"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Byte})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Byte,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Byte,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Byte"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.DateTime})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.DateTime,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.DateTime,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.DateTime"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Decimal})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Decimal,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Decimal,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Decimal"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Double})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Double,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Double,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Double"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Enum})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Enum,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Enum,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Enum"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Int16})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Int16,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Int16,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Int16"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Int32})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Int32,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Int32,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Int32"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Int64})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Int64,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Int64,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Int64"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Object})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Object,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Object,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Object"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.SByte})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.SByte,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.SByte,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.SByte"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Single})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Single,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Single,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Single"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.String})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.String,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.String,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.String"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Char})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Char,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Char,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Char"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.UInt16})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.UInt16,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.UInt16,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.UInt16"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.UInt32})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.UInt32,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.UInt32,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.UInt32"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.UInt64})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.UInt64,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.UInt64,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.UInt64"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Data.IDbConnection})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Data.IDbConnection,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Data.IDbConnection,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Data.IDbConnection"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Func{System.Data.IDbTransaction})">
+            <summary>
+            Calls <see cref="M:NValidate.Framework.The.Param(System.Data.IDbTransaction,System.String)"/> with the name of the parameter derived from the expression supplied
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.The.Param(System.Data.IDbTransaction,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Data.IDbTransaction"/> parameter.
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.Demand">
+            <summary>
+            <strong>Demand</strong> is a class factory that creates and returns validators.
+                  Gets a strongly typed validator whose type is determined by the arguments.
+               </summary>
+               <remarks>
+                 <para>
+                       <see cref="T:NValidate.Framework.Demand"/> is a class factory. <Strong>That</Strong>
+                       is a heavily overloaded factory method that returns a validator
+                       whose type is determined by the arguments.
+                  </para>
+                </remarks>
+                <example>
+                <code lang="Visual Basic" escaped="true">
+                Public Sub Test(ByVal x As Integer, ByVal y As Integer, ByVal sz As String)
+                   Const String FiveDigitsPattern = "\d[5]"
+                   Demand.That(x, "x").IsPositive().IsLessThan(100)
+                   Demand.That(y, "y").IsPositive().IsLessThan(x)
+                   Demand.That(sz, "sz").IsNotNullOrEmpty().HasLength(5).Matches(FiveDigitsPattern)
+                End Sub
+                </code>
+                <code lang="C#" escaped="true">
+                public void Test(int x, int y, string sz)
+                {
+                   const string FiveDigitsPattern = "\\d[5]";
+                   Demand.That(x, "x").IsPositive().IsLessThan(100);
+                   Demand.That(y, "y").IsPositive().IsLessThan(x);
+                   Demand.That(sz, "sz").IsNotNullOrEmpty().HasLength(5).Matches(FiveDigitsPattern);
+                }
+                </code>
+                </example>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Array,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Array"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Boolean,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Boolean"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Byte,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Byte"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Data.IDbConnection,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Data.IDbConnection"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.DateTime,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.DateTime"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Decimal,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Decimal"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Double,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Double"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Enum,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Enum"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Int16,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Int16"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Int32,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Int32"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Int64,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Int64"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Object,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Object"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.SByte,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.SByte"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Single,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Single"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.String,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.String"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.Data.IDbTransaction,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.Data.IDbTransaction"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.UInt16,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.UInt16"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.UInt32,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.UInt32"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(System.UInt64,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:System.UInt64"/> parameter.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.Demand.That(NValidate.Framework.IValidatable,System.String)">
+            <summary>
+            Gets a validator object for a <see cref="T:NValidate.Framework.IValidatable"/> parameter.
+            </summary>
+        </member>
+        <member name="P:NValidate.Framework.Demand.The">
+            <summary>
+            Extension point to attach factory methods that create and return validators
+            </summary>
+            <remarks>
+            Use extension methods to add factory methods to create instances of your own custom validators
+            </remarks>
+        </member>
+        <member name="T:NValidate.Framework.BooleanValidator">
+            <summary>
+            BooleanValidator contains a collection of methods that implement
+            the most common tests performed on Boolean parameters.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.BooleanValidator.IsFalse">
+            <summary>
+                Tests the parameter to ensure that its value evaluates to False.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.BooleanValidator.IsFalse(System.String)">
+            <summary>
+                Tests the parameter to ensure that its value evaluates to True.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.BooleanValidator.IsTrue">
+            <summary>
+                Tests the parameter to ensure that its value evaluates to True.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.BooleanValidator.IsTrue(System.String)">
+            <summary>
+                Tests the parameter to ensure that its value evaluates to False.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that is thrown 
+                    when the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="T:NValidate.Framework.IValidatable">
+            <summary>
+                Defines a generalized validation method that a class implements to 
+                support custom or complex parameter or object validation.
+            </summary>
+            <remarks>
+                <para>
+                    This interface is implemented by types that want to extend the 
+                    validation capabilities of NValidate. For example, an implementor
+                    may determine that a parameter is only valid in relation to other
+                    parameters; further, that rule may prove to be true throughout a
+                    system's design. IValidatable allows such a rule to be encapsulated
+                    in an object, and then proved by invoking Demand.That as it would
+                    for any of the intrinsic data types.
+                </para>
+                <para>
+                    A class that implements IValidatable indicates that it is capable
+                    of validating itself and returning a Boolean result that indicates
+                    whether or not its state is valid. If the object's state is not 
+                    valid, the implementing class returns False from the Validate 
+                    method and sets the ErrorMessage property to an appropriate string
+                    that indicates the nature of the problem.
+                </para>
+                <para>
+            	   When a caller invokes Demand.That and passes an instance of a class
+            	   that implements IValidatable, NValidate does the following:
+                </para>
+                <list type="number">
+                    <item>
+            			<term>
+            			NValidate creates and returns an instance of the CustomValidator
+            			class.
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			The caller invokes the IsValid method on the CustomValidator 
+            			class.
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			The IsValid method invokes the Validate method on the IValidatable
+            			interface.
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			The implementing class validates its state. 
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			If the class determines that its state is invalid, it sets its
+            			ErrorMessage property to a value that describes the nature of 
+            			the problem, and returns false from the Validate method. 
+            			Otherwise, the implementing class returns true from the Validate
+            			method.
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			The CustomValidator's IsValid method examines the return value 
+            			of the Validate method. 
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			If the result is true, the method returns a reference to the 
+            			CustomValidator class.
+            			</term>
+                    </item>
+                    <item>
+            			<term>
+            			If the result is false, the gets the ErrorMessage property from
+            			the validatable class. If no error message was set, a generic 
+            			message is provided. An ArgumentException is then thrown.
+            			</term>
+                    </item>
+                </list>
+            </remarks>
+        </member>
+        <member name="M:NValidate.Framework.IValidatable.Validate">
+            <summary>
+                The Validate method is invoked by Demand.That in order to validate
+                a parameter.
+            </summary>
+            <returns>
+                Implementers should return True if the parameter is valid. Otherwise,
+                implementers should return False.
+            </returns>
+            <remarks>
+              If the return value is False, the ErrorMessage should also be set to
+              indicate the reason that the test failed. Otherwise, a generic value
+              will be used.
+            </remarks>
+        </member>
+        <member name="P:NValidate.Framework.IValidatable.ErrorMessage">
+            <summary>
+                Gets the error message that will be included in exceptions that
+                are thrown if and when a custom validator's test fails.
+            </summary>
+            <returns>
+                A string containing an error message.
+            </returns>
+            <remarks>
+              If you are returning false from the Validate method, you should set this
+              value to something other than an empty string or null. Otherwise, a 
+              generic value will be used.
+            </remarks>
+        </member>
+        <member name="T:NValidate.Framework.StringValidator">
+            <summary>
+            The StringValidator class contains a collection of methods that 
+            implement the most common validation tests performed on string
+            parameters.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.Contains(System.String)">
+            <summary>
+            Verifies that the parameter contains the specified string value.
+            </summary>
+            <param name="expectedValue">The string that the parameter is
+            expected to contain.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.Contains(System.String,System.String)">
+            <summary>
+            Verifies that the parameter contains the specified string value.
+            </summary>
+            <param name="expectedValue">The string that the parameter is
+            expected to contain.</param>
+            <param name="errorMessage">The errorMessage to include in the exception
+            that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.DoesNotContain(System.String)">
+            <summary>
+                Tests the parameter to ensure that it does not contain the specified
+                substring.
+            </summary>
+            <param name="searchString" type="string">
+                <para>
+                    The searchString to search for.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.DoesNotContain(System.String,System.String)">
+            <summary>
+                Tests the parameter to ensure that it does not contain the specified
+                substring.
+            </summary>
+            <param name="searchString" type="string">
+                <para>
+                    The searchString to search for.
+                </para>
+            </param>
+            <param name="errorMessage" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the
+                    test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+              Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.DoesNotMatch(System.String)">
+            <summary>
+            Tests the parameter to ensure that it does not match a regular 
+            expression. 
+            </summary>
+            <param name="expression">A valid regular expression.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.DoesNotMatch(System.String,System.String)">
+            <summary>
+            Tests the parameter to ensure that it does not match a regular 
+            expression. 
+            </summary>
+            <param name="expression">A valid regular expression.</param>
+            <param name="errorMessage">The error errorMessage to include in the
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.EndsWith(System.String)">
+            <summary>
+            Tests the parameter to ensure that it ends with the expected
+            value.
+            </summary>
+            <param name="value">The value that the parameter value is 
+            expected to end with.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.EndsWith(System.String,System.String)">
+            <summary>
+            Tests the parameter to ensure that it ends with the expected
+            value.
+            </summary>
+            <param name="value">The value that the parameter value is 
+            expected to end with.</param>
+            <param name="errorMessage">The error errorMessage to include in the
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.HasLength(System.Int32)">
+            <summary>
+            Tests the parmeter to ensure that it has the specified length.
+            </summary>
+            <param name="expectedLength">The desired length for the parameter.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.HasLength(System.Int32,System.String)">
+            <summary>
+            Tests the parmeter to ensure that it has the specified length.
+            </summary>
+            <param name="expectedLength">The desired length for the parameter.</param>
+            <param name="errorMessage">The error errorMessage to include in the
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsBoolean">
+            <summary>
+            Tests the parmeter to ensure that its value can be converted to a Boolean.
+            </summary>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsBoolean(System.String)">
+            <summary>
+            Tests the parmeter to ensure that its value can be converted to a Boolean.
+            </summary>
+            <param name="errorMessage">The error errorMessage to include in the
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsDate">
+            <summary>
+            Tests the parmeter to ensure that its value can be converted to a Date.
+            </summary>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsDate(System.String)">
+            <summary>
+            Tests the parmeter to ensure that its value can be converted to a Date.
+            </summary>
+            <param name="errorMessage">The error errorMessage to include in the
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsEmpty">
+            <summary>
+            Tests the parameter to ensure that it is an empty string.
+            </summary>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsEmpty(System.String)">
+            <summary>
+            Tests the parameter to ensure that it is an empty string.
+            </summary>
+            <param name="errorMessage">The error errorMessage to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsNotEmpty">
+            <summary>
+            Tests the parameter to ensure that it is not an empty string.
+            </summary>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsNotEmpty(System.String)">
+            <summary>
+            Tests the parameter to ensure that it is not an empty string.
+            </summary>
+            <param name="errorMessage">The error errorMessage to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsNotNullOrEmpty">
+            <summary>
+                Tests the parameter to ensure that it is neither null nor empty.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the list contains zero items.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsNumeric(System.Globalization.NumberStyles)">
+            <summary>
+            Tests the parameter to ensure that it contains a valid numeric value.
+            </summary>
+            <param name="styles">The valid options to allow when attempting to parse
+            the string.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <remarks>This overload uses this current culture as specified by 
+            <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.</remarks>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsNumeric(System.Globalization.NumberStyles,System.String)">
+            <summary>
+            Tests the parameter to ensure that it contains a valid numeric value.
+            </summary>
+            <param name="styles">The valid options to allow when attempting to parse
+            the string.</param>
+            <param name="errorMessage">The error errorMessage to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <remarks>This overload uses this current culture as specified by 
+            <see cref="P:System.Globalization.CultureInfo.CurrentCulture"/>.</remarks>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.IsNumeric(System.Globalization.NumberStyles,System.Globalization.CultureInfo,System.String)">
+            <summary>
+            Tests the parameter to ensure that it contains a valid numeric value.
+            </summary>
+            <param name="styles">The valid options to allow when attempting to parse
+            the string.</param>
+            <param name="cultureInfo">The culture to use when parsing the string.</param>
+            <param name="errorMessage">The error errorMessage to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.Matches(System.String)">
+            <summary>
+                Tests the parameter to ensure that it matches the specified 
+                regular expression.
+            </summary>
+            <param name="expression" type="string">
+                <para>
+            	   The expression to match.    
+                </para>
+            </param>
+            <returns>
+                A reference to this instance of the StringValidator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.Matches(System.String,System.String)">
+            <summary>
+            Tests the parameter to ensure that it matches the specified
+            regular expression.
+            </summary>
+            <param name="expression">A valid regular expression to compare
+            the paramter value against.</param>
+            <param name="errorMessage">The error errorMessage to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.StartsWith(System.String)">
+            <summary>
+            Tests the parameter to ensure that it starts with the specified
+            value.
+            </summary>
+            <param name="expectedValue">The value that the parameter value
+            is expected to start with.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="M:NValidate.Framework.StringValidator.StartsWith(System.String,System.String)">
+            <summary>
+            Tests the parameter to ensure that it starts with the specified
+            value.
+            </summary>
+            <param name="expectedValue">The value that the parameter value
+            is expected to start with.</param>
+            <param name="errorMessage">The error errorMessage to include in the 
+            exception that is thrown if the test fails.</param>
+            <returns>A reference to this instance of the StringValidator.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when the test fails.</exception>
+        </member>
+        <member name="T:NValidate.Framework.ComplexValidatorBase`1">
+            <summary>
+            Base class for validators that perform a single, probably complex, validation on a parameter value
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.ComplexValidatorBase`1.IsValid">
+            <summary>
+             Validate the parameter value against the validation rule of this validator
+            </summary>
+        </member>
+        <member name="T:NValidate.Framework.SequenceValidator`1">
+            <summary>
+                <strong>SequenceValidator</strong> provides a set of methods that
+                test the validity of parameters that implement <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.Contains(`0)">
+            <summary>
+             Tests the collection to ensure that it contains the specified item.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.Contains``1(``0,System.Func{`0,``0})">
+            <summary>
+            Tests the projection of the collection elements to ensure that it contains the specified <paramref name="item"/>
+            </summary>
+            <param name="item">item to find</param>
+            <param name="projector">function that will convert the elements of <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/>
+            so that they can be compared with <paramref name="item"/> </param>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.Contains(`0,System.String)">
+            <summary>
+             Tests the collection to ensure that it contains the specified item.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.Contains``1(``0,System.Func{`0,``0},System.String)">
+            <summary>
+            Tests the projection of the collection elements to ensure that it contains the specified <paramref name="item"/>
+            </summary>
+            <param name="item">item to find</param>
+            <param name="projector">function that will convert the elements of <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/>
+            so that they can be compared with <paramref name="item"/> </param>
+            <param name="errorMessage">exception message to throw</param>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.DoesNotContain(`0)">
+            <summary>
+             Tests the collection to ensure that it does not contain the specified item.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.DoesNotContain``1(``0,System.Func{`0,``0})">
+            <summary>
+             Tests the projection of the collection elements to ensure that does not contain the specified 
+             <paramref name="item"/>
+            </summary>
+             <param name="item">item to find</param>
+             <param name="projector">function that will convert the elements of <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/>
+             so that they can be compared with <paramref name="item"/> </param>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.DoesNotContain(`0,System.String)">
+            <summary>
+             Tests the collection to ensure that it does not contain the specified  item.
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.DoesNotContain``1(``0,System.Func{`0,``0},System.String)">
+            <summary>
+            Tests the projection of the collection elements to ensure that it does not contain
+            the specified <paramref name="item"/>
+            </summary>
+            <param name="item">item to find</param>
+            <param name="projector">function that will convert the elements of <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/>
+            so that they can be compared with <paramref name="item"/> </param>
+            <param name="errorMessage">exception message to throw</param>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsEmpty">
+            <summary>
+                Tests the list to verify that it is empty.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsEmpty(System.String)">
+            <summary>
+                Tests the list to verify that it is empty.
+            </summary>
+            <param name="errorMessage" type="string">
+                <para>
+                    The error message to include in the exception that will be thrown
+                    if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsNotEmpty">
+            <summary>
+                Tests the list to ensure that it contains at least one item.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the list contains zero items.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsNotEmpty(System.String)">
+            <summary>
+                Tests the list to ensure that it contains at least one item.
+            </summary>
+            <param name="message" type="string">
+                <para>
+                    A string containing the error message to include with the 
+                    exception that will be thrown if the test fails.
+                </para>
+            </param>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the list contains zero items.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsNotNullOrEmpty">
+            <summary>
+                Tests the parameter to ensure that it is neither null nor empty.
+            </summary>
+            <returns>
+                A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+                Thrown when the parameter is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+                Thrown when the list contains zero items.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsSameObjectAs(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+                Tests the parameter to ensure that its value reference the same object in memory as the specified
+                value.
+            </summary>
+            <param name="expectedValue" type="System.ValueType">
+                <para>
+                    The expected value.
+                </para>
+            </param>
+            <returns>
+              A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException"> 
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsSameObjectAs(System.Collections.Generic.IEnumerable{`0},System.String)">
+            <summary>
+                Tests the parameter to ensure that its value reference the same object in memory as the specified
+                value.
+            </summary>
+            <param name="expectedValue" type="System.ValueType">
+                <para>
+                    The expected value.
+                </para>
+            </param>
+            <param name="message" type="string">
+                <para>
+                    The message to include in the exception that is thrown if the 
+                    test fails.
+                </para>
+            </param>
+            <returns>
+              A reference to this validator.
+            </returns>
+            <exception cref="T:System.ArgumentException"> 
+                Thrown when the test fails.
+            </exception>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsUnique">
+            <summary>
+            Tests the list to ensure that its collection elements are unique
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsUnique(System.String)">
+            <summary>
+            Tests the list to ensure that its elements are unique
+            </summary>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsUnique``1(System.Func{`0,``0})">
+            <summary>
+            Tests the parameter to ensure that its elements are unique
+            </summary>
+            <param name="projector">function that will convert the elements of <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/>
+            before they are tested for uniqueness </param>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.IsUnique``1(System.Func{`0,``0},System.String)">
+            <summary>
+            Tests the list to ensure that its elements are unique
+            </summary>
+            <param name="projector">function that will convert the elements of <see cref="P:NValidate.Framework.ValidatorBase`1.ParameterValue"/>
+            before they are tested for uniqueness </param>
+            <param name="errorMessage">exception message to throw</param>
+        </member>
+        <member name="M:NValidate.Framework.SequenceValidator`1.SetElementComparer(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+             The comparer that should be used to determine the equality of elements within the list
+            </summary>
+            <param name="value"></param>
+        </member>
+    </members>
+</doc>

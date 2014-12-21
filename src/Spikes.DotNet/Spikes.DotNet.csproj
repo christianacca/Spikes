@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B7C3AE75-6DF2-413D-9796-50B8E534AD49}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eca.Spikes.DotNet</RootNamespace>
+    <AssemblyName>Eca.Spikes.DotNet</AssemblyName>
+    <SignAssembly>false</SignAssembly>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/Eca.Spikes.DotNet/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>Spikes.DotNet</SccProjectName>
+    <SccLocalPath>3~013d968f-324d-41cc-af5e-d5ee52fbcae4</SccLocalPath>
+    <SccAuxPath>http://sevsq09-vm/VaultService</SccAuxPath>
+    <SccProvider>SourceGear Vault Visual Studio 2005 Client:{1EA47954-8515-402d-82D9-B5C332120A8D}</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\$(MSBuildProjectName)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\$(MSBuildProjectName)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration, Version=7.9.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Microsoft.Web.Administration\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.4.0.2, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="sysglobl" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Spikes.AssemblyInfo.cs">
+      <Link>Properties\Spikes.AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Classes\AccessControlListExamples.cs" />
+    <Compile Include="Classes\AppDomainExamples.cs" />
+    <Compile Include="Classes\ApplicationPoolExtensions.cs" />
+    <Compile Include="Classes\Crypto\AsymmetricKeyCryptoExamples.cs" />
+    <Compile Include="Classes\Crypto\HashExamples.cs" />
+    <Compile Include="Classes\Crypto\KeyedHashExamples.cs" />
+    <Compile Include="Classes\EmailExamples.cs" />
+    <Compile Include="Classes\GlobalizationExamples.cs" />
+    <Compile Include="Classes\Iis7AdministrationExamples.cs" />
+    <Compile Include="Classes\Interop\PInvokeExamples.cs" />
+    <Compile Include="Classes\Crypto\SymetricKeyCryptoExamples.cs" />
+    <Compile Include="Classes\CSharp3\LanguageSpikes.cs" />
+    <Compile Include="Classes\ReflectionEmitExamples.cs" />
+    <Compile Include="Classes\ReflectionExamples.cs" />
+    <Compile Include="Classes\CustomFormatterExamples.cs" />
+    <Compile Include="Classes\TracingAndDebugging.cs" />
+    <Compile Include="Classes\CollectionClassPerformance.cs" />
+    <Compile Include="Classes\ComparerExamples.cs" />
+    <Compile Include="Classes\ConfigurationExamples.cs" />
+    <Compile Include="Classes\ConversionBetweenBuiltInTypes.cs" />
+    <Compile Include="Classes\ConvertingBetweenCustomTypes.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\AdviseOnUnitTestingClassesThatUseIO.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\EncodingWhenReadingAndWritingFromFiles.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\NavigatingFileSystem.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\ReadingAndWritingFromStreams.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\UsingIsolatedStorage.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\WatchingFileSystem.cs" />
+    <Compile Include="Classes\GenericClasses.cs" />
+    <Compile Include="Classes\LinkedListExamples.cs" />
+    <Compile Include="Classes\Nullables.cs" />
+    <Compile Include="Classes\OverloadedMethods.cs" />
+    <Compile Include="Classes\BinarySerializationExamples.cs" />
+    <Compile Include="Classes\TestReplacementUsingRegEx.cs" />
+    <Compile Include="Classes\TextExtractionUsingRegEx.cs" />
+    <Compile Include="Classes\TextMatchesUsingRegEx.cs" />
+    <Compile Include="Classes\ThreadingExamples.cs" />
+    <Compile Include="Classes\TransactionScopeSpikes.cs" />
+    <Compile Include="Classes\Win32RegistryClass.cs" />
+    <Compile Include="Classes\EncodingAndSystemIO\HandlingStreamExceptionsInAWinFormApp.cs" />
+    <Compile Include="Classes\WmiTests.cs" />
+    <Compile Include="Classes\WorkingWithStrings.cs" />
+    <Compile Include="Classes\WritingToEventLog.cs" />
+    <Compile Include="Classes\Xml\EncodingWhenReadingXml.cs" />
+    <Compile Include="Classes\Xml\EncodingWhenWritingXml.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreLib\CoreLib.csproj">
+      <Project>{67F0F7A8-474B-4F4C-8589-9CE9679E39E9}</Project>
+      <Name>CoreLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Commons.Testing\Commons.Testing.csproj">
+      <Project>{F5576941-8077-4F13-96D6-71C8C59E87F5}</Project>
+      <Name>Commons.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spikes.SerializationVersioningEg\Spikes.SerializationVersioningEg.csproj">
+      <Project>{D3DC0B61-A050-43C7-A27A-509B3AFD253A}</Project>
+      <Name>Spikes.SerializationVersioningEg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Spikes.WinFormsApplication\Spikes.WinFormsApplication.csproj">
+      <Project>{11300216-D6CB-4659-A7BB-E1418686490E}</Project>
+      <Name>Spikes.WinFormsApplication</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Diagrams\AsymmetricKeyCryptoClasses.cd" />
+    <None Include="Diagrams\StreamHierarchy.cd" />
+    <None Include="Diagrams\System_IO_Overview.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="VersionedSimpleObject.v1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SpikesInteropExample">
+      <Guid>{78E99F48-D0E3-4F82-AD08-7176F67AD234}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>Copy "$(ProjectDir)\SampleImage.jpg" "$(TargetDir)\SampleImage.jpg"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

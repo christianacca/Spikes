@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Comment CommentText="Diagram shows the classes used for Asymmetric key cryptography.&#xD;&#xA;&#xD;&#xA;Only commonly used classes methods are shown.">
+    <Position X="0.698" Y="2.219" Height="0.75" Width="2.075" />
+  </Comment>
+  <Comment CommentText="You will not reference parent classes (eg RSA) in your code.">
+    <Position X="0.708" Y="4.219" Height="0.521" Width="1.825" />
+  </Comment>
+  <Comment CommentText="Use explicitly named CspParameters objects to persist public/private key pairs in a container">
+    <Position X="6.198" Y="2.917" Height="0.75" Width="1.513" />
+  </Comment>
+  <Class Name="System.Security.Cryptography.AsymmetricAlgorithm">
+    <Position X="3.5" Y="3" Width="1.5" />
+    <TypeIdentifier />
+    <Members>
+      <Method Name="AsymmetricAlgorithm" Hidden="true" />
+      <Method Name="Clear" Hidden="true" />
+      <Method Name="Create" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="KeySizeValue" Hidden="true" />
+      <Field Name="LegalKeySizesValue" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Security.Cryptography.DSACryptoServiceProvider">
+    <Position X="2" Y="7.5" Width="2" />
+    <TypeIdentifier />
+    <Members>
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="ExportCspBlob" Hidden="true" />
+      <Method Name="ExportParameters" Hidden="true" />
+      <Method Name="ImportCspBlob" Hidden="true" />
+      <Method Name="ImportParameters" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Security.Cryptography.DSA">
+    <Position X="2.25" Y="5" Width="1.5" />
+    <TypeIdentifier />
+    <Members>
+      <Method Name="DSA" Hidden="true" />
+      <Method Name="FromXmlString" Hidden="true" />
+      <Method Name="ToXmlString" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="System.Security.Cryptography.RSACryptoServiceProvider">
+    <Position X="5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+    <Members>
+      <Method Name="DecryptValue" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="EncryptValue" Hidden="true" />
+      <Method Name="ExportCspBlob" Hidden="true" />
+      <Method Name="ExportParameters" Hidden="true" />
+      <Method Name="ImportCspBlob" Hidden="true" />
+      <Method Name="ImportParameters" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Security.Cryptography.RSA">
+    <Position X="4.75" Y="5" Width="1.75" />
+    <TypeIdentifier />
+    <Members>
+      <Method Name="DecryptValue" Hidden="true" />
+      <Method Name="EncryptValue" Hidden="true" />
+      <Method Name="FromXmlString" Hidden="true" />
+      <Method Name="RSA" Hidden="true" />
+      <Method Name="ToXmlString" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="System.Security.Cryptography.CspParameters" Collapsed="true">
+    <Position X="6.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="System.Security.Cryptography.RSAParameters" Collapsed="true">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Struct Name="System.Security.Cryptography.DSAParameters" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+</ClassDiagram>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Core abstractions">
+    <Position X="3.208" Y="1.312" Height="0.263" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Simple implementations">
+    <Position X="0.719" Y="2.917" Height="0.263" Width="1.94" />
+  </Comment>
+  <Comment CommentText="Cache decorators">
+    <Position X="6.5" Y="3.563" Height="0.263" Width="1.7" />
+  </Comment>
+  <Comment CommentText="See Commons.EntLibCaching for a real caching implementation">
+    <Position X="0.5" Y="5.021" Height="0.615" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Cache management">
+    <Position X="4.104" Y="5.552" Height="0.263" Width="1.7" />
+  </Comment>
+  <Comment CommentText="Caching overview&#xD;&#xA;&#xD;&#xA;For more details see the Readme.txt in this folder">
+    <Position X="0.729" Y="0.5" Height="0.542" Width="2.794" />
+  </Comment>
+  <Class Name="Eca.Commons.Caching.NullCache" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAACAAEAAIABAQAAAAQAAAAQAAAAEAYAAA=</HashCode>
+      <FileName>Caching\NullCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.138" />
+  </Class>
+  <Class Name="Eca.Commons.Caching.SimpleInmemoryCache" Collapsed="true">
+    <Position X="1.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAACAQEAAIABARAAAAQAAABAAAAAEAYAAA=</HashCode>
+      <FileName>Caching\SimpleInmemoryCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Eca.Commons.Caching.NullStoppableCache" Collapsed="true">
+    <Position X="2.25" Y="4.25" Width="1.75" />
+    <InheritanceLine Type="Eca.Commons.Caching.CacheDecorator" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.125" Y="2.259" />
+        <Point X="5.125" Y="3.625" />
+        <Point X="3.562" Y="3.625" />
+        <Point X="3.562" Y="4.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Caching\NullStoppableCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Bottom" Position="0.215" />
+  </Class>
+  <Class Name="Eca.Commons.Caching.CacheDecorator" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEQAACAAEAAIABAQAAAAQAAAAAAAAAAAYAAA=</HashCode>
+      <FileName>Caching\CacheDecorator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Eca.Commons.Caching.CacheAdministator" Collapsed="true">
+    <Position X="4.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAECAAAAAQAAAAAAAIAAABAAAAQAASAAASEQA=</HashCode>
+      <FileName>Caching\CacheAdministator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Eca.Commons.Caching.Statistics.StatisticsCache" Collapsed="true">
+    <Position X="4.75" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="Eca.Commons.Caching.CacheDecorator" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="2.259" />
+        <Point X="5.75" Y="4.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAAAAAEAAIAABAAAAAAAAAAAAAAAAAYAAA=</HashCode>
+      <FileName>Caching\Statistics\StatisticsCache.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Eca.Commons.Caching.StoppableCache" Collapsed="true">
+    <Position X="6.5" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="Eca.Commons.Caching.CacheDecorator" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="2" />
+        <Point X="6.373" Y="2" />
+        <Point X="6.373" Y="4.565" />
+        <Point X="6.5" Y="4.565" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAAAAAAAAMABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Caching\StoppableCache.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Eca.Commons.Caching.ICache" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAACAAEAAIABAQAAAAQAAAAAAAAAAAYAAA=</HashCode>
+      <FileName>Caching\ICache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Eca.Commons.Caching.IStoppableCache" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Caching\IStoppableCache.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

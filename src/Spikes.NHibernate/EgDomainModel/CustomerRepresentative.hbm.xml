@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Eca.Spikes.NHibernate" namespace="Eca.Spikes.NHibernate" default-access="field.camelcase-underscore">
+  <class name="CustomerRepresentative" table="tblCustomerRepresentative">
+    <id name="Id" column="CustomerRepresentativeId">
+      <generator class="assigned" />
+    </id>
+    <version name="ConcurrencyId" unsaved-value="-1" />
+    <property name="FirstName" length="50" not-null="true" />
+    <property name="LastName" length="50" not-null="true" />
+  </class>
+</hibernate-mapping>
