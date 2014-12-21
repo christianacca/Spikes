@@ -186,4 +186,7 @@ FakesAssemblies/
 # Spikes Customizations
 !lib/**/*.dll
 !lib/**/*.pdb
+!lib/**/*.pdb
 !legacy/**/*.dll
+!lib/**/x64/
+!lib/**/x86/
