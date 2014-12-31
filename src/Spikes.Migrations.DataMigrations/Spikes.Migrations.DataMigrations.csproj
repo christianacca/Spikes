@@ -71,6 +71,10 @@
       <Project>{ea3f39d1-29f6-41a3-9e56-02211ca1bc9c}</Project>
       <Name>Spikes.Migrations.BaseData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Spikes.Migrations.BaseModel\Spikes.Migrations.BaseModel.csproj">
+      <Project>{EA5DBC8C-B8EF-42EE-B03E-840CEE20739A}</Project>
+      <Name>Spikes.Migrations.BaseModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Spikes.Migrations.Data\Spikes.Migrations.Data.csproj">
       <Project>{cc8748aa-0d56-47ef-bfa0-a192afd5c291}</Project>
       <Name>Spikes.Migrations.Data</Name>
