@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
@@ -38,7 +37,8 @@ namespace Spikes.Migrations.Tests
         public bool DropDatabase { get; set; }
 
         /// <summary>
-        ///     When <c>true</c> (the default), fail the upgrade if the current code model is different to the latest migration
+        ///     When <c>true</c> (the default), fail the upgrade if the current code model is different to model stored in 
+        ///     the latest migration
         /// </summary>
         /// <remarks>
         ///     The default behaviour of failing the migration is consistent with
@@ -89,41 +89,40 @@ namespace Spikes.Migrations.Tests
                 Logger.Info("Existing database dropped");
             }
 
-            var allmigrators = _configurations.Select(c => CreateMigrator(c, context)).ToList();
-            var skippedMigrators = allmigrators
-                .Where(m => SkipSeedWithNoPendingMigrations && !m.GetPendingMigrations().Any()).ToList();
-            var migatorsToRun = allmigrators.Except(skippedMigrators).ToList();
+            var migrations =
+                (from m in _configurations.Select(c => CreateMigrator(c, context))
+                    let pendingMigration = m.GetPendingMigrations().LastOrDefault()
+                    select
+                        new
+                        {
+                            migrator = m,
+                            pendingMigration,
+                            willRun = !SkipSeedWithNoPendingMigrations || pendingMigration != null
+                        }
+                    ).ToList();
 
             const string logMsg = "Configuration for {0} has no pending migrations... skipping the Seed method";
+            var skippedMigrators = migrations.Where(m => !m.willRun).Select(m => m.migrator).ToList();
             skippedMigrators.ForEach(m => Logger.Verbose(string.Format(logMsg, m.Configuration.ContextKey)));
 
-            // note: trying to minimise further calls to GetPendingMigrations as these are not cached
-            bool wasPendingMigrations;
-            if (SkipSeedWithNoPendingMigrations && !migatorsToRun.Any())
-            {
-                wasPendingMigrations = false;
-            }
-            else
-            {
-                wasPendingMigrations = allmigrators.Any(m => m.GetPendingMigrations().Any());
-            }
-
+            var migrationsToRun = migrations.Where(m => m.willRun).ToList();
             if (FailOnMissingCurrentMigration)
             {
-                migatorsToRun
-                    .Select(m => new MigratorLoggingDecorator(m, Logger)).ToList()
+                migrationsToRun
+                    .Select(m => new MigratorLoggingDecorator(m.migrator, Logger)).ToList()
                     .ForEach(migrator => migrator.Update());
             }
             else
             {
-                var migrationsToRun =
-                    (from m in migatorsToRun
-                     let latestMigration = m.GetPendingMigrations().LastOrDefault() ?? m.GetDatabaseMigrations().FirstOrDefault()
-                        select new {migrator = new MigratorLoggingDecorator(m, Logger), latestMigration}).ToList();
-                migrationsToRun
-                    .ForEach(x => x.migrator.Update(x.latestMigration));
+                var namedMigrations =
+                    (from m in migrationsToRun
+                        let latestMigration = m.pendingMigration ?? m.migrator.GetDatabaseMigrations().FirstOrDefault()
+                        select new {migrator = new MigratorLoggingDecorator(m.migrator, Logger), latestMigration}
+                        ).ToList();
+                namedMigrations.ForEach(x => x.migrator.Update(x.latestMigration));
             }
 
+            bool wasPendingMigrations = migrations.Any(m => m.pendingMigration != null);
             AdditionalSeed(context, wasPendingMigrations);
             context.SaveChanges();
         }
