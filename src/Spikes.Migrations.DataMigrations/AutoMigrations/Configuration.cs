@@ -8,7 +8,7 @@ namespace Spikes.Migrations.DataMigrations.AutoMigrations
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
-            ContextKey = "Spikes.Migrations.Data.SpikesMigrationsDb";
+            ContextKey = "Auto.SpikesMigrationsDb";
         }
 
         protected override void Seed(Data.SpikesMigrationsDb context)

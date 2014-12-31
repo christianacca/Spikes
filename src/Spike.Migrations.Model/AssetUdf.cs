@@ -5,10 +5,8 @@ namespace Spike.Migrations.Model
 {
     public partial class Asset
     {
-/*
         [Udf]
         [StringLength(100)]
         public string Description { get; set; }
-*/
     }
 }

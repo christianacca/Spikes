@@ -7,7 +7,7 @@ namespace Spikes.Migrations.DataMigrations.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "Spikes.Migrations.Data.SpikesMigrationsDb";
+            ContextKey = "SpikesMigrationsDb";
         }
 
         protected override void Seed(SpikesMigrationsDb context)
