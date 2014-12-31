@@ -46,21 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMigrations\201412280922404_InitialCreate.cs" />
+    <Compile Include="AutoMigrations\201412280922404_InitialCreate.Designer.cs">
+      <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AutoMigrations\Configuration.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.Designer.cs">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412280947272_MergeBase.cs" />
-    <Compile Include="Migrations\201412280947272_MergeBase.Designer.cs">
-      <DependentUpon>201412280947272_MergeBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412280948563_Add Asset.RequiredUserRole.cs" />
-    <Compile Include="Migrations\201412280948563_Add Asset.RequiredUserRole.Designer.cs">
-      <DependentUpon>201412280948563_Add Asset.RequiredUserRole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412311105247_Fixup.cs" />
-    <Compile Include="Migrations\201412311105247_Fixup.Designer.cs">
-      <DependentUpon>201412311105247_Fixup.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,17 +77,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201412280922404_InitialCreate.resx">
+    <EmbeddedResource Include="AutoMigrations\201412280922404_InitialCreate.resx">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412280947272_MergeBase.resx">
-      <DependentUpon>201412280947272_MergeBase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412280948563_Add Asset.RequiredUserRole.resx">
-      <DependentUpon>201412280948563_Add Asset.RequiredUserRole.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412311105247_Fixup.resx">
-      <DependentUpon>201412311105247_Fixup.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201412280922404_InitialCreate.resx">
+      <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

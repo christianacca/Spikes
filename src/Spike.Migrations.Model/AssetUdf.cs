@@ -1,4 +1,5 @@
-﻿using Spikes.Migrations.BaseModel;
+﻿using System.ComponentModel.DataAnnotations;
+using Spikes.Migrations.BaseModel;
 
 namespace Spike.Migrations.Model
 {
@@ -6,6 +7,7 @@ namespace Spike.Migrations.Model
     {
 /*
         [Udf]
+        [StringLength(100)]
         public string Description { get; set; }
 */
     }

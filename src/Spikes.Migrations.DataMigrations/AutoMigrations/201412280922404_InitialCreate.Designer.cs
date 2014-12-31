@@ -4,16 +4,16 @@ using System.CodeDom.Compiler;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Resources;
 
-namespace Spikes.Migrations.DataMigrations.Migrations
+namespace Spikes.Migrations.DataMigrations.AutoMigrations
 {
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class AddAssetRequiredUserRole : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddAssetRequiredUserRole));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201412280948563_Add Asset.RequiredUserRole"; }
+            get { return "201412280922404_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

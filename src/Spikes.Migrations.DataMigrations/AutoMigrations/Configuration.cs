@@ -1,16 +1,17 @@
 using System.Data.Entity.Migrations;
 
-namespace Spikes.Migrations.DataMigrations.Migrations
+namespace Spikes.Migrations.DataMigrations.AutoMigrations
 {
-    public sealed class Configuration : DbMigrationsConfiguration<SpikesMigrationsDb>
+    public sealed class Configuration : DbMigrationsConfiguration<Data.SpikesMigrationsDb>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "Spikes.Migrations.Data.SpikesMigrationsDb";
         }
 
-        protected override void Seed(SpikesMigrationsDb context)
+        protected override void Seed(Data.SpikesMigrationsDb context)
         {
             //  This method will be called after migrating to the latest version.
 
