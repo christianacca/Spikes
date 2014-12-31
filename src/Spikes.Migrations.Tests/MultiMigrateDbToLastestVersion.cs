@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
@@ -25,7 +26,7 @@ namespace Spikes.Migrations.Tests
         {
             _configurations = configurations ?? Enumerable.Empty<DbMigrationsConfiguration>();
             Logger = NullMigrationsLogger.Instance;
-            SkipSeedWithNoPendingMigrations = false;
+            FailOnMissingCurrentMigration = true;
         }
 
         /// <summary>
@@ -35,6 +36,15 @@ namespace Spikes.Migrations.Tests
         ///     The default value is <c>false</c>
         /// </remarks>
         public bool DropDatabase { get; set; }
+
+        /// <summary>
+        ///     When <c>true</c> (the default), fail the upgrade if the current code model is different to the latest migration
+        /// </summary>
+        /// <remarks>
+        ///     The default behaviour of failing the migration is consistent with
+        ///     <see cref="MigrateDatabaseToLatestVersion{TContext,TMigrationsConfiguration}" />
+        /// </remarks>
+        public bool FailOnMissingCurrentMigration { get; set; }
 
         /// <summary>
         ///     If set to <c>true</c> the initializer is run using the connection information from the context that
@@ -51,8 +61,14 @@ namespace Spikes.Migrations.Tests
         ///     configurations that do not have any pending migrations to run against the database.
         /// </summary>
         /// <remarks>
-        ///     The default value is <c>false</c>; ie the <see cref="DbMigrationsConfiguration{T}.Seed" /> method
-        ///     will be run even if there were no pending migrations detected for that configuration
+        ///     <para>
+        ///         The default value is <c>false</c>; ie the <see cref="DbMigrationsConfiguration{T}.Seed" /> method
+        ///         will be run even if there were no pending migrations detected for that configuration.
+        ///     </para>
+        ///     <para>
+        ///         The default behaviour of not skipping migrations is consistent with
+        ///         <see cref="MigrateDatabaseToLatestVersion{TContext,TMigrationsConfiguration}" />
+        ///     </para>
         /// </remarks>
         public bool SkipSeedWithNoPendingMigrations { get; set; }
 
@@ -92,9 +108,21 @@ namespace Spikes.Migrations.Tests
                 wasPendingMigrations = allmigrators.Any(m => m.GetPendingMigrations().Any());
             }
 
-            migatorsToRun
-                .Select(m => new MigratorLoggingDecorator(m, Logger)).ToList()
-                .ForEach(migrator => migrator.Update());
+            if (FailOnMissingCurrentMigration)
+            {
+                migatorsToRun
+                    .Select(m => new MigratorLoggingDecorator(m, Logger)).ToList()
+                    .ForEach(migrator => migrator.Update());
+            }
+            else
+            {
+                var migrationsToRun =
+                    (from m in migatorsToRun
+                     let latestMigration = m.GetPendingMigrations().LastOrDefault() ?? m.GetDatabaseMigrations().FirstOrDefault()
+                        select new {migrator = new MigratorLoggingDecorator(m, Logger), latestMigration}).ToList();
+                migrationsToRun
+                    .ForEach(x => x.migrator.Update(x.latestMigration));
+            }
 
             AdditionalSeed(context, wasPendingMigrations);
             context.SaveChanges();

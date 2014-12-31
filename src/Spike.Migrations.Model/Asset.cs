@@ -18,6 +18,6 @@ namespace Spike.Migrations.Model
 
         public virtual UserRole RequiredUserRole { get; set; }
 
-//        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Created { get; set; }
     }
 }
