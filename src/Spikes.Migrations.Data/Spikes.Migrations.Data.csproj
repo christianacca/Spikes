@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201412280948563_Add Asset.RequiredUserRole.Designer.cs">
       <DependentUpon>201412280948563_Add Asset.RequiredUserRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201412311105247_Fixup.cs" />
+    <Compile Include="Migrations\201412311105247_Fixup.Designer.cs">
+      <DependentUpon>201412311105247_Fixup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMigrationsDb.cs" />
@@ -88,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412280948563_Add Asset.RequiredUserRole.resx">
       <DependentUpon>201412280948563_Add Asset.RequiredUserRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412311105247_Fixup.resx">
+      <DependentUpon>201412311105247_Fixup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
