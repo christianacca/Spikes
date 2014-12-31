@@ -1,8 +1,7 @@
-namespace Spikes.Migrations.Data.Migrations
+using System.Data.Entity.Migrations;
+
+namespace Spikes.Migrations.DataMigrations.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class Fixup : DbMigration
     {
         public override void Up()

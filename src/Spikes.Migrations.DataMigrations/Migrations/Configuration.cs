@@ -1,18 +1,16 @@
-namespace Spikes.Migrations.Data.Migrations
-{
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
+using System.Data.Entity.Migrations;
 
-    public sealed class Configuration : DbMigrationsConfiguration<Spikes.Migrations.Data.SpikesMigrationsDb>
+namespace Spikes.Migrations.DataMigrations.Migrations
+{
+    public sealed class Configuration : DbMigrationsConfiguration<SpikesMigrationsDb>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            ContextKey = "Spikes.Migrations.Data.Migrations.Configuration";
         }
 
-        protected override void Seed(Spikes.Migrations.Data.SpikesMigrationsDb context)
+        protected override void Seed(SpikesMigrationsDb context)
         {
             //  This method will be called after migrating to the latest version.
 

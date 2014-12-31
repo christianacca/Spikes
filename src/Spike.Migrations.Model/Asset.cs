@@ -4,7 +4,7 @@ using Spikes.Migrations.BaseModel;
 
 namespace Spike.Migrations.Model
 {
-    public class Asset
+    public partial class Asset
     {
         public int Id { get; set; }
 

@@ -1,8 +1,7 @@
-namespace Spikes.Migrations.BaseData.Migrations
+using System.Data.Entity.Migrations;
+
+namespace Spikes.Migrations.BaseDataMigrations.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
     public partial class InitialCreate : DbMigration
     {
         public override void Up()

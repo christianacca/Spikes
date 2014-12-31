@@ -1,11 +1,11 @@
-namespace Spikes.Migrations.BaseData.Migrations
+namespace Spikes.Migrations.BaseDataMigrations.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<Spikes.Migrations.BaseData.SpikesMigrationsBaseDb>
+    public sealed class Configuration : DbMigrationsConfiguration<Spikes.Migrations.BaseDataMigrations.SpikesMigrationsBaseDb>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace Spikes.Migrations.BaseData.Migrations
             ContextKey = "Spikes.Migrations.BaseData.SpikesMigrationsBaseDb";
         }
 
-        protected override void Seed(Spikes.Migrations.BaseData.SpikesMigrationsBaseDb context)
+        protected override void Seed(Spikes.Migrations.BaseDataMigrations.SpikesMigrationsBaseDb context)
         {
             //  This method will be called after migrating to the latest version.
 

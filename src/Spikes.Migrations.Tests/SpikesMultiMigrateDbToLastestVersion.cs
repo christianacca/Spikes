@@ -1,5 +1,5 @@
 using System.Data.Entity.Migrations;
-using Spikes.Migrations.BaseData.Migrations;
+using Spikes.Migrations.BaseDataMigrations.Migrations;
 
 namespace Spikes.Migrations.Tests
 {
@@ -9,7 +9,7 @@ namespace Spikes.Migrations.Tests
             : base(new DbMigrationsConfiguration[]
             {
                 new Configuration(),
-                new Data.Migrations.Configuration()
+                new DataMigrations.Migrations.Configuration()
             })
         {
             DropDatabase = dropDatabase;
