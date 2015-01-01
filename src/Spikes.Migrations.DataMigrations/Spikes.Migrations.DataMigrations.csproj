@@ -50,10 +50,22 @@
     <Compile Include="AutoMigrations\201412280922404_InitialCreate.Designer.cs">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="AutoMigrations\201501012025196_Merge BaseModel.cs" />
+    <Compile Include="AutoMigrations\201501012025196_Merge BaseModel.Designer.cs">
+      <DependentUpon>201501012025196_Merge BaseModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoMigrations\AutoConfiguration.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.Designer.cs">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501012025196_Merge BaseModel.cs" />
+    <Compile Include="Migrations\201501012025196_Merge BaseModel.Designer.cs">
+      <DependentUpon>201501012025196_Merge BaseModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501012036211_Add Asset.CreatedBy.cs" />
+    <Compile Include="Migrations\201501012036211_Add Asset.CreatedBy.Designer.cs">
+      <DependentUpon>201501012036211_Add Asset.CreatedBy.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,8 +92,17 @@
     <EmbeddedResource Include="AutoMigrations\201412280922404_InitialCreate.resx">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AutoMigrations\201501012025196_Merge BaseModel.resx">
+      <DependentUpon>201501012025196_Merge BaseModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412280922404_InitialCreate.resx">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501012025196_Merge BaseModel.resx">
+      <DependentUpon>201501012025196_Merge BaseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501012036211_Add Asset.CreatedBy.resx">
+      <DependentUpon>201501012036211_Add Asset.CreatedBy.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

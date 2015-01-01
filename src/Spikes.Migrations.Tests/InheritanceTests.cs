@@ -43,7 +43,7 @@ namespace Spikes.Migrations.Tests
         [Test]
         public void CanInsertSubclassedInstances()
         {
-            var dataRole = new DataUserRole {DataRoleProp = "Data 1", Name = "DataRole1"};
+            var dataRole = new DataUserRole {DataRoleProp = "Data 1", Name = "DataRole1", Key = 1};
             var featureRole = new FeatureUserRole {FeatureRoleProp = "Feature 1", Name = "FeatureRole1"};
 
             _db.UserRoles.AddRange(new UserRole[] {dataRole, featureRole});
@@ -54,7 +54,7 @@ namespace Spikes.Migrations.Tests
         public void CanLoadPolymorphicNavigationProperty()
         {
             // given
-            var dataRole = new DataUserRole {DataRoleProp = "Data 1", Name = "DataRole1"};
+            var dataRole = new DataUserRole {DataRoleProp = "Data 1", Name = "DataRole1", Key = 2};
             _db.UserRoles.Add(dataRole);
             var asset = new Asset {RequiredUserRole = dataRole, Reference = "Asset1", Title = "Asset 1"};
             _db.Assets.Add(asset);

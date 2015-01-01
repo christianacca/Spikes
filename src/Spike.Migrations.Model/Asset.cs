@@ -22,10 +22,7 @@ namespace Spike.Migrations.Model
 
         public DateTimeOffset Created { get; set; }
 
-/*
-        [Required]
         [StringLength(100)]
         public string CreatedBy { get; set; }
-*/
     }
 }

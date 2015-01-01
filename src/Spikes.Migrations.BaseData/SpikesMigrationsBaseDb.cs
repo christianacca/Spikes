@@ -1,5 +1,7 @@
-﻿using System.Data.Common;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.Infrastructure.Pluralization;
 using System.Linq;
 using System.Reflection;
@@ -45,6 +47,9 @@ namespace Spikes.Migrations.BaseData
             modelBuilder.Types()
                 .Where(t => t.GetCustomAttribute<ReferenceDataAttribute>() != null)
                 .Configure(c => c.HasTableAnnotation("CustomIdentitySeed", true));
+
+            modelBuilder.Entity<UserRole>()
+                .Property(p => p.Key).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Key") { IsUnique = true }));
         }
     }
 }

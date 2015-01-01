@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Commons.AssemblyInfo.cs = Commons.AssemblyInfo.cs
 		CoreLib.AssemblyInfo.cs = CoreLib.AssemblyInfo.cs
 		eca.snk = eca.snk
+		Spikes.Migrations.Tests\migrations.json = Spikes.Migrations.Tests\migrations.json
 		nhibernate-configuration.xsd = nhibernate-configuration.xsd
 		nhibernate-mapping.xsd = nhibernate-mapping.xsd
 		Spikes.AssemblyInfo.cs = Spikes.AssemblyInfo.cs
