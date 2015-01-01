@@ -9,7 +9,7 @@ namespace Spikes.Migrations.DataMigrations.Migrations
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
     public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AutoMigrations.InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {

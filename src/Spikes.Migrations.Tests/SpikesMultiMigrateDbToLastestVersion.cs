@@ -9,7 +9,7 @@ namespace Spikes.Migrations.Tests
             : base(new DbMigrationsConfiguration[]
             {
                 new Configuration(),
-                new DataMigrations.AutoMigrations.Configuration()
+                new DataMigrations.AutoMigrations.AutoConfiguration()
             })
         {
             DropDatabase = dropDatabase;

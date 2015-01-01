@@ -50,14 +50,10 @@
     <Compile Include="AutoMigrations\201412280922404_InitialCreate.Designer.cs">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoMigrations\Configuration.cs" />
+    <Compile Include="AutoMigrations\AutoConfiguration.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.Designer.cs">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201412311815589_Add Asset.Created.cs" />
-    <Compile Include="Migrations\201412311815589_Add Asset.Created.Designer.cs">
-      <DependentUpon>201412311815589_Add Asset.Created.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,9 +82,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412280922404_InitialCreate.resx">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201412311815589_Add Asset.Created.resx">
-      <DependentUpon>201412311815589_Add Asset.Created.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

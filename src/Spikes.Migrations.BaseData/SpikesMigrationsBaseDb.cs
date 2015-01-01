@@ -1,6 +1,8 @@
 ﻿using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Pluralization;
+using System.Linq;
+using System.Reflection;
 using Spikes.Migrations.BaseModel;
 
 namespace Spikes.Migrations.BaseData
@@ -8,6 +10,10 @@ namespace Spikes.Migrations.BaseData
     public class SpikesMigrationsBaseDb : DbContext
     {
         public SpikesMigrationsBaseDb()
+        {
+        }
+
+        public SpikesMigrationsBaseDb(string nameOrConnectionString) : base(nameOrConnectionString)
         {
         }
 
@@ -35,6 +41,10 @@ namespace Spikes.Migrations.BaseData
             modelBuilder.Types()
                 .Where(t => userRoleType.IsAssignableFrom(t))
                 .Configure(c => c.ToTable(new EnglishPluralizationService().Pluralize(userRoleType.Name), "Base"));
+
+            modelBuilder.Types()
+                .Where(t => t.GetCustomAttribute<ReferenceDataAttribute>() != null)
+                .Configure(c => c.HasTableAnnotation("CustomIdentitySeed", true));
         }
     }
 }

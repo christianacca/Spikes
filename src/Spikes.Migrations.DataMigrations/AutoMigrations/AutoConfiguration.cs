@@ -2,10 +2,14 @@ using System.Data.Entity.Migrations;
 
 namespace Spikes.Migrations.DataMigrations.AutoMigrations
 {
-    public sealed class Configuration : DbMigrationsConfiguration<Data.SpikesMigrationsDb>
+    /// <summary>
+    /// This configuration will include udf properties in the model and will use automatic migrations
+    /// </summary>
+    public sealed class AutoConfiguration : DbMigrationsConfiguration<Data.SpikesMigrationsDb>
     {
-        public Configuration()
+        public AutoConfiguration()
         {
+            MigrationsDirectory = "AutoMigrations";
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
             ContextKey = "Auto.SpikesMigrationsDb";

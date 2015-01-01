@@ -12,6 +12,10 @@ namespace Spikes.Migrations.Data
         {
         }
 
+        public SpikesMigrationsDb(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
         public SpikesMigrationsDb(DbConnection existingConnection, bool contextOwnsConnection) : base(existingConnection, contextOwnsConnection)
         {
         }

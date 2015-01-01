@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Spikes.Migrations.BaseModel
 {
+    [ReferenceData]
     public class Lookup
     {
         public int Id { get; set; }

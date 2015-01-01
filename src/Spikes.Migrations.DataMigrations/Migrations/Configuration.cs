@@ -2,10 +2,15 @@ using System.Data.Entity.Migrations;
 
 namespace Spikes.Migrations.DataMigrations.Migrations
 {
+    /// <summary>
+    /// This configuration will exclude udf's from the model and requires code migrations to
+    /// be added by developer
+    /// </summary>
     public sealed class Configuration : DbMigrationsConfiguration<SpikesMigrationsDb>
     {
         public Configuration()
         {
+            MigrationsDirectory = "Migrations";
             AutomaticMigrationsEnabled = false;
             ContextKey = "SpikesMigrationsDb";
         }
