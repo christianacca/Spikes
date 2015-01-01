@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.Migrations.Model;
 using System.Data.Entity.Migrations.Utilities;
 using System.Data.Entity.SqlServer;
@@ -17,6 +18,27 @@ namespace Spikes.Migrations.BaseData
         private const string MigrationConfigFileName = "migrations.json";
         private static int? _customIdentitySeed;
         private int _identitySeed = StandardSeedValue;
+
+/*
+        protected override void Generate(AlterTableOperation alterTableOperation)
+        {
+            // WARNING: This does not work - you cannot call DBCC CHECKIDENT to reseed an existing table with data
+            // MAYBE: consider the following as an alternative: http://romiller.com/2013/04/30/ef6-switching-identity-onoff-with-a-custom-migration-operation/
+
+            AnnotationValues values;
+            alterTableOperation.Annotations.TryGetValue("CustomIdentitySeed", out values);
+            bool isCustomIdSeedRequired = values != null && values.NewValue.ToString() == "True" && alterTableOperation.Columns.Any(c => c.IsIdentity);
+            if (isCustomIdSeedRequired)
+            {
+                using (IndentedTextWriter w = Writer())
+                {
+                    const string sql = "DBCC CHECKIDENT ( {0}, RESEED, {1} )";
+                    w.Write(sql, alterTableOperation.Name, GetCustomSeedValue());
+                    Statement(w);
+                }
+            }
+        }
+*/
 
         private void EnforceCustomIdentitySeed(IDictionary<string, object> annotations, Action scope)
         {
