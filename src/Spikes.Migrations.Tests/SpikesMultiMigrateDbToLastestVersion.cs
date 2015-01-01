@@ -1,4 +1,5 @@
 using System.Data.Entity.Migrations;
+using Spikes.Migrations.BaseData;
 using Spikes.Migrations.BaseDataMigrations.Migrations;
 
 namespace Spikes.Migrations.Tests

@@ -1,7 +1,7 @@
 using System.Data.Entity.Migrations.Infrastructure;
 using log4net;
 
-namespace Spikes.Migrations.Tests
+namespace Spikes.Migrations.BaseData
 {
     public class Log4NetMigrationsLogger : MigrationsLogger
     {

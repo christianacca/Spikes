@@ -1,6 +1,6 @@
 using System.Data.Entity.Migrations.Infrastructure;
 
-namespace Spikes.Migrations.Tests
+namespace Spikes.Migrations.BaseData
 {
     /// <summary>
     /// An logger that ignores log messages

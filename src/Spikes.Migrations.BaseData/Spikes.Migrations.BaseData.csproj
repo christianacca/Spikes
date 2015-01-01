@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\lib\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\lib\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -49,7 +52,10 @@
   <ItemGroup>
     <Compile Include="CustomDbConfiguration.cs" />
     <Compile Include="IdSeedSqlServerMigrationSqlGenerator.cs" />
+    <Compile Include="Log4NetMigrationsLogger.cs" />
     <Compile Include="MigrationsConfig.cs" />
+    <Compile Include="MultiMigrateDbToLastestVersion.cs" />
+    <Compile Include="NullMigrationsLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMigrationsBaseDb.cs" />
   </ItemGroup>

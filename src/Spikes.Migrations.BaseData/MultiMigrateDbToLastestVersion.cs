@@ -5,7 +5,7 @@ using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
 using System.Reflection;
 
-namespace Spikes.Migrations.Tests
+namespace Spikes.Migrations.BaseData
 {
     /// <summary>
     ///     A database initialiser that will upgrade the database to the latest version as determined

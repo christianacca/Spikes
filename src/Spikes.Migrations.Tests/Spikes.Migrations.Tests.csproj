@@ -54,9 +54,6 @@
   <ItemGroup>
     <Compile Include="DbInit.cs" />
     <Compile Include="InheritanceTests.cs" />
-    <Compile Include="Log4NetMigrationsLogger.cs" />
-    <Compile Include="MultiMigrateDbToLastestVersion.cs" />
-    <Compile Include="NullMigrationsLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMultiMigrateDbToLastestVersion.cs" />
   </ItemGroup>
