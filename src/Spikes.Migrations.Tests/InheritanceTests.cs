@@ -1,5 +1,4 @@
 ﻿using System.Data.Common;
-using System.Data.Entity;
 using System.Linq;
 using NUnit.Framework;
 using Spike.Migrations.Model;

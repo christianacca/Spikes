@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Linq;
 using NUnit.Framework;
 using Spikes.Migrations.Data;
 
@@ -11,12 +10,22 @@ namespace Spikes.Migrations.Tests
         [SetUp]
         public void Setup()
         {
-            // as a balance between performance and test isolation/reliability throwing away the database before the start of each *test run*
-            Database.SetInitializer<SpikesMigrationsDb>(new SpikesMultiMigrateDbToLastestVersion {DropDatabase = true});
+            // note 1: 
+            // as a balance between performance and test isolation/reliability throwing away the database 
+            // before the start of each *test run*
+            // note 2:
+            // setting UseSuppliedContext to true will result in dbBuilderCtx in being used to build
+            // the database - this maybe problematic and is causing us to HAVE to set 
+            // FailOnMissingCurrentMigration to true
+            Database.SetInitializer<SpikesMigrationsDb>(new SpikesMultiMigrateDbToLastestVersion
+            {
+                DropDatabase = true,
+                UseSuppliedContext = true,
+                FailOnMissingCurrentMigration = false
+            });
 
-            // trigger initialisation before any tests run
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            new SpikesMigrationsDb().Assets.Any();
+            var dbBuilderCtx = new SpikesMigrationsDb();
+            dbBuilderCtx.Database.Initialize(false);
         }
     }
 }
