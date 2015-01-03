@@ -6,7 +6,6 @@ using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Globalization;
 using System.Linq;
-using System.Web.UI.WebControls;
 
 namespace Spikes.Migrations.BaseData
 {
@@ -28,7 +27,6 @@ namespace Spikes.Migrations.BaseData
         {
             _configurations = configurations ?? Enumerable.Empty<DbMigrationsConfiguration>();
             Logger = NullMigrationsLogger.Instance;
-            FailOnMissingCurrentMigration = true;
         }
 
         /// <summary>
@@ -40,16 +38,6 @@ namespace Spikes.Migrations.BaseData
         ///     or registered factory if applicable.
         /// </remarks>
         public string ConnectionStringName { get; set; }
-
-        /// <summary>
-        ///     When <c>true</c> (the default), fail the upgrade if the current code model is different to model stored in 
-        ///     the latest migration
-        /// </summary>
-        /// <remarks>
-        ///     The default behaviour of failing the migration is consistent with
-        ///     <see cref="MigrateDatabaseToLatestVersion{TContext,TMigrationsConfiguration}" />
-        /// </remarks>
-        public bool FailOnMissingCurrentMigration { get; set; }
 
         /// <summary>
         ///     When <c>true</c>, the <see cref="DbMigrationsConfiguration{T}.Seed" /> method will be skipped for those
