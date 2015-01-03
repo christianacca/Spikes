@@ -18,9 +18,8 @@ namespace Spikes.Migrations.BaseData
         private readonly IEnumerable<DbMigrationsConfiguration> _configurations;
 
         /// <remarks>
-        ///     The migrations defined by each <see cref="DbMigrationsConfiguration" /> will be executed fully
-        ///     before the next <see cref="DbMigrationsConfiguration" /> is selected to run, therefore
-        ///     the order of <paramref name="configurations" /> list is critical
+        ///     The order of <paramref name="configurations" /> should be least dependent model
+        ///     first
         /// </remarks>
         /// <param name="configurations">Defines the migrations to run</param>
         public MultiMigrateDbToLastestVersion(IEnumerable<DbMigrationsConfiguration> configurations)
