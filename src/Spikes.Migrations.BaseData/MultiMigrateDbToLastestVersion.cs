@@ -52,7 +52,13 @@ namespace Spikes.Migrations.BaseData
         ///     using the default constructor or registered factory if applicable.
         /// </summary>
         /// <remarks>
-        ///     The default value is <c>false</c>
+        ///     <para>
+        ///         The default value is <c>false</c>
+        ///     </para>
+        ///     <para>
+        ///         IMPORTANT: If you set to <c>true</c> and depending on your setup, you may need to also set
+        ///         <see cref="FailOnMissingCurrentMigration" /> to false
+        ///     </para>
         /// </remarks>
         public bool UseSuppliedContext { get; set; }
 
@@ -91,13 +97,14 @@ namespace Spikes.Migrations.BaseData
 
             var migrations =
                 (from m in _configurations.Select(c => CreateMigrator(c, context))
-                    let pendingMigration = m.GetPendingMigrations().LastOrDefault()
+                    let latestPendingMigration = m.GetPendingMigrations().LastOrDefault()
                     select
                         new
                         {
                             migrator = m,
-                            pendingMigration,
-                            willRun = !SkipSeedWithNoPendingMigrations || pendingMigration != null
+                            isAutoMigrationsEnabled = m.Configuration.AutomaticMigrationsEnabled,
+                            latestPendingMigration,
+                            willRun = !SkipSeedWithNoPendingMigrations || latestPendingMigration != null
                         }
                     ).ToList();
 
@@ -116,13 +123,18 @@ namespace Spikes.Migrations.BaseData
             {
                 var namedMigrations =
                     (from m in migrationsToRun
-                        let latestMigration = m.pendingMigration ?? m.migrator.GetDatabaseMigrations().FirstOrDefault()
-                        select new {migrator = new MigratorLoggingDecorator(m.migrator, Logger), latestMigration}
+                        let namedMigration = m.latestPendingMigration ?? m.migrator.GetDatabaseMigrations().FirstOrDefault()
+                        select new
+                        {
+                            migrator = new MigratorLoggingDecorator(m.migrator, Logger),
+                            m.isAutoMigrationsEnabled,
+                            namedMigration
+                        }
                         ).ToList();
-                namedMigrations.ForEach(x => x.migrator.Update(x.latestMigration));
+                namedMigrations.ForEach(x => x.migrator.Update(x.isAutoMigrationsEnabled ? null : x.namedMigration));
             }
 
-            bool wasPendingMigrations = migrations.Any(m => m.pendingMigration != null);
+            bool wasPendingMigrations = migrations.Any(m => m.latestPendingMigration != null || m.isAutoMigrationsEnabled);
             AdditionalSeed(context, wasPendingMigrations);
             context.SaveChanges();
         }
