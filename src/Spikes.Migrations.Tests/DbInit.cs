@@ -10,22 +10,17 @@ namespace Spikes.Migrations.Tests
         [SetUp]
         public void Setup()
         {
-            // note 1: 
-            // as a balance between performance and test isolation/reliability throwing away the database 
-            // before the start of each *test run*
-            // note 2:
-            // setting UseSuppliedContext to true will result in dbBuilderCtx in being used to build
-            // the database - this maybe problematic and is causing us to HAVE to set 
-            // FailOnMissingCurrentMigration to true
             Database.SetInitializer<SpikesMigrationsDb>(new SpikesMultiMigrateDbToLastestVersion
             {
-                DropDatabase = true,
-                UseSuppliedContext = true,
-                FailOnMissingCurrentMigration = false
+                ConnectionStringName = "SpikesMigrationsDb"
             });
 
-            var dbBuilderCtx = new SpikesMigrationsDb();
-            dbBuilderCtx.Database.Initialize(false);
+            var db = new SpikesMigrationsDb("SpikesMigrationsDb");
+            if (db.Database.Exists())
+            {
+                db.Database.Delete();
+            }
+            db.Database.Initialize(false);
         }
     }
 }

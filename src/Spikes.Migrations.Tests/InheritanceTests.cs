@@ -17,7 +17,7 @@ namespace Spikes.Migrations.Tests
         [SetUp]
         public void Setup()
         {
-            _conn = new SpikesMigrationsDb().Database.Connection;
+            _conn = new SpikesMigrationsDb("SpikesMigrationsDb").Database.Connection;
             _conn.Open();
             _transaction = _conn.BeginTransaction();
             _db = CreateDb();

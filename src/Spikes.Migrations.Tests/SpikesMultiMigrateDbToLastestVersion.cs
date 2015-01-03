@@ -6,14 +6,13 @@ namespace Spikes.Migrations.Tests
 {
     public class SpikesMultiMigrateDbToLastestVersion : MultiMigrateDbToLastestVersion
     {
-        public SpikesMultiMigrateDbToLastestVersion(bool dropDatabase = false)
+        public SpikesMultiMigrateDbToLastestVersion()
             : base(new DbMigrationsConfiguration[]
             {
                 new Configuration(),
                 new DataMigrations.AutoMigrations.AutoConfiguration()
             })
         {
-            DropDatabase = dropDatabase;
         }
     }
 }

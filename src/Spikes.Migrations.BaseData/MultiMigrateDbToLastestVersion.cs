@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
-using System.Reflection;
 
 namespace Spikes.Migrations.BaseData
 {
@@ -29,12 +30,14 @@ namespace Spikes.Migrations.BaseData
         }
 
         /// <summary>
-        ///     When set to <c>true</c>, any existing database will be dropped first before migrations are run
+        ///     Used to override the connection to the database to be migrated.
         /// </summary>
         /// <remarks>
-        ///     The default value is <c>false</c>
+        ///     If not supplied the connection information will be taken from a context,
+        ///     as determined by the <see cref="DbConfiguration" />, constructed using the context's default constructor
+        ///     or registered factory if applicable.
         /// </remarks>
-        public bool DropDatabase { get; set; }
+        public string ConnectionStringName { get; set; }
 
         /// <summary>
         ///     When <c>true</c> (the default), fail the upgrade if the current code model is different to model stored in 
@@ -45,22 +48,6 @@ namespace Spikes.Migrations.BaseData
         ///     <see cref="MigrateDatabaseToLatestVersion{TContext,TMigrationsConfiguration}" />
         /// </remarks>
         public bool FailOnMissingCurrentMigration { get; set; }
-
-        /// <summary>
-        ///     If set to <c>true</c> the initializer is run using the connection information from the context that
-        ///     triggered initialization. Otherwise, the connection information will be taken from a context constructed
-        ///     using the default constructor or registered factory if applicable.
-        /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         The default value is <c>false</c>
-        ///     </para>
-        ///     <para>
-        ///         IMPORTANT: If you set to <c>true</c> and depending on your setup, you may need to also set
-        ///         <see cref="FailOnMissingCurrentMigration" /> to false
-        ///     </para>
-        /// </remarks>
-        public bool UseSuppliedContext { get; set; }
 
         /// <summary>
         ///     When <c>true</c>, the <see cref="DbMigrationsConfiguration{T}.Seed" /> method will be skipped for those
@@ -88,15 +75,8 @@ namespace Spikes.Migrations.BaseData
 
         public virtual void InitializeDatabase(DbContext context)
         {
-            if (DropDatabase && context.Database.Exists())
-            {
-                Logger.Verbose("Existing database detected and DropDatabase is set to 'true'.. Dropping database");
-                context.Database.Delete();
-                Logger.Info("Existing database dropped");
-            }
-
             var migrations =
-                (from m in _configurations.Select(c => CreateMigrator(c, context))
+                (from m in _configurations.Select(CreateMigrator)
                     let latestPendingMigration = m.GetPendingMigrations().LastOrDefault()
                     select
                         new
@@ -139,18 +119,13 @@ namespace Spikes.Migrations.BaseData
             context.SaveChanges();
         }
 
-        private DbMigrator CreateMigrator(DbMigrationsConfiguration c, DbContext context)
+        private DbMigrator CreateMigrator(DbMigrationsConfiguration c)
         {
-            if (!UseSuppliedContext)
+            if (!String.IsNullOrEmpty(ConnectionStringName))
             {
-                return new DbMigrator(c);
+                c.TargetDatabase = new DbConnectionInfo(ConnectionStringName);
             }
-
-            var mt = typeof (DbMigrator);
-            const BindingFlags instanceCtor = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            var ctorArgs = new object[] {c, context};
-            return
-                (DbMigrator) mt.Assembly.CreateInstance(mt.FullName, true, instanceCtor, null, ctorArgs, null, null);
+            return new DbMigrator(c);
         }
 
         /// <summary>
