@@ -46,14 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMigrations\201412280922404_InitialCreate.cs" />
-    <Compile Include="AutoMigrations\201412280922404_InitialCreate.Designer.cs">
-      <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AutoMigrations\201501012025196_Merge BaseModel.cs" />
-    <Compile Include="AutoMigrations\201501012025196_Merge BaseModel.Designer.cs">
-      <DependentUpon>201501012025196_Merge BaseModel.cs</DependentUpon>
-    </Compile>
     <Compile Include="AutoMigrations\AutoConfiguration.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.cs" />
     <Compile Include="Migrations\201412280922404_InitialCreate.Designer.cs">
@@ -89,12 +81,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AutoMigrations\201412280922404_InitialCreate.resx">
-      <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AutoMigrations\201501012025196_Merge BaseModel.resx">
-      <DependentUpon>201501012025196_Merge BaseModel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412280922404_InitialCreate.resx">
       <DependentUpon>201412280922404_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>

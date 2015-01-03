@@ -9,7 +9,8 @@ namespace Spikes.Migrations.DataMigrations.AutoMigrations
     {
         public AutoConfiguration()
         {
-            MigrationsDirectory = "AutoMigrations";
+            MigrationsDirectory = "Migrations";
+            MigrationsNamespace = "Spikes.Migrations.DataMigrations.Migrations";
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
             ContextKey = "Auto.SpikesMigrationsDb";
