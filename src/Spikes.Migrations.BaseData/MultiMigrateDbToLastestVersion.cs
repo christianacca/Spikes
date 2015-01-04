@@ -76,6 +76,13 @@ namespace Spikes.Migrations.BaseData
 
         public virtual void InitializeDatabase(DbContext context)
         {
+            bool migrationsRun = Upgrade();
+            AdditionalSeed(context, migrationsRun);
+            context.SaveChanges();
+        }
+
+        private bool Upgrade()
+        {
             List<MigratorInfo> migrators = _configurations.Select(CreateMigratorInfo).ToList();
 
             var migrations = (
@@ -112,8 +119,8 @@ namespace Spikes.Migrations.BaseData
                 migator.Update(lastMigration.FullName);
             });
 
-            AdditionalSeed(context, migrations.Any(m => m.willRun));
-            context.SaveChanges();
+            bool migrationsRun = migrations.Any(m => m.willRun);
+            return migrationsRun;
         }
 
         private IEnumerable<MigrationInfo> GetMigrations(DbMigrator migrator)
