@@ -21,7 +21,10 @@ namespace Spikes.Migrations.BaseData
         ///     The order of <paramref name="configurations" /> should be least dependent model
         ///     first
         /// </remarks>
-        /// <param name="configurations">Defines the migrations to run</param>
+        /// <param name="configurations">
+        ///     Defines the migrations to run. The order of <paramref name="configurations" />
+        ///     should be least dependent model first
+        /// </param>
         public MultiMigrateDbToLastestVersion(IEnumerable<DbMigrationsConfiguration> configurations)
         {
             _configurations = configurations ?? Enumerable.Empty<DbMigrationsConfiguration>();
@@ -37,6 +40,15 @@ namespace Spikes.Migrations.BaseData
         ///     or registered factory if applicable.
         /// </remarks>
         public string ConnectionStringName { get; set; }
+
+        /// <summary>
+        ///     Names of migrations that should be skipped
+        /// </summary>
+        /// <remarks>
+        ///     This is useful when migrations from one configuration should be used in place of one or more migrations
+        ///     defined in another configuration
+        /// </remarks>
+        public IEnumerable<string> SkippedMigrations { get; set; }
 
         /// <summary>
         ///     When <c>true</c>, the <see cref="DbMigrationsConfiguration{T}.Seed" /> method will be skipped for those
@@ -73,7 +85,7 @@ namespace Spikes.Migrations.BaseData
                 {
                     migrator,
                     migration,
-                    willRun = !SkipSeedWithNoPendingMigrations || !migration.IsNull
+                    willRun = (!SkipSeedWithNoPendingMigrations || !migration.IsNull) && !migration.IsSkipped
                 }).ToList();
 
             const string logMsg = "Configuration for {0} has no pending migrations... skipping the Seed method";
@@ -84,6 +96,7 @@ namespace Spikes.Migrations.BaseData
                 .Where(m => m.willRun)
                 .OrderBy(m => m.migration.CreatedOn).ThenBy(m => m.migrator.Priority)
                 .ToList();
+
             var batchedMigrations = orderedMigrations
                 .SliceWhen(
                     (prev, current) =>
@@ -105,7 +118,8 @@ namespace Spikes.Migrations.BaseData
 
         private IEnumerable<MigrationInfo> GetMigrations(DbMigrator migrator)
         {
-            List<MigrationInfo> migrations = migrator.GetPendingMigrations().Select(MigrationInfo.Parse).ToList();
+            var parser = new MigrationInfoParser(SkippedMigrations);
+            List<MigrationInfo> migrations = migrator.GetPendingMigrations().Select(s => parser.Parse(s)).ToList();
             if (migrator.Configuration.AutomaticMigrationsEnabled)
             {
                 return migrations.Union(new[] {MigrationInfo.Auto});
@@ -150,12 +164,35 @@ namespace Spikes.Migrations.BaseData
             // override in subclass
         }
 
+        private class MigrationInfoParser
+        {
+            public MigrationInfoParser(IEnumerable<string> skippedMigrations)
+            {
+                SkippedMigrations = skippedMigrations ?? Enumerable.Empty<string>();
+            }
+
+            private IEnumerable<string> SkippedMigrations { get; set; }
+
+            public MigrationInfo Parse(string rawName)
+            {
+                string[] nameParts = rawName.Split(new[] {"_"}, StringSplitOptions.None);
+                return new MigrationInfo
+                {
+                    Name = nameParts[1],
+                    FullName = rawName,
+                    CreatedOn = DateTime.ParseExact(nameParts[0], "yyyyMMddHHmmssFFF", CultureInfo.InvariantCulture),
+                    IsSkipped = SkippedMigrations.Contains(rawName)
+                };
+            }
+        }
+
         private class MigrationInfo
         {
             public DateTime CreatedOn { get; set; }
             public string FullName { get; set; }
             public bool IsAuto { get; set; }
             public bool IsNull { get; set; }
+            public bool IsSkipped { get; set; }
             public string Name { get; set; }
 
             public static MigrationInfo Auto
@@ -170,18 +207,8 @@ namespace Spikes.Migrations.BaseData
 
             public override string ToString()
             {
-                return string.Format("Name: {0}, CreatedOn: {1}, IsAuto: {2}, IsNull: {3}", Name, CreatedOn, IsAuto, IsNull);
-            }
-
-            public static MigrationInfo Parse(string rawName)
-            {
-                string[] nameParts = rawName.Split(new[] {"_"}, StringSplitOptions.None);
-                return new MigrationInfo
-                {
-                    Name = nameParts[1],
-                    FullName = rawName,
-                    CreatedOn = DateTime.ParseExact(nameParts[0], "yyyyMMddHHmmssFFF", CultureInfo.InvariantCulture)
-                };
+                const string format = "Name: {0}, CreatedOn: {1}, IsAuto: {2}, IsNull: {3}, IsSkipped: {4}";
+                return string.Format(format, Name, CreatedOn, IsAuto, IsNull, IsSkipped);
             }
         }
 
