@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Spikes.Migrations.Data;
 
-namespace Spikes.Migrations.Tests
+namespace Spikes.Migrations.Tests.MultiMigrateTests
 {
     [SetUpFixture]
     public class DbInit

@@ -52,8 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbInit.cs" />
-    <Compile Include="InheritanceTests.cs" />
+    <Compile Include="MultiMigrateTests\DbInit.cs" />
+    <Compile Include="MultiMigrateTests\InheritanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMultiMigrateDbToLastestVersion.cs" />
   </ItemGroup>

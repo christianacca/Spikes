@@ -5,7 +5,7 @@ using Spike.Migrations.Model;
 using Spikes.Migrations.BaseModel;
 using Spikes.Migrations.Data;
 
-namespace Spikes.Migrations.Tests
+namespace Spikes.Migrations.Tests.MultiMigrateTests
 {
     [TestFixture]
     public class InheritanceTests
