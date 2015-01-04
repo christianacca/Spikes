@@ -10,9 +10,10 @@ namespace Spikes.Migrations.Tests
             : base(new DbMigrationsConfiguration[]
             {
                 new Configuration(),
-                new DataMigrations.Migrations.Configuration()
+                new DataMigrations.AutoMigrations.AutoConfiguration()
             })
         {
+            SkippedMigrations = new[] {"201501032326177_Rename LookupItem pk"};
         }
     }
 }

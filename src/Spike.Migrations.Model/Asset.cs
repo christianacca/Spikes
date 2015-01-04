@@ -15,7 +15,7 @@ namespace Spike.Migrations.Model
         public string Reference { get; set; }
 
         public virtual LookupItem AssetType { get; set; }
-        public int? AssetTypeId { get; set; }
+        public int? AssetTypeKey { get; set; }
 
         public virtual UserRole RequiredUserRole { get; set; }
         public int? RequiredUserRoleId { get; set; }

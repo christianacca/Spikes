@@ -63,6 +63,10 @@
     <Compile Include="Migrations\201501032317054_Merge BaseModel2.Designer.cs">
       <DependentUpon>201501032317054_Merge BaseModel2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501032325042_Merge BaseModel3.cs" />
+    <Compile Include="Migrations\201501032325042_Merge BaseModel3.Designer.cs">
+      <DependentUpon>201501032325042_Merge BaseModel3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMigrationsDb.cs" />
@@ -96,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501032317054_Merge BaseModel2.resx">
       <DependentUpon>201501032317054_Merge BaseModel2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501032325042_Merge BaseModel3.resx">
+      <DependentUpon>201501032325042_Merge BaseModel3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

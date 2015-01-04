@@ -16,10 +16,12 @@ namespace Spikes.Migrations.Tests
             });
 
             var db = new SpikesMigrationsDb("SpikesMigrationsDb");
+/*
             if (db.Database.Exists())
             {
                 db.Database.Delete();
             }
+*/
             db.Database.Initialize(false);
         }
     }
