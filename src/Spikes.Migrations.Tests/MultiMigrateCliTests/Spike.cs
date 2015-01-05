@@ -4,8 +4,8 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations.Design;
 using System.IO;
 using System.Linq;
+using CcAcca.EntityFramework.Migrations;
 using NUnit.Framework;
-using Spikes.Migrations.BaseData;
 using Spikes.Migrations.Data;
 
 namespace Spikes.Migrations.Tests.MultiMigrateCliTests

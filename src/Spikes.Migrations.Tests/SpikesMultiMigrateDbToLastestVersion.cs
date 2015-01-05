@@ -1,5 +1,5 @@
 using System.Data.Entity.Migrations;
-using Spikes.Migrations.BaseData;
+using CcAcca.EntityFramework.Migrations;
 using Spikes.Migrations.BaseDataMigrations.Migrations;
 
 namespace Spikes.Migrations.Tests

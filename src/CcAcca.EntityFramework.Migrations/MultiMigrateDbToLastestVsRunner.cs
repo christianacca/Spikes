@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
 
-namespace Spikes.Migrations.BaseData
+namespace CcAcca.EntityFramework.Migrations
 {
     /// <summary>
     /// Runs the migrations defined by the supplied <see cref="DelegatedMigrator"/>s

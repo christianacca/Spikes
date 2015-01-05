@@ -6,7 +6,7 @@ using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
 
-namespace Spikes.Migrations.BaseData
+namespace CcAcca.EntityFramework.Migrations
 {
     /// <summary>
     ///     A database initialiser that will upgrade the database to the latest version as determined

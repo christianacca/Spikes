@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.SqlServer;
+using CcAcca.EntityFramework.Migrations;
 
 namespace Spikes.Migrations.BaseData
 {

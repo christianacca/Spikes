@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Spikes.Migrations.BaseData
+namespace CcAcca.EntityFramework.Migrations
 {
     internal static class UtilExts
     {

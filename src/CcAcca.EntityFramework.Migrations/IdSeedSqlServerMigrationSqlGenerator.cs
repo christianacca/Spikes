@@ -9,7 +9,7 @@ using System.Security;
 using System.Text;
 using System.Web.Script.Serialization;
 
-namespace Spikes.Migrations.BaseData
+namespace CcAcca.EntityFramework.Migrations
 {
     /// <summary>
     ///     A migration sql generator that will create IDENTITY columns with a seed value

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Spikes.Migrations.BaseData
+namespace CcAcca.EntityFramework.Migrations
 {
     /// <summary>
     /// Represent the information about a individual migration

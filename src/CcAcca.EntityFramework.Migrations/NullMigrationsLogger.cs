@@ -1,6 +1,6 @@
 using System.Data.Entity.Migrations.Infrastructure;
 
-namespace Spikes.Migrations.BaseData
+namespace CcAcca.EntityFramework.Migrations
 {
     /// <summary>
     /// An logger that ignores log messages
