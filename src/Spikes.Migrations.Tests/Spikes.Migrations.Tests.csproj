@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultiMigrateCliTests\Spike.cs" />
     <Compile Include="MultiMigrateTests\DbInit.cs" />
     <Compile Include="MultiMigrateTests\InheritanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +89,7 @@
       <Name>Spikes.Migrations.DataMigrations</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
