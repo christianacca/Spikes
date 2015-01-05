@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
-using System.Globalization;
 using System.Linq;
 
 namespace Spikes.Migrations.BaseData
@@ -76,74 +75,36 @@ namespace Spikes.Migrations.BaseData
 
         public virtual void InitializeDatabase(DbContext context)
         {
-            bool migrationsRun = Upgrade();
+            bool migrationsRun = UpgradeDb();
             AdditionalSeed(context, migrationsRun);
             context.SaveChanges();
         }
 
-        private bool Upgrade()
+        private bool UpgradeDb()
         {
-            List<MigratorInfo> migrators = _configurations.Select(CreateMigratorInfo).ToList();
-
-            var migrations = (
-                from migrator in migrators
-                from migration in GetMigrations(migrator.Impl).DefaultIfEmpty(MigrationInfo.Null)
-                select new
-                {
-                    migrator,
-                    migration,
-                    willRun = (!SkipSeedWithNoPendingMigrations || !migration.IsNull) && !migration.IsSkipped
-                }).ToList();
-
-            const string logMsg = "Configuration for {0} has no pending migrations... skipping the Seed method";
-            List<DbMigrator> skippedMigrators = migrations.Where(m => !m.willRun).Select(m => m.migrator.Impl).ToList();
-            skippedMigrators.ForEach(m => Logger.Verbose(string.Format(logMsg, m.Configuration.ContextKey)));
-
-            var orderedMigrations = migrations
-                .Where(m => m.willRun)
-                .OrderBy(m => m.migration.CreatedOn).ThenBy(m => m.migrator.Priority)
-                .ToList();
-
-            var batchedMigrations = orderedMigrations
-                .SliceWhen(
-                    (prev, current) =>
-                        prev == null ||
-                        prev.migrator.Impl.Configuration.ContextKey != current.migrator.Impl.Configuration.ContextKey)
-                .ToList();
-
-            batchedMigrations.ForEach(batch =>
+            List<DelegatedMigrator> migrators = _configurations.Select(CreateMigrator).ToList();
+            var runner = new MultiMigrateDbToLastestVsRunner(migrators)
             {
-                batch = batch.ToList();
-                DbMigrator migator = batch.First().migrator.Impl;
-                MigrationInfo lastMigration = batch.Last().migration;
-                migator.Update(lastMigration.FullName);
-            });
-
-            bool migrationsRun = migrations.Any(m => m.willRun);
-            return migrationsRun;
+                SkippedMigrations = SkippedMigrations,
+                Logger = Logger,
+                SkipSeedWithNoPendingMigrations = SkipSeedWithNoPendingMigrations
+            };
+            return runner.Run();
         }
 
-        private IEnumerable<MigrationInfo> GetMigrations(DbMigrator migrator)
-        {
-            var parser = new MigrationInfoParser(SkippedMigrations);
-            List<MigrationInfo> migrations = migrator.GetPendingMigrations().Select(s => parser.Parse(s)).ToList();
-            if (migrator.Configuration.AutomaticMigrationsEnabled)
-            {
-                return migrations.Union(new[] {MigrationInfo.Auto});
-            }
-            else
-            {
-                return migrations;
-            }
-        }
-
-        private MigratorInfo CreateMigratorInfo(DbMigrationsConfiguration c, int migratorPriority)
+        private DelegatedMigrator CreateMigrator(DbMigrationsConfiguration c, int migratorPriority)
         {
             if (!String.IsNullOrEmpty(ConnectionStringName))
             {
                 c.TargetDatabase = new DbConnectionInfo(ConnectionStringName);
             }
-            return new MigratorInfo {Impl = new DbMigrator(c), Priority = migratorPriority};
+            var impl = new DbMigrator(c);
+            return new DelegatedMigrator(impl.GetPendingMigrations, impl.Update)
+            {
+                IsAutoMigrationsEnabled = c.AutomaticMigrationsEnabled,
+                ConfigurationTypeName = c.GetType().FullName, 
+                Priority = migratorPriority
+            };
         }
 
         /// <summary>
@@ -169,65 +130,6 @@ namespace Spikes.Migrations.BaseData
         public virtual void AdditionalSeed(DbContext context, bool migrationsRun)
         {
             // override in subclass
-        }
-
-        private class MigrationInfoParser
-        {
-            public MigrationInfoParser(IEnumerable<string> skippedMigrations)
-            {
-                SkippedMigrations = skippedMigrations ?? Enumerable.Empty<string>();
-            }
-
-            private IEnumerable<string> SkippedMigrations { get; set; }
-
-            public MigrationInfo Parse(string rawName)
-            {
-                string[] nameParts = rawName.Split(new[] {"_"}, StringSplitOptions.None);
-                return new MigrationInfo
-                {
-                    Name = nameParts[1],
-                    FullName = rawName,
-                    CreatedOn = DateTime.ParseExact(nameParts[0], "yyyyMMddHHmmssFFF", CultureInfo.InvariantCulture),
-                    IsSkipped = SkippedMigrations.Contains(rawName)
-                };
-            }
-        }
-
-        private class MigrationInfo
-        {
-            public DateTime CreatedOn { get; set; }
-            public string FullName { get; set; }
-            public bool IsAuto { get; set; }
-            public bool IsNull { get; set; }
-            public bool IsSkipped { get; set; }
-            public string Name { get; set; }
-
-            public static MigrationInfo Auto
-            {
-                get { return new MigrationInfo {IsAuto = true, CreatedOn = DateTime.MaxValue}; }
-            }
-
-            public static MigrationInfo Null
-            {
-                get { return new MigrationInfo {IsNull = true, CreatedOn = DateTime.MaxValue}; }
-            }
-
-            public override string ToString()
-            {
-                const string format = "Name: {0}, CreatedOn: {1}, IsAuto: {2}, IsNull: {3}, IsSkipped: {4}";
-                return string.Format(format, Name, CreatedOn, IsAuto, IsNull, IsSkipped);
-            }
-        }
-
-        private class MigratorInfo
-        {
-            public DbMigrator Impl { get; set; }
-            public int Priority { get; set; }
-
-            public override string ToString()
-            {
-                return string.Format("ContextKey: {0}, Priority: {1}", Impl.Configuration.ContextKey, Priority);
-            }
         }
     }
 }

@@ -51,9 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomDbConfiguration.cs" />
+    <Compile Include="DelegatedMigrator.cs" />
     <Compile Include="IdSeedSqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Log4NetMigrationsLogger.cs" />
+    <Compile Include="MigrationInfo.cs" />
     <Compile Include="MigrationsConfig.cs" />
+    <Compile Include="MultiMigrateDbToLastestVsRunner.cs" />
     <Compile Include="MultiMigrateDbToLastestVersion.cs" />
     <Compile Include="NullMigrationsLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
