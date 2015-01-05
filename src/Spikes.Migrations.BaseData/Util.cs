@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Spikes.Migrations.BaseData
 {
@@ -14,10 +13,12 @@ namespace Spikes.Migrations.BaseData
         public static IEnumerable<IEnumerable<T>> SliceWhen<T>(this IEnumerable<T> source,
                                                                Func<T, T, bool> slicingCondition)
         {
-            if (!source.Any()) yield break;
-
             IEnumerator<T> iterator = source.GetEnumerator();
-            iterator.MoveNext();
+            bool hasElement = iterator.MoveNext();
+            if (!hasElement)
+            {
+                yield break;
+            }
             T prev = iterator.Current;
             var currentGroup = new List<T> { prev };
             while (iterator.MoveNext())
