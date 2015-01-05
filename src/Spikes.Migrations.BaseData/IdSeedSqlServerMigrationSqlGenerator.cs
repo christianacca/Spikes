@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.Migrations.Model;
 using System.Data.Entity.Migrations.Utilities;
 using System.Data.Entity.SqlServer;
@@ -12,13 +11,16 @@ using System.Web.Script.Serialization;
 
 namespace Spikes.Migrations.BaseData
 {
+    /// <summary>
+    ///     A migration sql generator that will create IDENTITY columns with a seed value
+    ///     defined in an external configuration file
+    /// </summary>
     public class IdSeedSqlServerMigrationSqlGenerator : SqlServerMigrationSqlGenerator
     {
         private const int StandardSeedValue = 1;
-        private const string MigrationConfigFileName = "migrations.json";
+        public const string MigrationConfigFileName = "migrations.json";
         private static int? _customIdentitySeed;
         private int _identitySeed = StandardSeedValue;
-
 /*
         protected override void Generate(AlterTableOperation alterTableOperation)
         {
@@ -86,7 +88,7 @@ namespace Spikes.Migrations.BaseData
             var dir = new DirectoryInfo(probingPath);
             while (dir != null)
             {
-                yield return Path.Combine(dir.FullName, "migrations.json.user");
+                yield return Path.Combine(dir.FullName, MigrationConfigFileName + ".user");
                 yield return Path.Combine(dir.FullName, MigrationConfigFileName);
 
                 try
