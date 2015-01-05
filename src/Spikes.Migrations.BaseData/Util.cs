@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Spikes.Migrations.BaseData
 {
-    public static class UtilExts
+    internal static class UtilExts
     {
         /// <summary>
         /// Slice <paramref name="source"/> every time <paramref name="slicingCondition"/> is satisfied
