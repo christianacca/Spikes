@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CcAcca.EntityFramework.Library")]
+[assembly: AssemblyTitle("MultiMigrate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("CcAcca.EntityFramework.Library")]
+[assembly: AssemblyProduct("MultiMigrate")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cf6393ae-7278-41dd-b8dc-fb12d5999fcd")]
+[assembly: Guid("3a4498a9-462b-4ceb-bb3f-c6a04ee34d2a")]
 
 // Version information for an assembly consists of the following four values:
 //

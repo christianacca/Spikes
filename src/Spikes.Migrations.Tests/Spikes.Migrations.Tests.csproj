@@ -60,8 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="migrators-config.json" />
+    <None Include="run-multi-migrations-skippedmigrations-eg1.bat" />
+    <None Include="run-multi-migrations-skippedmigrations-eg2.bat" />
     <None Include="run_db_migrations.bat" />
     <None Include="packages.config" />
+    <None Include="skipped-migrations.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CcAcca.EntityFramework.Migrations\CcAcca.EntityFramework.Migrations.csproj">

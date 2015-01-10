@@ -1,0 +1,11 @@
+[
+	{
+		Assembly: "Spikes.Migrations.BaseDataMigrations",
+		ConfigurationType: "Spikes.Migrations.BaseDataMigrations.Migrations.Configuration"
+	},
+	{
+		Assembly: "Spikes.Migrations.DataMigrations",
+		ConfigurationType: "Spikes.Migrations.DataMigrations.AutoMigrations.AutoConfiguration",
+		AutomaticMigrationsEnabled: true
+	}
+]

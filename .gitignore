@@ -190,3 +190,4 @@ FakesAssemblies/
 !legacy/**/*.dll
 !lib/**/x64/
 !lib/**/x86/
+Dependencies/*.dll

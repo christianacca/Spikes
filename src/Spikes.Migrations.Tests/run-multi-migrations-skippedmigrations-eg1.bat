@@ -1,0 +1,2 @@
+C:\Users\ccrowhurst\Documents\Learning\Spikes\src\MultiMigrate\bin\Debug\MultiMigrate.exe -migrators@=migrators-config.json -startUpDirectory=bin\Debug -startUpConfigurationFile=Spikes.Migrations.Tests.dll.config -connectionStringName=SpikesMigrationsDb -skippedMigrations@=skipped-migrations.json
+PAUSE
