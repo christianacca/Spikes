@@ -13,6 +13,8 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
     [TestFixture]
     public class Spike
     {
+        private static List<IDisposable> _trash = new List<IDisposable>();
+
         [SetUp]
         public void Setup()
         {
@@ -21,6 +23,12 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
             {
                 db.Database.Delete();
             }
+        }
+
+        [TearDown]
+        public void Teardown()
+        {
+            _trash.ForEach(d => d.Dispose());
         }
 
         [Test]
@@ -76,7 +84,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
         private static ToolingFacade CreateToolingFacadeForBaseData()
         {
             string workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            return new ToolingFacade(
+            var facade = new ToolingFacade(
                 migrationsAssemblyName: "Spikes.Migrations.BaseDataMigrations",
                 contextAssemblyName: null,
                 configurationTypeName: "Spikes.Migrations.BaseDataMigrations.Migrations.Configuration",
@@ -86,11 +94,13 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
                 dataDirectory: null,
                 connectionStringInfo: new DbConnectionInfo("SpikesMigrationsDb")
                 );
+            _trash.Add(facade);
+            return facade;
         }
         private static ToolingFacade CreateToolingFacadeForMainData()
         {
             string workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            return new ToolingFacade(
+            ToolingFacade facade = new ToolingFacade(
                 migrationsAssemblyName: "Spikes.Migrations.DataMigrations",
                 contextAssemblyName: null,
                 configurationTypeName: "Configuration",
@@ -100,6 +110,8 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
                 dataDirectory: null,
                 connectionStringInfo: new DbConnectionInfo("SpikesMigrationsDb")
                 );
+            _trash.Add(facade);
+            return facade;
         }
     }
 }

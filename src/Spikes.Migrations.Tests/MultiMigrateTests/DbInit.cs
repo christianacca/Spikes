@@ -15,14 +15,14 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
                 ConnectionStringName = "SpikesMigrationsDb"
             });
 
-            var db = new SpikesMigrationsDb("SpikesMigrationsDb");
-/*
-            if (db.Database.Exists())
+            using (var db = new SpikesMigrationsDb("SpikesMigrationsDb"))
             {
-                db.Database.Delete();
+                if (db.Database.Exists())
+                {
+                    db.Database.Delete();
+                }
+                db.Database.Initialize(false);
             }
-*/
-            db.Database.Initialize(false);
         }
     }
 }

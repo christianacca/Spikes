@@ -7,10 +7,16 @@ namespace CcAcca.EntityFramework.Migrations
     /// <summary>
     /// A Migrator which delegates the work of running migrations to another implementation
     /// </summary>
-    public class DelegatedMigrator
+    public class DelegatedMigrator: IDisposable
     {
-        public DelegatedMigrator(Func<IEnumerable<string>> getPendingMigrations, Action<string> update)
+        private readonly Action _disposeImpl;
+
+        public DelegatedMigrator(Func<IEnumerable<string>> getPendingMigrations, Action<string> update, Action dispose = null)
         {
+            _disposeImpl = dispose ?? (() =>
+            {
+                // noop
+            });
             GetPendingMigrations = getPendingMigrations;
             Update = update;
         }
@@ -46,6 +52,11 @@ namespace CcAcca.EntityFramework.Migrations
         public override string ToString()
         {
             return String.Format("ConfigurationTypeName: {0}, Priority: {1}", ConfigurationTypeName, Priority);
+        }
+
+        public void Dispose()
+        {
+            _disposeImpl();
         }
     }
 }

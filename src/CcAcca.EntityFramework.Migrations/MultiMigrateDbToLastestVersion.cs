@@ -83,13 +83,15 @@ namespace CcAcca.EntityFramework.Migrations
         private bool UpgradeDb()
         {
             List<DelegatedMigrator> migrators = _configurations.Select(CreateMigrator).ToList();
-            var runner = new MultiMigrateDbToLastestVsRunner(migrators)
+            using (var runner = new MultiMigrateDbToLastestVsRunner(migrators)
             {
                 SkippedMigrations = SkippedMigrations,
                 Logger = Logger,
                 SkipSeedWithNoPendingMigrations = SkipSeedWithNoPendingMigrations
-            };
-            return runner.Run();
+            })
+            {
+                return runner.Run();
+            }
         }
 
         private DelegatedMigrator CreateMigrator(DbMigrationsConfiguration c, int migratorPriority)

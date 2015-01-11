@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations.Design;
 using System.IO;
@@ -52,29 +53,32 @@ namespace MultiMigrate
             [Description(ConnectionStrNameHelp)]string connectionStringName,
             [Description(SkippedMigrationsHelp)]string[] skippedMigrations)
         {
-            var ms =
+            List<DelegatedMigrator> ms =
                 migrators.Select(
                     c =>
                         CreateDelegatedMigrator(_startUpDirectory, startUpConfigurationFile, startUpDataDirectory,
                             connectionStringName, c)).ToList();
 
-            var migrationRunner = new MultiMigrateDbToLastestVsRunner(ms)
+            using (var migrationRunner = new MultiMigrateDbToLastestVsRunner(ms)
             {
                 SkippedMigrations = skippedMigrations
-            };
-            migrationRunner.Run();
+            })
+            {
+                migrationRunner.Run();
+            }
         }
 
-        private static DelegatedMigrator CreateDelegatedMigrator(string startUpDirectory, string startUpConfigurationFile,
+        private static DelegatedMigrator CreateDelegatedMigrator(string startUpDirectory,
+            string startUpConfigurationFile,
             string startUpDataDirectory, string connectionStringName, MigratorConfig config)
         {
-            ToolingFacade bdf = CreateToolingFacade(config, startUpDirectory, startUpConfigurationFile,
+            ToolingFacade facade = CreateToolingFacade(config, startUpDirectory, startUpConfigurationFile,
                 startUpDataDirectory, connectionStringName);
-            var bdm = new DelegatedMigrator(bdf.GetPendingMigrations, migration => bdf.Update(migration, true))
+            return new DelegatedMigrator(facade.GetPendingMigrations, migration => facade.Update(migration, true),
+                () => facade.Dispose())
             {
                 IsAutoMigrationsEnabled = config.AutomaticMigrationsEnabled
             };
-            return bdm;
         }
 
         private static ToolingFacade CreateToolingFacade(MigratorConfig config, string startUpDirectory, string startUpConfigurationFile, string startUpDataDirectory, string connectionStringName)

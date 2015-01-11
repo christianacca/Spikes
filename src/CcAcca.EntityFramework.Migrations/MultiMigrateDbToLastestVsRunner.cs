@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace CcAcca.EntityFramework.Migrations
     /// Runs the migrations defined by the supplied <see cref="DelegatedMigrator"/>s
     /// in order of migration creation date and then by <see cref="DelegatedMigrator.Priority"/>
     /// </summary>
-    public class MultiMigrateDbToLastestVsRunner
+    public class MultiMigrateDbToLastestVsRunner : IDisposable
     {
         private readonly IEnumerable<DelegatedMigrator> _migrators;
 
@@ -73,6 +74,14 @@ namespace CcAcca.EntityFramework.Migrations
 
             bool migrationsRun = migrations.Any(m => m.willRun);
             return migrationsRun;
+        }
+
+        public void Dispose()
+        {
+            foreach (DelegatedMigrator migrator in _migrators)
+            {
+                migrator.Dispose();
+            }
         }
     }
 }
