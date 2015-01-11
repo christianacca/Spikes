@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Pluralization;
 using Spike.Migrations.Model;
 using Spikes.Migrations.BaseData;
+using Spikes.Migrations.BaseModel;
 
 namespace Spikes.Migrations.Data
 {
@@ -34,6 +35,14 @@ namespace Spikes.Migrations.Data
             modelBuilder.Types()
                 .Where(t => t.Assembly == mainModelAssembly)
                 .Configure(c => c.ToTable(new EnglishPluralizationService().Pluralize(c.ClrType.Name), "Main"));
+
+            // note: this is a workaround to the standard way of mapping Table-per-hierarchy mapping for UserRole
+            // we're doing this so that the single table get's created in the schema we want all tables
+            var userRoleType = typeof(UserRole);
+            modelBuilder.Types()
+                .Where(t => t.Assembly == mainModelAssembly)
+                .Where(t => userRoleType.IsAssignableFrom(t))
+                .Configure(c => c.ToTable(new EnglishPluralizationService().Pluralize(userRoleType.Name), BaseSchemaName));
         }
     }
 }
