@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataUserRole.cs" />
+    <Compile Include="FakeEntity.cs" />
     <Compile Include="FeatureUserRole.cs" />
     <Compile Include="Lookup.cs" />
     <Compile Include="LookupItem.cs" />

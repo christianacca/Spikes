@@ -10,10 +10,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         [SetUp]
         public void Setup()
         {
-            Database.SetInitializer<SpikesMigrationsDb>(new SpikesMultiMigrateDbToLastestVersion
-            {
-                ConnectionStringName = "SpikesMigrationsDb"
-            });
+            Database.SetInitializer<SpikesMigrationsDb>(new SpikesMultiMigrateDbToLastestVersion());
 
             using (var db = new SpikesMigrationsDb("SpikesMigrationsDb"))
             {

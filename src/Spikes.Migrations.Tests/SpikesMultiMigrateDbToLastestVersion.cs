@@ -6,12 +6,15 @@ namespace Spikes.Migrations.Tests
 {
     public class SpikesMultiMigrateDbToLastestVersion : MultiMigrateDbToLastestVersion
     {
-        public SpikesMultiMigrateDbToLastestVersion()
+
+        public SpikesMultiMigrateDbToLastestVersion() : this("SpikesMigrationsDb") {}
+
+        public SpikesMultiMigrateDbToLastestVersion(string connectionStringName)
             : base(new DbMigrationsConfiguration[]
             {
                 new Configuration(),
-                new DataMigrations.AutoMigrations.AutoConfiguration()
-            })
+                new DataMigrations.Migrations.Configuration()
+            }, connectionStringName)
         {
             SkippedMigrations = new[] {"201501032326177_Rename LookupItem pk"};
         }

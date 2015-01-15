@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web.Configuration;
 using CcAcca.EntityFramework.Migrations;
 using CLAP;
 
@@ -25,6 +28,8 @@ namespace MultiMigrate
         // ReSharper disable once UnusedMember.Local
         static void StartupDirectory(string value)
         {
+            // todo: make startupDirectory optional and default to the current directory
+
             _startUpDirectory = value;
             AppDomain.CurrentDomain.AssemblyResolve += ResolveEfAssembly;
         }
@@ -48,53 +53,92 @@ namespace MultiMigrate
 
         [Verb(IsDefault = true, Description = Help)]
         public static void Upgrade([Required, Description(MigratorsHelp)] MigratorConfig[] migrators,
-            [Description(StartUpConfigFileHelp)] string startUpConfigurationFile,
+            [Required, Description(ConnectionStrNameHelp)]string connectionStringName,
+            [Required, Description(StartUpConfigFileHelp)] string startUpConfigurationFile,
             [Description(StartUpDataDirHelp)]string startUpDataDirectory,
-            [Description(ConnectionStrNameHelp)]string connectionStringName,
             [Description(SkippedMigrationsHelp)]string[] skippedMigrations)
         {
-            List<DelegatedMigrator> ms =
-                migrators.Select(
-                    c =>
-                        CreateDelegatedMigrator(_startUpDirectory, startUpConfigurationFile, startUpDataDirectory,
-                            connectionStringName, c)).ToList();
+            // todo: remove requirement that connectionStringName and therefore startUpConfigurationFile is required
+            // by allowing connectionString and providerName to be supplied as an alternative
+            using (DbConnection cnn = CreateDbConnection(startUpConfigurationFile, connectionStringName))
+            {
+                List<DelegatedMigrator> ms =
+                    migrators.Select(
+                        c =>
+                            CreateMigrator(startUpConfigurationFile, startUpDataDirectory, connectionStringName, c, cnn)
+                        ).ToList();
 
-            using (var migrationRunner = new MultiMigrateDbToLastestVsRunner(ms)
-            {
-                SkippedMigrations = skippedMigrations
-            })
-            {
-                migrationRunner.Run();
+                using (var migrationRunner = new MultiMigrateDbToLastestVsRunner(ms)
+                {
+                    SkippedMigrations = skippedMigrations
+                })
+                {
+                    migrationRunner.Run();
+                }
             }
         }
 
-        private static DelegatedMigrator CreateDelegatedMigrator(string startUpDirectory,
-            string startUpConfigurationFile,
-            string startUpDataDirectory, string connectionStringName, MigratorConfig config)
+        private static DbConnection CreateDbConnection(string startUpConfigurationFile, string connectionStringName)
         {
-            ToolingFacade facade = CreateToolingFacade(config, startUpDirectory, startUpConfigurationFile,
-                startUpDataDirectory, connectionStringName);
-            return new DelegatedMigrator(facade.GetPendingMigrations, migration => facade.Update(migration, true),
-                () => facade.Dispose())
+            ConnectionStringSettings connectionString = 
+                GetConnectionStringSetting(startUpConfigurationFile, connectionStringName);
+            DbProviderFactory factory = DbProviderFactories.GetFactory(connectionString.ProviderName);
+            DbConnection conn = factory.CreateConnection();
+            conn.ConnectionString = connectionString.ConnectionString;
+            return conn;
+        }
+
+        private static DelegatedMigrator CreateMigrator(string startUpConfigurationFile,
+            string startUpDataDirectory, string connectionStringName, MigratorConfig config, DbConnection connection)
+        {
+            ToolingFacade facade = 
+                CreateToolingFacade(config, startUpConfigurationFile, startUpDataDirectory, connectionStringName);
+            return new DelegatedMigrator(facade.GetPendingMigrations, facade.GetDatabaseMigrations, migration => facade.Update(migration, true),
+                connection, () => facade.Dispose())
             {
                 IsAutoMigrationsEnabled = config.AutomaticMigrationsEnabled
             };
         }
 
-        private static ToolingFacade CreateToolingFacade(MigratorConfig config, string startUpDirectory, string startUpConfigurationFile, string startUpDataDirectory, string connectionStringName)
+        private static ConnectionStringSettings GetConnectionStringSetting(string startUpConfigurationFile, string connectionStringName)
+        {
+            Configuration appConfig = LoadAppConfig(startUpConfigurationFile);
+            return appConfig.ConnectionStrings.ConnectionStrings[connectionStringName];
+        }
+
+        private static Configuration LoadAppConfig(string startUpConfigurationFile)
+        {
+            if (startUpConfigurationFile.ToLower().EndsWith("web.config"))
+            {
+                string configPath = Path.Combine(GetWorkingDirectory(), startUpConfigurationFile);
+                return WebConfigurationManager.OpenWebConfiguration(configPath);
+            }
+            else
+            {
+                string configPath = Path.Combine(GetWorkingDirectory(), Path.GetFileNameWithoutExtension(startUpConfigurationFile));
+                return ConfigurationManager.OpenExeConfiguration(configPath);
+            }
+        }
+
+        private static ToolingFacade CreateToolingFacade(MigratorConfig config, string startUpConfigurationFile, string startUpDataDirectory, string connectionStringName)
         {
             string workingDirectory = null;
-            if (!String.IsNullOrWhiteSpace(startUpDirectory))
+            if (!String.IsNullOrWhiteSpace(_startUpDirectory))
             {
-                workingDirectory = Path.IsPathRooted(startUpDirectory)
-                    ? startUpDirectory
-                    : Path.Combine(Environment.CurrentDirectory, startUpDirectory);
+                workingDirectory = GetWorkingDirectory();
             }
 
             return new ToolingFacade(config.Assembly, config.ContextAssembly, config.ConfigurationType, workingDirectory,
                 Path.Combine(workingDirectory, startUpConfigurationFile), startUpDataDirectory,
                 new DbConnectionInfo(connectionStringName)
                 );
+        }
+
+        private static string GetWorkingDirectory()
+        {
+            return Path.IsPathRooted(_startUpDirectory)
+                ? _startUpDirectory
+                : Path.Combine(Environment.CurrentDirectory, _startUpDirectory);
         }
     }
 }

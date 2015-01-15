@@ -27,6 +27,7 @@ namespace Spikes.Migrations.BaseData
 
         public DbSet<UserRole> UserRoles { get; set; }
 
+        public DbSet<FakeEntity> FakeEntities { get; set; }
         public DbSet<Lookup> Lookups { get; set; }
         public DbSet<LookupItem> LookupItems { get; set; }
 

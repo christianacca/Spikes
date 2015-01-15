@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Common;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations.Design;
 using System.IO;
@@ -67,9 +70,9 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
         public void CanMigrateDbFromMultipleConfigurations()
         {
             var bdf = CreateToolingFacadeForBaseData();
-            var bdm = new DelegatedMigrator(bdf.GetPendingMigrations, migration => bdf.Update(migration, true));
+            var bdm = new DelegatedMigrator(bdf.GetPendingMigrations, bdf.GetDatabaseMigrations, migration => bdf.Update(migration, true), CreateDbConnection());
             var mdf = CreateToolingFacadeForMainData();
-            var mdm = new DelegatedMigrator(mdf.GetPendingMigrations, migration => mdf.Update(migration, true))
+            var mdm = new DelegatedMigrator(mdf.GetPendingMigrations, mdf.GetDatabaseMigrations, migration => mdf.Update(migration, true), CreateDbConnection())
             {
                 IsAutoMigrationsEnabled = true
             };
@@ -78,6 +81,18 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
                 SkippedMigrations = new[] { "201501032326177_Rename LookupItem pk" }
             };
             migrationRunner.Run();
+        }
+
+        private DbConnection CreateDbConnection()
+        {
+            ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings["SpikesMigrationsDb"];
+            DbProviderFactory factory =
+                DbProviderFactories.GetFactory(connectionString.ProviderName);
+            //create a command of the proper type.
+            DbConnection conn = factory.CreateConnection();
+            //set the connection string
+            conn.ConnectionString = connectionString.ConnectionString;
+            return conn;
         }
 
 

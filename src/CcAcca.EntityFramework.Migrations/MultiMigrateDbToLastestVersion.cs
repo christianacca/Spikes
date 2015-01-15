@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
@@ -14,6 +16,7 @@ namespace CcAcca.EntityFramework.Migrations
     /// </summary>
     public class MultiMigrateDbToLastestVersion : IDatabaseInitializer<DbContext>
     {
+        private readonly string _connectionStringName;
         private readonly IEnumerable<DbMigrationsConfiguration> _configurations;
 
         /// <remarks>
@@ -24,21 +27,16 @@ namespace CcAcca.EntityFramework.Migrations
         ///     Defines the migrations to run. The order of <paramref name="configurations" />
         ///     should be least dependent model first
         /// </param>
-        public MultiMigrateDbToLastestVersion(IEnumerable<DbMigrationsConfiguration> configurations)
+        /// <param name="connectionStringName">
+        ///     The name of a connection string that specifies the target database to migrate
+        /// </param>
+        public MultiMigrateDbToLastestVersion(IEnumerable<DbMigrationsConfiguration> configurations,
+            string connectionStringName)
         {
+            _connectionStringName = connectionStringName;
             _configurations = configurations ?? Enumerable.Empty<DbMigrationsConfiguration>();
             Logger = NullMigrationsLogger.Instance;
         }
-
-        /// <summary>
-        ///     Used to override the connection to the database to be migrated.
-        /// </summary>
-        /// <remarks>
-        ///     If not supplied the connection information will be taken from a context,
-        ///     as determined by the <see cref="DbConfiguration" />, constructed using the context's default constructor
-        ///     or registered factory if applicable.
-        /// </remarks>
-        public string ConnectionStringName { get; set; }
 
         /// <summary>
         ///     Names of migrations that should be skipped
@@ -75,6 +73,7 @@ namespace CcAcca.EntityFramework.Migrations
 
         public virtual void InitializeDatabase(DbContext context)
         {
+            //todo: assert that the database and server are same for _connectionStringName and context
             bool migrationsRun = UpgradeDb();
             AdditionalSeed(context, migrationsRun);
             context.SaveChanges();
@@ -82,26 +81,36 @@ namespace CcAcca.EntityFramework.Migrations
 
         private bool UpgradeDb()
         {
-            List<DelegatedMigrator> migrators = _configurations.Select(CreateMigrator).ToList();
-            using (var runner = new MultiMigrateDbToLastestVsRunner(migrators)
+            using (DbConnection cnn = CreateDbConnection())
             {
-                SkippedMigrations = SkippedMigrations,
-                Logger = Logger,
-                SkipSeedWithNoPendingMigrations = SkipSeedWithNoPendingMigrations
-            })
-            {
-                return runner.Run();
+                List<DelegatedMigrator> migrators
+                    = _configurations.Select((c, migratorPriority) => CreateMigrator(c, migratorPriority, cnn)).ToList();
+                using (var runner = new MultiMigrateDbToLastestVsRunner(migrators)
+                {
+                    SkippedMigrations = SkippedMigrations,
+                    Logger = Logger,
+                    SkipSeedWithNoPendingMigrations = SkipSeedWithNoPendingMigrations
+                })
+                {
+                    return runner.Run();
+                }
             }
         }
 
-        private DelegatedMigrator CreateMigrator(DbMigrationsConfiguration c, int migratorPriority)
+        private DbConnection CreateDbConnection()
         {
-            if (!String.IsNullOrEmpty(ConnectionStringName))
-            {
-                c.TargetDatabase = new DbConnectionInfo(ConnectionStringName);
-            }
+            ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[_connectionStringName];
+            DbProviderFactory factory = DbProviderFactories.GetFactory(connectionString.ProviderName);
+            DbConnection conn = factory.CreateConnection();
+            conn.ConnectionString = connectionString.ConnectionString;
+            return conn;
+        }
+
+        private DelegatedMigrator CreateMigrator(DbMigrationsConfiguration c, int migratorPriority, DbConnection cnn)
+        {
+            c.TargetDatabase = new DbConnectionInfo(_connectionStringName);
             var impl = new DbMigrator(c);
-            return new DelegatedMigrator(impl.GetPendingMigrations, impl.Update)
+            return new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update, cnn)
             {
                 IsAutoMigrationsEnabled = c.AutomaticMigrationsEnabled,
                 ConfigurationTypeName = c.GetType().FullName, 

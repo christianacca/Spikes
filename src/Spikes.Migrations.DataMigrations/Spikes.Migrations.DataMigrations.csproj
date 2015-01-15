@@ -71,6 +71,10 @@
     <Compile Include="Migrations\201501110901388_Add CustomUserRole.Designer.cs">
       <DependentUpon>201501110901388_Add CustomUserRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501142243256_Merge BaseModel4.cs" />
+    <Compile Include="Migrations\201501142243256_Merge BaseModel4.Designer.cs">
+      <DependentUpon>201501142243256_Merge BaseModel4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMigrationsDb.cs" />
@@ -110,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501110901388_Add CustomUserRole.resx">
       <DependentUpon>201501110901388_Add CustomUserRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501142243256_Merge BaseModel4.resx">
+      <DependentUpon>201501142243256_Merge BaseModel4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

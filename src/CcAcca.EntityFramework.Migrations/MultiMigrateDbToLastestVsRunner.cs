@@ -12,19 +12,24 @@ namespace CcAcca.EntityFramework.Migrations
     public class MultiMigrateDbToLastestVsRunner : IDisposable
     {
         private readonly IEnumerable<DelegatedMigrator> _migrators;
+        private Dictionary<DelegatedMigrator, IEnumerable<MigrationInfo>> _allMigrations;
 
         public MultiMigrateDbToLastestVsRunner(IEnumerable<DelegatedMigrator> migrators)
         {
             _migrators = migrators;
+            _allMigrations = new Dictionary<DelegatedMigrator, IEnumerable<MigrationInfo>>();
             Logger = NullMigrationsLogger.Instance;
         }
 
         public IEnumerable<string> SkippedMigrations { get; set; }
+        /// <summary>
+        /// TODO: currently not in use - either remove or support
+        /// </summary>
         public bool SkipSeedWithNoPendingMigrations { get; set; }
         public MigrationsLogger Logger { get; set; }
 
 
-        private IEnumerable<MigrationInfo> GetMigrations(DelegatedMigrator migrator)
+        private IEnumerable<MigrationInfo> GetPendingMigrations(DelegatedMigrator migrator)
         {
             var parser = MigrationInfo.CreateParser(SkippedMigrations);
             List<MigrationInfo> migrations = migrator.GetPendingMigrations().Select(s => parser.Parse(s)).ToList();
@@ -38,41 +43,59 @@ namespace CcAcca.EntityFramework.Migrations
             }
         }
 
+        private IEnumerable<MigrationInfo> GetAllMigrations(DelegatedMigrator migrator)
+        {
+            var parser = MigrationInfo.CreateParser(null);
+            List<MigrationInfo> applied = migrator.GetDatabaseMigrations().Select(s => parser.Parse(s)).ToList();
+            var all = applied.Union(GetPendingMigrations(migrator))
+                .OrderBy(m => m.CreatedOn)
+                .ThenBy(m => migrator.Priority)
+                .ToList();
+            return all;
+        }
+
         public bool Run()
         {
+            // note: currently the seed method for each DbMigrationsConfiguration is being run multiple times
+            // todo: work out some way to tell DbMigrationsConfiguration.Seed that it should only run once
+
             var migrations = (
                 from migrator in _migrators
-                from migration in GetMigrations(migrator).DefaultIfEmpty(MigrationInfo.Null)
-                select new
-                {
-                    migrator,
-                    migration,
-                    willRun = (!SkipSeedWithNoPendingMigrations || !migration.IsNull) && !migration.IsSkipped
-                }).ToList();
-
-            const string logMsg = "'{0}' has no pending migrations... skipping the Seed method";
-            List<string> skippedConfigs =
-                migrations.Where(m => !m.willRun).Select(m => m.migrator.ConfigurationTypeName ?? "AnonymousConfig").ToList();
-            skippedConfigs.ForEach(c => Logger.Verbose(string.Format(logMsg, c)));
+                from migration in GetPendingMigrations(migrator)
+                select new { migrator, migration }
+                ).ToList();
 
             var orderedMigrations = migrations
-                .Where(m => m.willRun)
                 .OrderBy(m => m.migration.CreatedOn).ThenBy(m => m.migrator.Priority)
                 .ToList();
 
             var batchedMigrations = orderedMigrations
-                .SliceWhen((prev, current) => prev != null && prev.migrator != current.migrator)
+                .SliceWhen((prev, current) => prev != null && prev.migrator != current.migrator || current.migration.IsSkipped)
                 .ToList();
+
+            if (migrations.Any(m => m.migration.IsSkipped))
+            {
+                _allMigrations = _migrators.ToDictionary(m => m, GetAllMigrations);
+            }
 
             batchedMigrations.ForEach(batch =>
             {
                 batch = batch.ToList();
                 DelegatedMigrator migator = batch.First().migrator;
                 MigrationInfo lastMigration = batch.Last().migration;
-                migator.Update(lastMigration.FullName);
+                if (lastMigration.IsSkipped)
+                {
+                    var previousMigration =
+                        _allMigrations[migator].TakeWhile(m => m.CreatedOn < lastMigration.CreatedOn).LastOrDefault();
+                    migator.InsertMigrationHistory(lastMigration.FullName, previousMigration != null ? previousMigration.FullName : null);
+                }
+                else
+                {
+                    migator.Update(lastMigration.FullName);
+                }
             });
 
-            bool migrationsRun = migrations.Any(m => m.willRun);
+            bool migrationsRun = migrations.Any(m => !m.migration.IsSkipped);
             return migrationsRun;
         }
 
