@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
-using CcAcca.EntityFramework.Migrations;
 using NUnit.Framework;
 using Spikes.Migrations.Data;
-using Spikes.Migrations.DataMigrations.Migrations;
+using Spikes.Migrations.DataMigrations.AutoMigrations;
 
 namespace Spikes.Migrations.Tests.MultiMigrateTests
 {
     [TestFixture]
-    public class Spike
+    public class CreateDbTests
     {
         private readonly List<IDisposable> _trash = new List<IDisposable>();
 
@@ -20,13 +19,12 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         {
             Database.SetInitializer(new NullDatabaseInitializer<SpikesMigrationsDb>());
 
-            using (var db = new SpikesMigrationsDb("SpikesMigrationsDb"))
+            using (var db = new SpikesMigrationsDb())
             {
                 if (db.Database.Exists())
                 {
                     db.Database.Delete();
                 }
-                db.Database.Initialize(false);
             }
         }
 
@@ -38,7 +36,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
 
         private SpikesMigrationsDb CreateDbContext()
         {
-            var context = new SpikesMigrationsDb("SpikesMigrationsDb");
+            var context = new SpikesMigrationsDb();
             _trash.Add(context);
             return context;
         }
@@ -60,7 +58,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
             initializer.InitializeDatabase(db);
 
             // when, then
-            var migrator = new DbMigrator(new Configuration());
+            var migrator = new DbMigrator(new AutoConfiguration());
             IEnumerable<string> migrations = migrator.GetDatabaseMigrations();
             Assert.That(migrations, Is.Not.Empty);
         }
@@ -68,9 +66,20 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         [Test]
         public void CanScriptMigration()
         {
-            var migrator = new MigratorScriptingDecorator(new DbMigrator(new Configuration()));
+            var migrator = new MigratorScriptingDecorator(new DbMigrator(new AutoConfiguration()));
             string sql = migrator.ScriptUpdate("201501032325042_Merge BaseModel3", "201501110901388_Add CustomUserRole");
             Console.Out.WriteLine(sql);
+        }
+
+
+        [Test]
+        public void ScriptingMigrationDoesNotClearPendingMigrations()
+        {
+            var impl = new DbMigrator(new AutoConfiguration());
+            var migrator = new MigratorScriptingDecorator(impl);
+            string sql = migrator.ScriptUpdate(null, null);
+            Assert.That(sql, Is.Not.Empty);
+            Assert.That(impl.GetPendingMigrations(), Is.Not.Empty);
         }
     }
 }

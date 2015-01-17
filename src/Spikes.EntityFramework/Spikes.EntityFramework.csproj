@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesDatabaseInitializer.cs" />
     <Compile Include="SpikesDbContext.cs" />
+    <Compile Include="Tests\DbIntegrationTestBase.cs" />
     <Compile Include="Tests\DbSetup.cs" />
     <Compile Include="Tests\BidirectionalTests.cs" />
   </ItemGroup>

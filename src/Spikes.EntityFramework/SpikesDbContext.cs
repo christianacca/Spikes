@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
+using System.Data.Entity;
 using Spikes.EntityFramework.Models.Bidirectional.Conventional;
 using Spikes.EntityFramework.Models.Bidirectional.NonStandard;
 
@@ -6,6 +7,18 @@ namespace Spikes.EntityFramework
 {
     public class SpikesDbContext : DbContext
     {
+        public SpikesDbContext()
+        {
+        }
+
+        public SpikesDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
+        public SpikesDbContext(DbConnection existingConnection, bool contextOwnsConnection) : base(existingConnection, contextOwnsConnection)
+        {
+        }
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderNonStd> OrdersNonStd { get; set; }
 

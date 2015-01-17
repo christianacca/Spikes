@@ -7,6 +7,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 namespace CcAcca.EntityFramework.Migrations
 {
@@ -110,7 +111,8 @@ namespace CcAcca.EntityFramework.Migrations
         {
             c.TargetDatabase = new DbConnectionInfo(_connectionStringName);
             var impl = new DbMigrator(c);
-            return new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update, cnn)
+//            var scriptingImpl = new MigratorScriptingDecorator(impl);
+            return new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update, (s, s1) => null, cnn)
             {
                 IsAutoMigrationsEnabled = c.AutomaticMigrationsEnabled,
                 ConfigurationTypeName = c.GetType().FullName, 

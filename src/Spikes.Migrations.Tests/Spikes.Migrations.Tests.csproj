@@ -54,12 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MultiMigrateCliTests\Spike.cs" />
-    <Compile Include="MultiMigrateTests\DbInit.cs" />
-    <Compile Include="MultiMigrateTests\FakeEntityTests.cs" />
-    <Compile Include="MultiMigrateTests\InheritanceTests.cs" />
-    <Compile Include="MultiMigrateTests\Spike.cs" />
+    <Compile Include="MultiMigrateTests\PostDbCreateTests.cs" />
+    <Compile Include="MultiMigrateTests\CreateDbTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpikesMultiMigrateDbToLastestVersion.cs" />
+    <Compile Include="TestTemplates\ExampleDbSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

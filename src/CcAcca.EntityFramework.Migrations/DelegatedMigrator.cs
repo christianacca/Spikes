@@ -14,18 +14,16 @@ namespace CcAcca.EntityFramework.Migrations
         private readonly Func<IEnumerable<string>> _getPendingMigrationsImpl;
         private readonly Func<IEnumerable<string>> _getGetDatabaseMigrationsImpl;
         private readonly Action<string> _updateImpl;
+        private readonly Func<string, string, string> _scriptUpdateImpl;
         private readonly DbConnection _connection;
         private readonly Action _disposeImpl;
 
-        public DelegatedMigrator(Func<IEnumerable<string>> getPendingMigrationsImpl,
-            Func<IEnumerable<string>> getGetDatabaseMigrationsImpl,
-            Action<string> updateImpl,
-            DbConnection connection,
-            Action dispose = null)
+        public DelegatedMigrator(Func<IEnumerable<string>> getPendingMigrationsImpl, Func<IEnumerable<string>> getGetDatabaseMigrationsImpl, Action<string> updateImpl, Func<string, string, string> scriptUpdateImpl, DbConnection connection, Action dispose = null)
         {
             _getPendingMigrationsImpl = getPendingMigrationsImpl;
             _getGetDatabaseMigrationsImpl = getGetDatabaseMigrationsImpl;
             _updateImpl = updateImpl;
+            _scriptUpdateImpl = scriptUpdateImpl;
             _connection = connection;
             _disposeImpl = dispose ?? (() =>
             {

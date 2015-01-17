@@ -70,9 +70,9 @@ namespace Spikes.Migrations.Tests.MultiMigrateCliTests
         public void CanMigrateDbFromMultipleConfigurations()
         {
             var bdf = CreateToolingFacadeForBaseData();
-            var bdm = new DelegatedMigrator(bdf.GetPendingMigrations, bdf.GetDatabaseMigrations, migration => bdf.Update(migration, true), CreateDbConnection());
+            var bdm = new DelegatedMigrator(bdf.GetPendingMigrations, bdf.GetDatabaseMigrations, migration => bdf.Update(migration, true), (s, t) => bdf.ScriptUpdate(s, t, true), CreateDbConnection());
             var mdf = CreateToolingFacadeForMainData();
-            var mdm = new DelegatedMigrator(mdf.GetPendingMigrations, mdf.GetDatabaseMigrations, migration => mdf.Update(migration, true), CreateDbConnection())
+            var mdm = new DelegatedMigrator(mdf.GetPendingMigrations, mdf.GetDatabaseMigrations, migration => mdf.Update(migration, true), (s, t) => mdf.ScriptUpdate(s, t, true), CreateDbConnection())
             {
                 IsAutoMigrationsEnabled = true
             };

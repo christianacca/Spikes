@@ -1,4 +1,4 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
 using System.Linq;
 using NUnit.Framework;
 using Spikes.EntityFramework.Models.Bidirectional.Conventional;
@@ -6,55 +6,47 @@ using Spikes.EntityFramework.Models.Bidirectional.Conventional;
 namespace Spikes.EntityFramework.Tests
 {
     [TestFixture]
-    public class BidirectionalTests
+    public class BidirectionalTests : DbIntegrationTestBase<SpikesDbContext>
     {
-        private SpikesDbContext _db;
-        private DbContextTransaction _transaction;
-
-        [SetUp]
-        public void Setup()
+        protected override DbConnection CreateConnection()
         {
-            _db = new SpikesDbContext();
-            _transaction = _db.Database.BeginTransaction();
+            return new SpikesDbContext().Database.Connection;
         }
 
-        [TearDown]
-        public void Teardown()
+        protected override SpikesDbContext CreateDbContextFromConnection(DbConnection cnn)
         {
-            _transaction.Rollback();
-            _transaction.Dispose();
-            _db.Dispose();
+            return new SpikesDbContext(cnn, contextOwnsConnection: false);
         }
 
-        [Test]
-        public void CanInstantiate()
-        {
-            // see setup
-        }
-
-        
-        
         [Test]
         public void CanClearLocalCache()
         {
-            _db.Orders.Add(new Order());
-            Assert.That(_db.Orders.Local.Count(), Is.EqualTo(1), "checking assumptions");
+            using (var db = CreateDbContext())
+            {
+                db.Orders.Add(new Order());
+                Assert.That(db.Orders.Local.Count(), Is.EqualTo(1), "checking assumptions");
 
-            _db.Orders.Local.Clear();
-            Assert.That(_db.Orders.Local.Count(), Is.EqualTo(0));
+                db.Orders.Local.Clear();
+                Assert.That(db.Orders.Local.Count(), Is.EqualTo(0));
+            }
         }
 
         [Test]
-        public void QueriesWillNotReturnAttachedButNotPersistedEntities()
+        public void QueriesWillNotReturnAttachedButNotYetPersistedEntities()
         {
-            _db.Orders.Add(new Order());
-            Assert.That(_db.Orders.ToList(), Is.Empty);
+            using (var db = CreateDbContext())
+            {
+                db.Orders.Add(new Order());
+                Assert.That(db.Orders.ToList(), Is.Empty);
+            }
         }
 
         [Test]
-        public void CanAddFetchAndDelete()
+        public void CanAddAndFetch()
         {
-            _db.Orders.Add(new Order
+            using (var db = CreateDbContext())
+            {
+                db.Orders.Add(new Order
                 {
                     Lines =
                         {
@@ -62,27 +54,13 @@ namespace Spikes.EntityFramework.Tests
                             new OrderLine { Units = 10 },
                         }
                 });
-            _db.SaveChanges();
-            _db.Orders.Local.Clear();
+                db.SaveChanges();
+            }
 
-            
-            Assert.That(_db.Orders.Count(), Is.EqualTo(1));
+            using (var db = CreateDbContext())
+            {
+                Assert.That(db.Orders.Count(), Is.EqualTo(1));
+            }
         }
-
-        
-/*
-        [Test]
-        public void CanAddAndFetchOrderWithLines()
-        {
-            _db.Orders.Add(new Order
-                {
-                    OrderLines = 
-                });
-            _db.SaveChanges();
-            Assert.That(_db.Orders.Count(), Is.EqualTo(1));
-        }
-*/
-
-        
     }
 }

@@ -1,10 +1,11 @@
-﻿using System.Data.Entity;
+using System.Data.Entity;
 using NUnit.Framework;
+using Spikes.Migrations.Data;
 
-namespace Spikes.EntityFramework.Tests
+namespace Spikes.Migrations.Tests.TestTemplates
 {
     [SetUpFixture]
-    public class DbSetup
+    public class ExampleDbSetup
     {
         /// <summary>
         /// Drop and create the database just before the tests in this test suite execute
@@ -20,9 +21,14 @@ namespace Spikes.EntityFramework.Tests
         [SetUp]
         public void Setup()
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<SpikesDbContext>());
-            using (var db = new SpikesDbContext())
+            Database.SetInitializer<SpikesMigrationsDb>(new SpikesMultiMigrateDbToLastestVersion());
+
+            using (var db = new SpikesMigrationsDb())
             {
+                if (db.Database.Exists())
+                {
+                    db.Database.Delete();
+                }
                 db.Database.Initialize(false);
             }
         }
