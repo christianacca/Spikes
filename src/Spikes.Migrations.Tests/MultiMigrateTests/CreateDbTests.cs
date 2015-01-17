@@ -70,16 +70,5 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
             string sql = migrator.ScriptUpdate("201501032325042_Merge BaseModel3", "201501110901388_Add CustomUserRole");
             Console.Out.WriteLine(sql);
         }
-
-
-        [Test]
-        public void ScriptingMigrationDoesNotClearPendingMigrations()
-        {
-            var impl = new DbMigrator(new AutoConfiguration());
-            var migrator = new MigratorScriptingDecorator(impl);
-            string sql = migrator.ScriptUpdate(null, null);
-            Assert.That(sql, Is.Not.Empty);
-            Assert.That(impl.GetPendingMigrations(), Is.Not.Empty);
-        }
     }
 }

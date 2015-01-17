@@ -87,7 +87,7 @@ namespace CcAcca.EntityFramework.Migrations
                 {
                     var previousMigration =
                         _allMigrations[migator].TakeWhile(m => m.CreatedOn < lastMigration.CreatedOn).LastOrDefault();
-                    migator.InsertMigrationHistory(lastMigration.FullName, previousMigration != null ? previousMigration.FullName : null);
+                    migator.InsertMigrationHistory(previousMigration != null ? previousMigration.FullName : null, lastMigration.FullName);
                 }
                 else
                 {

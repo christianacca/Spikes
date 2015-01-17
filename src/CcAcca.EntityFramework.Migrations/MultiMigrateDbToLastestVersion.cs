@@ -111,8 +111,8 @@ namespace CcAcca.EntityFramework.Migrations
         {
             c.TargetDatabase = new DbConnectionInfo(_connectionStringName);
             var impl = new DbMigrator(c);
-//            var scriptingImpl = new MigratorScriptingDecorator(impl);
-            return new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update, (s, s1) => null, cnn)
+            var scriptingImpl = new MigratorScriptingDecorator(new DbMigrator(c));
+            return new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update, scriptingImpl.ScriptUpdate, cnn)
             {
                 IsAutoMigrationsEnabled = c.AutomaticMigrationsEnabled,
                 ConfigurationTypeName = c.GetType().FullName, 

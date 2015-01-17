@@ -13,7 +13,7 @@ namespace Spikes.Migrations.DataMigrations.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201501032325042_Merge BaseModel3"; }
+            get { return "201501032328042_Merge BaseModel3"; }
         }
         
         string IMigrationMetadata.Source
