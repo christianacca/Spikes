@@ -32,7 +32,7 @@ namespace CcAcca.EntityFramework.Migrations
         private IEnumerable<MigrationInfo> GetPendingMigrations(DelegatedMigrator migrator)
         {
             var parser = MigrationInfo.CreateParser(SkippedMigrations);
-            List<MigrationInfo> migrations = migrator.GetPendingMigrations().Select(s => parser.Parse(s)).ToList();
+            List<MigrationInfo> migrations = migrator.GetPendingMigrations().Select(parser.Parse).ToList();
             if (migrator.IsAutoMigrationsEnabled)
             {
                 return migrations.Union(new[] {MigrationInfo.Auto});
@@ -46,7 +46,7 @@ namespace CcAcca.EntityFramework.Migrations
         private IEnumerable<MigrationInfo> GetAllMigrations(DelegatedMigrator migrator)
         {
             var parser = MigrationInfo.CreateParser(null);
-            List<MigrationInfo> applied = migrator.GetDatabaseMigrations().Select(s => parser.Parse(s)).ToList();
+            List<MigrationInfo> applied = migrator.GetDatabaseMigrations().Select(parser.Parse).ToList();
             var all = applied.Union(GetPendingMigrations(migrator))
                 .OrderBy(m => m.CreatedOn)
                 .ThenBy(m => migrator.Priority)
