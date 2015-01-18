@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Migrations.Infrastructure;
 using NUnit.Framework;
+using Spikes.Migrations.BaseDataMigrations.Migrations;
 using Spikes.Migrations.Data;
 using Spikes.Migrations.DataMigrations.AutoMigrations;
 
@@ -68,6 +69,16 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         {
             var migrator = new MigratorScriptingDecorator(new DbMigrator(new AutoConfiguration()));
             string sql = migrator.ScriptUpdate("201501032325042_Merge BaseModel3", "201501110901388_Add CustomUserRole");
+            Console.Out.WriteLine(sql);
+        }
+
+        [Test]
+        public void CanScriptMigrationFromBaseData()
+        {
+            // note: notice that there is a bug in the ef that causes schema name for insert into MigrationsHistory table to be incorrect
+            // (bug reported here: https://entityframework.codeplex.com/workitem/1871)
+            var migrator = new MigratorScriptingDecorator(new DbMigrator(new Configuration()));
+            string sql = migrator.ScriptUpdate("201501032315036_Introduce by-directional association", "201501032326177_Rename LookupItem pk");
             Console.Out.WriteLine(sql);
         }
     }

@@ -41,7 +41,7 @@ namespace Spikes.Migrations.Data
             var userRoleType = typeof(UserRole);
             modelBuilder.Types()
                 .Where(t => t.Assembly == mainModelAssembly)
-                .Where(t => userRoleType.IsAssignableFrom(t))
+                .Where(userRoleType.IsAssignableFrom)
                 .Configure(c => c.ToTable(new EnglishPluralizationService().Pluralize(userRoleType.Name), BaseSchemaName));
         }
     }
