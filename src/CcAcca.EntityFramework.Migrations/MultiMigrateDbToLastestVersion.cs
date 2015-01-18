@@ -73,10 +73,34 @@ namespace CcAcca.EntityFramework.Migrations
 
         public virtual void InitializeDatabase(DbContext context)
         {
-            //todo: assert that the database and server are same for _connectionStringName and context
+            AssertDbContextConnection(context.Database.Connection);
             bool migrationsRun = UpgradeDb();
             AdditionalSeed(context, migrationsRun);
             context.SaveChanges();
+        }
+
+        private void AssertDbContextConnection(DbConnection ctxCnn)
+        {
+            using (DbConnection migrationsCnn = CreateDbConnection())
+            {
+                const string msgSummary =
+                    "The database connection for the DbContext that triggered database initialization is not equivalent to the connection supplied for running migrations";
+                if (!String.Equals(ctxCnn.DataSource, migrationsCnn.DataSource,
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    const string msgDetail = "Server names are different. DbContext uses: '{0}'; Migrations uses: {1}";
+                    string msg = msgSummary + Environment.NewLine +
+                                 string.Format(msgDetail, ctxCnn.DataSource, migrationsCnn.DataSource);
+                    throw new InvalidOperationException(msg);
+                }
+                if (!String.Equals(ctxCnn.Database, migrationsCnn.Database, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    const string msgDetail = "Database names are different. DbContext uses: '{0}'; Migrations uses: {1}";
+                    string msg = msgSummary + Environment.NewLine +
+                                 string.Format(msgDetail, ctxCnn.Database, migrationsCnn.Database);
+                    throw new InvalidOperationException(msg);
+                }
+            }
         }
 
         private bool UpgradeDb()
