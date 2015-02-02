@@ -85,6 +85,11 @@ namespace CcAcca.EntityFramework.Migrations
                 MigrationInfo lastMigration = batch.Last().migration;
                 if (lastMigration.IsSkipped)
                 {
+                    // Q: Why do we need to insert a skipped migration into the migration history table?
+                    // A: the standard behaviour when calling migator.Update(lastMigration.FullName) is to execute
+                    //    ALL migrations after the last inserted migration in the db and the migration identified
+                    //    by lastMigration.FullName
+                    //    This will result in running migration that was skipped in the previous batch
                     var previousMigration =
                         _allMigrations[migator].TakeWhile(m => m.CreatedOn < lastMigration.CreatedOn).LastOrDefault();
                     migator.InsertMigrationHistory(previousMigration != null ? previousMigration.FullName : null, lastMigration.FullName);
