@@ -43,10 +43,18 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         }
 
         [Test]
-        public void CanUpgradeToLatestVs()
+        public void CanUpgradeToLatestVs_CodeBasedMigrations()
         {
             SpikesMigrationsDb db = CreateDbContext();
-            var initializer = new SpikesMultiMigrateDbToLastestVersion();
+            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingCodeBasedMigrations;
+            initializer.InitializeDatabase(db);
+        }
+
+        [Test]
+        public void CanUpgradeToLatestVs_AutodMigrations()
+        {
+            SpikesMigrationsDb db = CreateDbContext();
+            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations;
             initializer.InitializeDatabase(db);
         }
 
@@ -55,7 +63,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         {
             // given
             SpikesMigrationsDb db = CreateDbContext();
-            var initializer = new SpikesMultiMigrateDbToLastestVersion();
+            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations;
             initializer.InitializeDatabase(db);
 
             // when, then

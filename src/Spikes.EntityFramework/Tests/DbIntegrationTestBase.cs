@@ -31,7 +31,7 @@ namespace Spikes.EntityFramework.Tests
 
         /// <summary>
         /// Implementors of subclass to create the connection that will be supplied
-        /// <see cref="CreateDbContextFromConnection"/>
+        /// to <see cref="CreateDbContextFromConnection"/>
         /// </summary>
         /// <example>
         /// <code>
@@ -44,9 +44,14 @@ namespace Spikes.EntityFramework.Tests
         protected abstract DbConnection CreateConnection();
 
         /// <summary>
-        /// Implementors of subclass to create the <see cref="DbContext"/> from an
-        /// existing connection
+        /// Implementors of subclass to create a <see cref="DbContext"/> from an
+        /// existing <see cref="DbConnection"/>
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <see cref="CreateConnection"/> will be used to supply the <see cref="DbConnection"/>
+        /// </para>
+        /// </remarks>
         /// <example>
         /// <code>
         /// protected override YourDbContext CreateDbContextFromConnection(DbConnection cnn)
@@ -62,8 +67,13 @@ namespace Spikes.EntityFramework.Tests
         /// that will rolled back at the end of the each test
         /// </summary>
         /// <remarks>
-        /// Every <see cref="DbContext"/> created will share the same connection
-        /// and therefore transaction
+        /// <para>
+        /// Every <see cref="DbContext"/> created within each test case method
+        /// will share the same connection and therefore transaction.
+        /// </para>
+        /// <para>
+        /// The connection that's used is the one returned by <see cref="CreateConnection"/>
+        /// </para>
         /// </remarks>
         protected T CreateDbContext()
         {

@@ -22,7 +22,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
                 {
                     db.Database.Delete();
                 }
-                var initializer = new SpikesMultiMigrateDbToLastestVersion();
+                var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations;
                 initializer.InitializeDatabase(db);
             }
         }
