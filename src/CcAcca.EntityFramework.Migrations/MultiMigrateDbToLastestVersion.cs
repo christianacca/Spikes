@@ -109,6 +109,10 @@ namespace CcAcca.EntityFramework.Migrations
             ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[_connectionStringName];
             DbProviderFactory factory = DbProviderFactories.GetFactory(connectionString.ProviderName);
             DbConnection conn = factory.CreateConnection();
+            if (conn == null)
+            {
+                throw new InvalidOperationException("DbProviderFactory failed to create connection");
+            }
             conn.ConnectionString = connectionString.ConnectionString;
             return conn;
         }
