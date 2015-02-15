@@ -22,10 +22,7 @@ namespace CcAcca.EntityFramework.Migrations
         }
 
         public IEnumerable<string> SkippedMigrations { get; set; }
-        /// <summary>
-        /// TODO: currently not in use - either remove or support
-        /// </summary>
-        public bool SkipSeedWithNoPendingMigrations { get; set; }
+
         public MigrationsLogger Logger { get; set; }
 
 

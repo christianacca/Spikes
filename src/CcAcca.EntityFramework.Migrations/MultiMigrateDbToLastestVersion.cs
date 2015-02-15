@@ -48,22 +48,6 @@ namespace CcAcca.EntityFramework.Migrations
         public IEnumerable<string> SkippedMigrations { get; set; }
 
         /// <summary>
-        ///     When <c>true</c>, the <see cref="DbMigrationsConfiguration{T}.Seed" /> method will be skipped for those
-        ///     configurations that do not have any pending migrations to run against the database.
-        /// </summary>
-        /// <remarks>
-        ///     <para>
-        ///         The default value is <c>false</c>; ie the <see cref="DbMigrationsConfiguration{T}.Seed" /> method
-        ///         will be run even if there were no pending migrations detected for that configuration.
-        ///     </para>
-        ///     <para>
-        ///         The default behaviour of not skipping migrations is consistent with
-        ///         <see cref="MigrateDatabaseToLatestVersion{TContext,TMigrationsConfiguration}" />
-        ///     </para>
-        /// </remarks>
-        public bool SkipSeedWithNoPendingMigrations { get; set; }
-
-        /// <summary>
         ///     Assign the logger that should output generated log messages
         /// </summary>
         /// <remarks>
@@ -112,8 +96,7 @@ namespace CcAcca.EntityFramework.Migrations
                 using (var runner = new MultiMigrateDbToLastestVsRunner(migrators)
                 {
                     SkippedMigrations = SkippedMigrations,
-                    Logger = Logger,
-                    SkipSeedWithNoPendingMigrations = SkipSeedWithNoPendingMigrations
+                    Logger = Logger
                 })
                 {
                     return runner.Run();
