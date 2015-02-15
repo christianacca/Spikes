@@ -35,9 +35,9 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
             _trash.ForEach(d => d.Dispose());
         }
 
-        private SpikesMigrationsDb CreateDbContext()
+        private SpikesMigrationsDb CreateDbContext(string connectionStringName = null)
         {
-            var context = new SpikesMigrationsDb();
+            var context = new SpikesMigrationsDb(connectionStringName);
             _trash.Add(context);
             return context;
         }
@@ -46,7 +46,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         public void CanUpgradeToLatestVs_CodeBasedMigrations()
         {
             SpikesMigrationsDb db = CreateDbContext();
-            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingCodeBasedMigrations;
+            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingCodeBasedMigrations();
             initializer.InitializeDatabase(db);
         }
 
@@ -54,7 +54,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         public void CanUpgradeToLatestVs_AutodMigrations()
         {
             SpikesMigrationsDb db = CreateDbContext();
-            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations;
+            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations();
             initializer.InitializeDatabase(db);
         }
 
@@ -63,7 +63,7 @@ namespace Spikes.Migrations.Tests.MultiMigrateTests
         {
             // given
             SpikesMigrationsDb db = CreateDbContext();
-            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations;
+            var initializer = SpikesMultiMigrateDbToLastestVersion.UsingAutoMigrations();
             initializer.InitializeDatabase(db);
 
             // when, then

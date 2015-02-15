@@ -13,7 +13,8 @@ namespace Spikes.Migrations.Data
         {
         }
 
-        public SpikesMigrationsDb(string nameOrConnectionString) : base(nameOrConnectionString)
+        public SpikesMigrationsDb(string nameOrConnectionString)
+            : base(nameOrConnectionString ?? "SpikesMigrationsDb")
         {
         }
 

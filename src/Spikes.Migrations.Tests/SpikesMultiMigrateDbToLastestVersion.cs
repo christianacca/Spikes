@@ -9,37 +9,26 @@ namespace Spikes.Migrations.Tests
 {
     public class SpikesMultiMigrateDbToLastestVersion : MultiMigrateDbToLastestVersion
     {
-
-        public SpikesMultiMigrateDbToLastestVersion()
-            : this(new DbMigrationsConfiguration[]
+        public SpikesMultiMigrateDbToLastestVersion(IEnumerable<DbMigrationsConfiguration> configurations = null, string connectionStringName = null)
+            : base(configurations ?? new DbMigrationsConfiguration[]
             {
                 new BaseConfiguration(),
                 new MainNonAutoConfiguration()
-            })
-        {
-        }
-
-        public SpikesMultiMigrateDbToLastestVersion(IEnumerable<DbMigrationsConfiguration> configurations)
-            : base(configurations, "SpikesMigrationsDb")
+            }, connectionStringName ?? "SpikesMigrationsDb")
         {
             SkippedMigrations = new[] { "201501032326177_Rename LookupItem pk" };
         }
 
-        public static SpikesMultiMigrateDbToLastestVersion UsingCodeBasedMigrations
+        public static SpikesMultiMigrateDbToLastestVersion UsingCodeBasedMigrations(string connectionStringName = null)
         {
-            get
-            {
-                var configs = new DbMigrationsConfiguration[] { new BaseConfiguration(), new MainNonAutoConfiguration() };
-                return new SpikesMultiMigrateDbToLastestVersion(configs);
-            }
+            var configs = new DbMigrationsConfiguration[] {new BaseConfiguration(), new MainNonAutoConfiguration()};
+            return new SpikesMultiMigrateDbToLastestVersion(configs, connectionStringName);
         }
-        public static SpikesMultiMigrateDbToLastestVersion UsingAutoMigrations
+
+        public static SpikesMultiMigrateDbToLastestVersion UsingAutoMigrations(string connectionStringName = null)
         {
-            get
-            {
-                var configs = new DbMigrationsConfiguration[] { new BaseConfiguration(), new MainAutoConfiguration() };
-                return new SpikesMultiMigrateDbToLastestVersion(configs);
-            }
+            var configs = new DbMigrationsConfiguration[] {new BaseConfiguration(), new MainAutoConfiguration()};
+            return new SpikesMultiMigrateDbToLastestVersion(configs, connectionStringName);
         }
     }
 }
