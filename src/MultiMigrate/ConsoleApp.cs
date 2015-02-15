@@ -90,8 +90,12 @@ namespace MultiMigrate
         {
             ToolingFacade facade = 
                 CreateToolingFacade(config, startUpConfigurationFile, startUpDataDirectory, connectionStringName);
-            var migrator = DelegatedMigrator.CreateFromToolingFacade(facade, connection);
-            migrator.IsAutoMigrationsEnabled = config.AutomaticMigrationsEnabled;
+            var migrator = new DelegatedMigrator(facade.GetPendingMigrations, facade.GetDatabaseMigrations,
+                migration => facade.Update(migration, true), (s, t) => facade.ScriptUpdate(s, t, true), connection,
+                facade.Dispose)
+            {
+                IsAutoMigrationsEnabled = config.AutomaticMigrationsEnabled
+            };
             return migrator;
         }
 

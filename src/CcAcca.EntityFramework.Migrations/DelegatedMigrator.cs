@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Migrations;
-using System.Data.Entity.Migrations.Design;
 using System.Data.Entity.Migrations.Infrastructure;
 
 namespace CcAcca.EntityFramework.Migrations
@@ -111,14 +110,6 @@ namespace CcAcca.EntityFramework.Migrations
         public void Dispose()
         {
             _disposeImpl();
-        }
-
-        public static DelegatedMigrator CreateFromToolingFacade(ToolingFacade facade, DbConnection connection)
-        {
-            var migrator = new DelegatedMigrator(facade.GetPendingMigrations, facade.GetDatabaseMigrations,
-                migration => facade.Update(migration, true), (s, t) => facade.ScriptUpdate(s, t, true), connection,
-                facade.Dispose);
-            return migrator;
         }
 
         public static DelegatedMigrator CreateFromMigrationConfig(DbMigrationsConfiguration c, DbConnection cnn)
