@@ -16,7 +16,10 @@ namespace CcAcca.EntityFramework.Migrations
     /// </summary>
     public class MultiMigrateDbToLastestVersion : IDatabaseInitializer<DbContext>
     {
+        private static readonly Action<IEnumerable<DbMigrationsConfiguration>, DbContext> NoOpConfigurator = (configurations, context) => { };
+
         private readonly string _connectionStringName;
+        private Action<IEnumerable<DbMigrationsConfiguration>, DbContext> _configurator = NoOpConfigurator;
         private readonly IEnumerable<DbMigrationsConfiguration> _configurations;
 
         /// <remarks>
@@ -39,6 +42,19 @@ namespace CcAcca.EntityFramework.Migrations
         }
 
         /// <summary>
+        /// Registers a delegate which will be executed just before migrations are run. This delegate can
+        /// be used to apply final migration configuration settings
+        /// </summary>
+        /// <param name="configurator">
+        /// A delegate instance that will be supplied the migration configuration(s) along with the
+        /// database context that triggered the migration
+        /// </param>
+        public void SetConfigOverride(Action<IEnumerable<DbMigrationsConfiguration>, DbContext> configurator)
+        {
+            _configurator = configurator ?? NoOpConfigurator;
+        }
+
+        /// <summary>
         ///     Names of migrations that should be skipped
         /// </summary>
         /// <remarks>
@@ -58,9 +74,19 @@ namespace CcAcca.EntityFramework.Migrations
         public virtual void InitializeDatabase(DbContext context)
         {
             AssertDbContextConnection(context.Database.Connection);
+            ApplyFinalConfigurations(context);
             bool migrationsRun = UpgradeDb();
             AdditionalSeed(context, migrationsRun);
             context.SaveChanges();
+        }
+
+        private void ApplyFinalConfigurations(DbContext context)
+        {
+            foreach (var c in _configurations)
+            {
+                c.TargetDatabase = new DbConnectionInfo(_connectionStringName);
+            }
+            _configurator(_configurations, context);
         }
 
         private void AssertDbContextConnection(DbConnection ctxCnn)
@@ -112,7 +138,6 @@ namespace CcAcca.EntityFramework.Migrations
 
         private DelegatedMigrator CreateMigrator(DbMigrationsConfiguration c, int migratorPriority, DbConnection cnn)
         {
-            c.TargetDatabase = new DbConnectionInfo(_connectionStringName);
             var migrator = DelegatedMigrator.CreateFromMigrationConfig(c, cnn);
             migrator.Priority = migratorPriority;
             return migrator;
