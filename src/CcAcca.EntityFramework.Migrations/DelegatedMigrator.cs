@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Design;
+using System.Data.Entity.Migrations.Infrastructure;
 
 namespace CcAcca.EntityFramework.Migrations
 {
@@ -108,6 +111,39 @@ namespace CcAcca.EntityFramework.Migrations
         public void Dispose()
         {
             _disposeImpl();
+        }
+
+        public static DelegatedMigrator CreateFromToolingFacade(ToolingFacade facade, DbConnection connection)
+        {
+            var migrator = new DelegatedMigrator(facade.GetPendingMigrations, facade.GetDatabaseMigrations,
+                migration => facade.Update(migration, true), (s, t) => facade.ScriptUpdate(s, t, true), connection,
+                facade.Dispose);
+            return migrator;
+        }
+
+        public static DelegatedMigrator CreateFromMigrationConfig(DbMigrationsConfiguration c, DbConnection cnn)
+        {
+            var impl = new DbMigrator(c);
+            var scriptingImpl = new MigratorScriptingDecorator(new DbMigrator(c));
+            var migrator = new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update,
+                scriptingImpl.ScriptUpdate, cnn)
+            {
+                IsAutoMigrationsEnabled = c.AutomaticMigrationsEnabled,
+                ConfigurationTypeName = c.GetType().FullName
+            };
+            return migrator;
+        }
+
+        public static DbConnection CreateDbConnection(ConnectionStringSettings connectionString)
+        {
+            DbProviderFactory factory = DbProviderFactories.GetFactory(connectionString.ProviderName);
+            DbConnection conn = factory.CreateConnection();
+            if (conn == null)
+            {
+                throw new InvalidOperationException("DbProviderFactory failed to create connection");
+            }
+            conn.ConnectionString = connectionString.ConnectionString;
+            return conn;
         }
     }
 }

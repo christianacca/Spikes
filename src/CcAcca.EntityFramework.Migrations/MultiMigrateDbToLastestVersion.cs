@@ -107,27 +107,15 @@ namespace CcAcca.EntityFramework.Migrations
         private DbConnection CreateDbConnection()
         {
             ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings[_connectionStringName];
-            DbProviderFactory factory = DbProviderFactories.GetFactory(connectionString.ProviderName);
-            DbConnection conn = factory.CreateConnection();
-            if (conn == null)
-            {
-                throw new InvalidOperationException("DbProviderFactory failed to create connection");
-            }
-            conn.ConnectionString = connectionString.ConnectionString;
-            return conn;
+            return DelegatedMigrator.CreateDbConnection(connectionString);
         }
 
         private DelegatedMigrator CreateMigrator(DbMigrationsConfiguration c, int migratorPriority, DbConnection cnn)
         {
             c.TargetDatabase = new DbConnectionInfo(_connectionStringName);
-            var impl = new DbMigrator(c);
-            var scriptingImpl = new MigratorScriptingDecorator(new DbMigrator(c));
-            return new DelegatedMigrator(impl.GetPendingMigrations, impl.GetDatabaseMigrations, impl.Update, scriptingImpl.ScriptUpdate, cnn)
-            {
-                IsAutoMigrationsEnabled = c.AutomaticMigrationsEnabled,
-                ConfigurationTypeName = c.GetType().FullName, 
-                Priority = migratorPriority
-            };
+            var migrator = DelegatedMigrator.CreateFromMigrationConfig(c, cnn);
+            migrator.Priority = migratorPriority;
+            return migrator;
         }
 
         /// <summary>

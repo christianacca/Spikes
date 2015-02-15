@@ -82,10 +82,7 @@ namespace MultiMigrate
         {
             ConnectionStringSettings connectionString = 
                 GetConnectionStringSetting(startUpConfigurationFile, connectionStringName);
-            DbProviderFactory factory = DbProviderFactories.GetFactory(connectionString.ProviderName);
-            DbConnection conn = factory.CreateConnection();
-            conn.ConnectionString = connectionString.ConnectionString;
-            return conn;
+            return DelegatedMigrator.CreateDbConnection(connectionString);
         }
 
         private static DelegatedMigrator CreateMigrator(string startUpConfigurationFile,
@@ -93,10 +90,9 @@ namespace MultiMigrate
         {
             ToolingFacade facade = 
                 CreateToolingFacade(config, startUpConfigurationFile, startUpDataDirectory, connectionStringName);
-            return new DelegatedMigrator(facade.GetPendingMigrations, facade.GetDatabaseMigrations, migration => facade.Update(migration, true), (s, t) => facade.ScriptUpdate(s, t, true), connection, facade.Dispose)
-            {
-                IsAutoMigrationsEnabled = config.AutomaticMigrationsEnabled
-            };
+            var migrator = DelegatedMigrator.CreateFromToolingFacade(facade, connection);
+            migrator.IsAutoMigrationsEnabled = config.AutomaticMigrationsEnabled;
+            return migrator;
         }
 
         private static ConnectionStringSettings GetConnectionStringSetting(string startUpConfigurationFile, string connectionStringName)
