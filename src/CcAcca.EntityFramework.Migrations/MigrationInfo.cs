@@ -22,11 +22,6 @@ namespace CcAcca.EntityFramework.Migrations
         public bool IsAuto { get; set; }
 
         /// <summary>
-        /// Whether this migration represents that there isn't a migration
-        /// </summary>
-        public bool IsNull { get; set; }
-
-        /// <summary>
         /// Whether this migration should be skipped when updating a database
         /// </summary>
         public bool IsSkipped { get; set; }
@@ -41,15 +36,10 @@ namespace CcAcca.EntityFramework.Migrations
             get { return new MigrationInfo { IsAuto = true, CreatedOn = DateTime.MaxValue }; }
         }
 
-        public static MigrationInfo Null
-        {
-            get { return new MigrationInfo { IsNull = true, CreatedOn = DateTime.MaxValue }; }
-        }
-
         public override string ToString()
         {
-            const string format = "Name: {0}, CreatedOn: {1}, IsAuto: {2}, IsNull: {3}, IsSkipped: {4}";
-            return String.Format(format, Name, CreatedOn, IsAuto, IsNull, IsSkipped);
+            const string format = "Name: {0}, CreatedOn: {1}, IsAuto: {2}, IsSkipped: {3}";
+            return String.Format(format, Name, CreatedOn, IsAuto, IsSkipped);
         }
 
         public static Parser CreateParser(IEnumerable<string> skippedMigrations)

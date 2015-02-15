@@ -69,7 +69,7 @@ namespace CcAcca.EntityFramework.Migrations
             }
 
             var config =
-                new JavaScriptSerializer().Deserialize<MigrationsConfig>(File.ReadAllText(configFilePath));
+                new JavaScriptSerializer().Deserialize<MigrationSqlGenConfig>(File.ReadAllText(configFilePath));
             if (!config.identitySeed.HasValue)
             {
                 throw new InvalidOperationException("{0} missing an 'identitySeed' value");
