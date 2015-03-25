@@ -5,6 +5,8 @@ using Spikes.EntityFramework.Models.Bidirectional.NonStandard;
 
 namespace Spikes.EntityFramework
 {
+    using Spikes.EntityFramework.Models.Unidirectional.Conventional;
+
     public class SpikesDbContext : DbContext
     {
         public SpikesDbContext()
@@ -22,10 +24,12 @@ namespace Spikes.EntityFramework
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderNonStd> OrdersNonStd { get; set; }
 
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<FileHeader> FileHeaders { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             // Primary Key property doesn't match EF convention - expected 'Id' or 'OrderNonStdId', but is 'MyId'
 
             modelBuilder.Entity<OrderNonStd>().HasKey(x => x.MyId);
