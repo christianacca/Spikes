@@ -29,7 +29,7 @@ namespace Eca.Commons.Reflection
 
         private static readonly ICollection<string> BuiltinCollectionTypes
             = new List<string>
-                  {
+            {
                       "System.Collections.Generic.ICollection",
                       "System.Collections.Generic.IEnumerable",
                       "System.Collections.Generic.IList",
@@ -193,6 +193,37 @@ namespace Eca.Commons.Reflection
             }
             return obj.GetType();
         }
+
+        public static IEnumerable<Type> TypeHiearchy(this Type sourceType)
+        {
+            Type type = sourceType;
+            yield return type;
+            do
+            {
+                if (type.BaseType != null)
+                {
+                    yield return type.BaseType;
+                }
+            } while ((type = type.BaseType) != null);
+        }
+
+        public static IEnumerable<FieldInfo> DepthFirstFieldList(this Type sourceType)
+        {
+            var types = sourceType.TypeHiearchy().ToList();
+            types.Reverse();
+            return types.SelectMany(t => t.GetFields(BindingFlags.Public | BindingFlags.Static));
+        }
+
+        public static IDictionary<int, string> ToKeyValuePairs(this Type type)
+        {
+            var fieldInfos = type.DepthFirstFieldList();
+
+            return fieldInfos
+                .Where(fi => fi.IsLiteral && !fi.IsInitOnly)
+                .Select((f, idx) => new { Index = idx, f.Name })
+                .ToDictionary(x => x.Index, x => x.Name);
+        }
+
 
 
         public static FieldInfo GetField(object owner, string fieldName)
@@ -433,7 +464,7 @@ namespace Eca.Commons.Reflection
             if (method == null)
             {
                 string errorMsg =
-                    string.Format(
+                    String.Format(
                         "Type '{0}' does not implement method '{1}' or there is a mismatch between arguments supplied and the parameters the method expects",
                         targetType.Name,
                         methodName);

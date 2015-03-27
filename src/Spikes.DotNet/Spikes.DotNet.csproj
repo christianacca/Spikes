@@ -96,6 +96,7 @@
     <Compile Include="Classes\Crypto\HashExamples.cs" />
     <Compile Include="Classes\Crypto\KeyedHashExamples.cs" />
     <Compile Include="Classes\EmailExamples.cs" />
+    <Compile Include="Classes\FakeEnumExamples.cs" />
     <Compile Include="Classes\GlobalizationExamples.cs" />
     <Compile Include="Classes\Iis7AdministrationExamples.cs" />
     <Compile Include="Classes\Interop\PInvokeExamples.cs" />

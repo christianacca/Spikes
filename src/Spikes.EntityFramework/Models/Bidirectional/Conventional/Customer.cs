@@ -1,10 +1,16 @@
-﻿namespace Spikes.EntityFramework.Models.Bidirectional.Conventional
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-    public class Customer : EntityBase
+namespace Spikes.EntityFramework.Models.Bidirectional.Conventional
+{
+    public class Customer
     {
+        public Customer()
+        {
+            Files = new List<CustomerFileHeader>();
+        }
+
         public string Name { get; set; }
+        public int Id { get; set; }
 
         public ICollection<CustomerFileHeader> Files { get; set; }
     }

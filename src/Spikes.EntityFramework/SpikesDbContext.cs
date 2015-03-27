@@ -28,8 +28,12 @@ namespace Spikes.EntityFramework
         public DbSet<Customer> Customers { get; set; }
         public DbSet<FileHeader> FileHeaders { get; set; }
 
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<FileContentInfo>().HasKey(f => f.FilterHeaderId)
+                .HasRequired(f => f.FileHeader).WithOptional(fh => fh.ContentInfo);
+
             // Primary Key property doesn't match EF convention - expected 'Id' or 'OrderNonStdId', but is 'MyId'
 
             modelBuilder.Entity<OrderNonStd>().HasKey(x => x.MyId);

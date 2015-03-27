@@ -21,7 +21,12 @@ namespace Spikes.EntityFramework.Tests
         public void Setup()
         {
             Database.SetInitializer(new DropCreateDatabaseAlways<SpikesDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<SpikesExternalDbContext>());
             using (var db = new SpikesDbContext())
+            {
+                db.Database.Initialize(false);
+            }
+            using (var db = new SpikesExternalDbContext())
             {
                 db.Database.Initialize(false);
             }

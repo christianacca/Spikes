@@ -63,29 +63,38 @@
     <Compile Include="DbContextExtensions.cs" />
     <Compile Include="Models\Bidirectional\Conventional\Customer.cs" />
     <Compile Include="Models\Bidirectional\Conventional\CustomerFileHeader.cs" />
-    <Compile Include="Models\Bidirectional\Conventional\EntityBase.cs" />
-    <Compile Include="Models\Bidirectional\Conventional\EntityFileHeader.cs" />
-    <Compile Include="Models\Bidirectional\Conventional\FileHeader.cs" />
-    <Compile Include="Models\Bidirectional\Conventional\FileContent.cs" />
+    <Compile Include="Models\Bidirectional\Conventional\LookupItem.cs" />
     <Compile Include="Models\Bidirectional\Conventional\Order.cs" />
+    <Compile Include="Models\Bidirectional\Conventional\OrderFileHeader.cs" />
     <Compile Include="Models\Bidirectional\Conventional\OrderLine.cs" />
     <Compile Include="Models\Bidirectional\NonStandard\OrderLineNonStd.cs" />
     <Compile Include="Models\Bidirectional\NonStandard\OrderNonStd.cs" />
+    <Compile Include="Models\Bidirectional\ExternalDb\FileContent.cs" />
+    <Compile Include="Models\Bidirectional\Conventional\FileContentInfo.cs" />
+    <Compile Include="Models\Bidirectional\Conventional\FileHeader.cs" />
+    <Compile Include="Models\Bidirectional\ExternalDb\ImageSize.cs" />
+    <Compile Include="Models\Bidirectional\ExternalDb\MediaGroup.cs" />
     <Compile Include="Models\Unidirectional\Conventional\Invoice.cs" />
     <Compile Include="Models\Unidirectional\Conventional\InvoiceLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpikesDatabaseInitializer.cs" />
     <Compile Include="SpikesDbContext.cs" />
+    <Compile Include="SpikesExternalDbContext.cs" />
+    <Compile Include="Tests\MultiDbIntegrationTestBase.cs" />
     <Compile Include="Tests\DbIntegrationTestBase.cs" />
     <Compile Include="Tests\DbSetup.cs" />
     <Compile Include="Tests\BidirectionalTests.cs" />
-    <Compile Include="Tests\GeneralTests.cs" />
+    <Compile Include="Tests\ExploratoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CoreLib\CoreLib.csproj">
+      <Project>{67F0F7A8-474B-4F4C-8589-9CE9679E39E9}</Project>
+      <Name>CoreLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

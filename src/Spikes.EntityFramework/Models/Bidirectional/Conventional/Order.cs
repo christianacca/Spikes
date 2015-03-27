@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace Spikes.EntityFramework.Models.Bidirectional.Conventional
 {
-    public class Order : EntityBase
+    public class Order
     {
         public Order()
         {
             PlacedOn = DateTime.Now;
             Lines = new List<OrderLine>();
         }
+
+        public int Id { get; set; }
 
         public DateTime PlacedOn { get; set; }
 
@@ -19,6 +21,6 @@ namespace Spikes.EntityFramework.Models.Bidirectional.Conventional
         /// </summary>
         public ICollection<OrderLine> Lines { get; set; }
 
-        public ICollection<FileHeader> Files { get; set; }
+        public ICollection<OrderFileHeader> Files { get; set; }
     }
 }
