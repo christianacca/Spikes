@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
+using Eca.Commons.Data;
 using MiscUtil.Collections.Extensions;
 using NUnit.Framework;
 
@@ -16,6 +17,16 @@ namespace Spikes.EntityFramework.Tests
     {
         private Dictionary<Type, Tuple<DbConnection, DbTransaction>> _connAndTxs;
 
+        protected MultiDbIntegrationTestBase()
+        {
+            IsRollbackEnabled = true;
+        }
+
+        /// <summary>
+        /// Whether data changes made by each test should be rolled back at the end of that test (defaults to true)
+        /// </summary>
+        public bool IsRollbackEnabled { get; set; }
+
         [SetUp]
         public void SetupDbTransaction()
         {
@@ -25,12 +36,41 @@ namespace Spikes.EntityFramework.Tests
         [TearDown]
         public void RollbackTransation()
         {
+            if (IsRollbackEnabled)
+            {
+                _connAndTxs.Values.ToList().ForEach(x => x.Item2.Rollback());
+            }
+            else
+            {
+                _connAndTxs.Values.ToList().ForEach(x => x.Item2.Commit());
+            }
             _connAndTxs.Values.ToList().ForEach(x =>
             {
-                x.Item2.Rollback();
                 x.Item2.Dispose();
                 x.Item1.Dispose();
             });
+        }
+
+        public void RebuildDatabases(params DbContext[] dbs)
+        {
+            foreach (var db in dbs)
+            {
+                SqlAdminQueries.DropDatabase(db.Database.Connection.DataSource, db.Database.Connection.Database);
+                db.Database.Initialize(true);
+                // DropDatabase kills existing connections so make sure to remove the dead ones we're holding onto
+                if (_connAndTxs.ContainsKey(db.GetType()))
+                {
+                    _connAndTxs.Remove(db.GetType());
+                }
+            }
+        }
+
+        public void CommitChanges()
+        {
+            _connAndTxs.Values.ToList().ForEach(x => x.Item2.Commit());
+            // begin a new transaction for existing connections
+            _connAndTxs = _connAndTxs.ToDictionary(x => x.Key,
+                x => new Tuple<DbConnection, DbTransaction>(x.Value.Item1, x.Value.Item1.BeginTransaction()));
         }
 
         /// <summary>

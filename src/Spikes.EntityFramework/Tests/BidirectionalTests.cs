@@ -128,7 +128,9 @@ namespace Spikes.EntityFramework.Tests
                 FileOwnerType = "Customer",
                 ContentType = "application/image",
                 ImageSize = ImageSize.Full,
-                MediaGroup = new MediaGroup()
+                MediaGroup = new MediaGroup(),
+                FileExtension = "jpg",
+                FileName = "Scan of bill"
             };
             using (var db = CreateDbContext<SpikesExternalDbContext>())
             {
@@ -149,10 +151,32 @@ namespace Spikes.EntityFramework.Tests
                 db.SaveChanges();
             }
 
-            using (var db = CreateDbContext<SpikesDbContext>())
+            try
             {
-                Assert.That(db.Customers.Count(), Is.EqualTo(1));
-                Assert.That(db.FileHeaders.OfType<CustomerFileHeader>().Count(), Is.EqualTo(1));
+                // we need to commit FileContent instances created by SpikesExternalDbContext above 
+                // so as to be able query these FileContent instances using SpikesDbContext below
+                CommitChanges();
+
+                using (var db = CreateDbContext<SpikesDbContext>())
+                {
+                    Assert.That(db.Customers.Count(), Is.EqualTo(1));
+                    Assert.That(db.FileHeaders.OfType<CustomerFileHeader>().Count(), Is.EqualTo(1));
+
+                    // Note:
+                    // ContentInfo instances are being returned by a view that joins FileContent instances in the
+                    // external document database with the FileHeader instance from the application database
+                    FileHeader fileHeader = db.FileHeaders.Include(f => f.ContentInfo).First();
+                    Assert.That(fileHeader.ContentInfo, Is.Not.Null);
+                    Assert.That(fileHeader.ContentInfo.ContentType, Is.EqualTo("application/image"));
+                    Assert.That(fileHeader.ContentInfo.FileExtension, Is.EqualTo("jpg"));
+                    Assert.That(fileHeader.ContentInfo.FileName, Is.EqualTo("Scan of bill"));
+                }
+            }
+            finally
+            {
+                // because we've commited changes we need to throw away the database
+                // to avoid effecting other unit tests left to run
+                RebuildDatabases(new SpikesExternalDbContext(), new SpikesDbContext());
             }
         }
     }

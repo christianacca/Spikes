@@ -61,6 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbContextReflectionExts.cs" />
+    <Compile Include="Migrations\201503262252365_InitialCreate.cs" />
+    <Compile Include="Migrations\201503262252365_InitialCreate.Designer.cs">
+      <DependentUpon>201503262252365_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Bidirectional\Conventional\Customer.cs" />
     <Compile Include="Models\Bidirectional\Conventional\CustomerFileHeader.cs" />
     <Compile Include="Models\Bidirectional\Conventional\LookupItem.cs" />
@@ -88,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Models\Bidirectional\FileUploadModel.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +101,17 @@
       <Project>{67F0F7A8-474B-4F4C-8589-9CE9679E39E9}</Project>
       <Name>CoreLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503262252365_InitialCreate.resx">
+      <DependentUpon>201503262252365_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503262252365_InitialCreate_ExternalDb_Up.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201503262252365_InitialCreate_ExternalDb_Down.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
