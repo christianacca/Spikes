@@ -27,6 +27,7 @@ namespace Spikes.EntityFramework
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<FileHeader> FileHeaders { get; set; }
+        public DbSet<CustomerFileHeader> CustomerFileHeaders { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -1,4 +1,6 @@
-﻿namespace Spikes.EntityFramework
+﻿using System.Data.Entity.Core.Mapping;
+
+namespace Spikes.EntityFramework
 {
     using System;
     using System.Collections.Generic;
@@ -9,43 +11,62 @@
     using System.Linq;
     using System.Reflection;
 
-    public static class DbContextExtensions
+    public static class DbContextReflectionExts
     {
-        public static IDictionary<Type, String> GetTables(this DbContext ctx)
+        public static string GetTableName(this DbContext context, Type type)
         {
-            ObjectContext octx = (ctx as IObjectContextAdapter).ObjectContext;
-            IEnumerable<EntityType> entities =
-                octx.MetadataWorkspace.GetItemCollection(DataSpace.OSpace).GetItems<EntityType>().ToList();
+            MetadataWorkspace metadata = ((IObjectContextAdapter) context).ObjectContext.MetadataWorkspace;
+            var objectItemCollection = ((ObjectItemCollection) metadata.GetItemCollection(DataSpace.OSpace));
+            EntityType entityType = metadata.GetItems<EntityType>(DataSpace.OSpace)
+                .Single(e => objectItemCollection.GetClrType(e) == type);
+            EntityType entitySet = metadata.GetItems(DataSpace.CSpace)
+                .Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType).OfType<EntityType>()
+                .Single(x => x.Name == entityType.Name);
+            List<EntitySetMapping> entitySetMappings = metadata.GetItems<EntityContainerMapping>(DataSpace.CSSpace)
+                .Single().EntitySetMappings.ToList();
 
-            return
-                (entities.ToDictionary(x => Type.GetType(x.FullName), x => GetTableName(ctx, Type.GetType(x.FullName))));
+            EntitySet table;
+            EntitySetMapping mapping = entitySetMappings.SingleOrDefault(x => x.EntitySet.Name == entitySet.Name);
+            if (mapping != null)
+            {
+                table = mapping.EntityTypeMappings.Single().Fragments.Single().StoreEntitySet;
+            }
+            else
+            {
+                mapping =
+                    entitySetMappings.SingleOrDefault(
+                        x =>
+                            x.EntityTypeMappings.Where(y => y.EntityType != null)
+                                .Any(y => y.EntityType.Name == entitySet.Name));
+                if (mapping != null)
+                {
+                    table = mapping.EntityTypeMappings.Where(x => x.EntityType != null)
+                        .Single(x => x.EntityType.Name == entityType.Name)
+                        .Fragments.Single()
+                        .StoreEntitySet;
+                }
+                else
+                {
+                    EntitySetMapping entitySetMapping = entitySetMappings
+                        .Single(x => x.EntityTypeMappings.Any(y => y.IsOfEntityTypes.Any(z => z.Name == entitySet.Name)));
+                    table = entitySetMapping.EntityTypeMappings
+                        .First(x => x.IsOfEntityTypes.Any(y => y.Name == entitySet.Name))
+                        .Fragments.Single().StoreEntitySet;
+                }
+            }
+
+            return String.Format("{0}.{1}", table.MetadataProperties["Schema"].Value ?? table.Schema,
+                table.MetadataProperties["Table"].Value ?? table.Name);
         }
 
-        public static String GetTableName(this DbContext ctx, Type entityType)
+        public static IDictionary<Type, string> GetTableMappings(this DbContext ctx)
         {
-            ObjectContext octx = (ctx as IObjectContextAdapter).ObjectContext;
-            EntitySetBase et =
-                octx.MetadataWorkspace.GetItemCollection(DataSpace.SSpace)
-                    .GetItems<EntityContainer>()
-                    .Single()
-                    .BaseEntitySets.Single(x => x.Name == entityType.Name);
-
-            String tableName = String.Concat(
-                et.MetadataProperties["Schema"].Value,
-                ".",
-                et.MetadataProperties["Table"].Value);
-
-            return (tableName);
+            return ctx.GetClrEntityTypes().ToDictionary(t => t, ctx.GetTableName);
         }
 
         public static IEnumerable<PropertyInfo> OneToMany(this DbContext ctx, Type entityType)
         {
-            ObjectContext octx = (ctx as IObjectContextAdapter).ObjectContext;
-            EntityType et =
-                octx.MetadataWorkspace.GetItems(DataSpace.OSpace)
-                    .Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType)
-                    .OfType<EntityType>()
-                    .Single(x => x.Name == entityType.Name);
+            EntityType et = ctx.GetEntityType(entityType);
 
             return
                 (et.NavigationProperties.Where(
@@ -63,7 +84,7 @@
 
         public static IEnumerable<PropertyInfo> OneToOne(this DbContext ctx, Type entityType)
         {
-            EntityType et = ctx.GetEntityType(entityType, DataSpace.OSpace);
+            EntityType et = ctx.GetEntityType(entityType);
 
             return
                 (et.NavigationProperties.Where(
@@ -139,12 +160,7 @@
 
         public static IDictionary<String, PropertyInfo> GetTableKeyColumns(this DbContext ctx, Type entityType)
         {
-            ObjectContext octx = (ctx as IObjectContextAdapter).ObjectContext;
-            EntityType storageEntityType =
-                octx.MetadataWorkspace.GetItems(DataSpace.SSpace)
-                    .Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType)
-                    .OfType<EntityType>()
-                    .Single(x => x.Name == entityType.Name);
+            EntityType storageEntityType = ctx.GetEntityType(entityType, DataSpace.SSpace);
             EntityType objectEntityType = ctx.GetEntityType(entityType);
             return
                 (storageEntityType.KeyMembers.Select(
@@ -159,30 +175,38 @@
                         }).ToDictionary(x => x.Name, x => x.Property));
         }
 
-        public static IDictionary<String, PropertyInfo> GetTableColumns(this DbContext ctx, Type entityType)
+        public static ICollection<PropertyInfo> GetTableColumns(this DbContext ctx, Type entityType)
         {
-            EntityType storageEntityType = ctx.GetEntityType(entityType, DataSpace.SSpace);
-            EntityType objectEntityType = ctx.GetEntityType(entityType);
-
+            EntityType conceptualEntityType = ctx.GetEntityType(entityType, DataSpace.CSpace);
             return
-                (storageEntityType.Properties.Select(
-                    (elm, index) =>
-                        new { elm.Name, Property = entityType.GetProperty(objectEntityType.Members[index].Name) })
-                    .ToDictionary(x => x.Name, x => x.Property));
+                conceptualEntityType.Properties.Select(elm => entityType.GetProperty(elm.Name)).ToList();
         }
 
-        public static Dictionary<PropertyInfo, IEnumerable<PropertyInfo>> GetNavigationProperties(this DbContext ctx, Type entityType)
+        public static Dictionary<PropertyInfo, IEnumerable<PropertyInfo>> GetForeignKeyColumns(this DbContext ctx, Type entityType)
         {
             EntityType conceptualEntityType = ctx.GetEntityType(entityType, DataSpace.CSpace);
             var mapping = conceptualEntityType.NavigationProperties
                 .Select(navProp => new
-                                   {
-                                       Property = entityType.GetProperty(navProp.Name), 
-                                       Properties = navProp.GetDependentProperties().Select(dp => entityType.GetProperty(dp.Name))
-                                   })
+                {
+                    Property = entityType.GetProperty(navProp.Name),
+                    Properties = navProp.GetDependentProperties().Select(dp => entityType.GetProperty(dp.Name))
+                })
                 .ToDictionary(x => x.Property, x => x.Properties);
 
             return mapping;
+        }
+
+        public static IEnumerable<Type> GetClrEntityTypes<T>(this T dbContext) where T : DbContext
+        {
+            ObjectContext octx = (dbContext as IObjectContextAdapter).ObjectContext;
+            // Get the mapping between CLR types and metadata OSpace
+            var objectItemCollection = ((ObjectItemCollection)octx.MetadataWorkspace.GetItemCollection(DataSpace.OSpace));
+
+            var entityTypes = octx.MetadataWorkspace.GetItems(DataSpace.OSpace)
+                .Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType)
+                .OfType<EntityType>();
+
+            return entityTypes.Select(objectItemCollection.GetClrType);
         }
     }
 }
