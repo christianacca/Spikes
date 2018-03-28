@@ -191,3 +191,4 @@ FakesAssemblies/
 !lib/**/x64/
 !lib/**/x86/
 Dependencies/*.dll
+/src/MultiMigrate/Dependencies/*.dll
