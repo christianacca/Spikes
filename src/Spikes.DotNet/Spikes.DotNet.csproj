@@ -127,6 +127,8 @@
     <Compile Include="Classes\TextMatchesUsingRegEx.cs" />
     <Compile Include="Classes\ThreadingExamples.cs" />
     <Compile Include="Classes\TransactionScopeSpikes.cs" />
+    <Compile Include="Classes\UriBuilderExamples.cs" />
+    <Compile Include="Classes\UriExamples.cs" />
     <Compile Include="Classes\Win32RegistryClass.cs" />
     <Compile Include="Classes\EncodingAndSystemIO\HandlingStreamExceptionsInAWinFormApp.cs" />
     <Compile Include="Classes\WmiTests.cs" />
