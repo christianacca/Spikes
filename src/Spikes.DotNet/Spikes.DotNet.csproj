@@ -102,6 +102,7 @@
     <Compile Include="Classes\Interop\PInvokeExamples.cs" />
     <Compile Include="Classes\Crypto\SymetricKeyCryptoExamples.cs" />
     <Compile Include="Classes\CSharp3\LanguageSpikes.cs" />
+    <Compile Include="Classes\ProcessExamples.cs" />
     <Compile Include="Classes\ReflectionEmitExamples.cs" />
     <Compile Include="Classes\ReflectionExamples.cs" />
     <Compile Include="Classes\CustomFormatterExamples.cs" />
